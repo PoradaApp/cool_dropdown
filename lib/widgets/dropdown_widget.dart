@@ -132,11 +132,10 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                 child: Container(
                   margin: widget.dropdownOptions.marginGap,
                   clipBehavior: Clip.antiAlias,
-                  constraints: BoxConstraints(
-                    maxWidth: _dropdownCalculator.dropdownWidth,
-                    minHeight: 52,
-                    maxHeight: _dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width,
-                  ),
+                  width: _dropdownCalculator.dropdownWidth,
+                  height: (_dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width) <= 52
+                      ? 52
+                      : _dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width,
                   padding: EdgeInsets.all(widget.dropdownOptions.borderSide.width * 0.5),
                   decoration: ShapeDecoration(
                     color: widget.dropdownOptions.color,
