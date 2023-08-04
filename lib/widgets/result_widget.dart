@@ -270,7 +270,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                             ),
                           ),
                           SizedBox(width: widget.resultOptions.space),
-                          if (_shouldBuildIcon()) _buildArrow(),
+                          /* if (_shouldBuildIcon())  */ _buildArrow(),
                         ].isReverse(widget.resultOptions.render == ResultRender.reverse),
                       )
                     : _buildArrow(),
@@ -282,7 +282,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
 
   bool _shouldBuildIcon() {
     if (widget.hasInputField) {
-      return _controller.text.isNotEmpty && widget.resultOptions.icon != null;
+      return widget.resultOptions.icon != null;
     } else {
       return widget.resultOptions.icon != null;
     }
