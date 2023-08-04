@@ -111,7 +111,7 @@ class DropdownController implements TickerProvider {
       );
 
   void show({required BuildContext context, required DropdownWidget child}) {
-    if (_overlayEntry != null) {
+    if (_overlayEntry != null || _child == null) {
       // If _overlayEntry already exists replace the child and show the overlay.
       _child = child;
       if (_overlayEntry!.mounted) {

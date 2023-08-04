@@ -174,10 +174,8 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                         setState(() {});
                       },
                       onChanged: (value) {
-                        if (value.isNotEmpty) {
-                          widget.onEditingChange?.call(value);
-                          //canOpen();
-                        } else {
+                        widget.onEditingChange?.call(value);
+                        if (value.isEmpty) {
                           widget.controller.close();
                         }
                       },
