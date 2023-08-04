@@ -181,22 +181,26 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                             ),
                           ),
                         )
-                      : Column(
-                          children: [
-                            SizedBox(
-                              height: widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
-                            ),
-                            SizedBox(
-                              height: 52,
-                              child: DropdownItemWidget(
-                                item: widget.undefinedItem!,
-                                dropdownItemOptions: widget.dropdownItemOptions,
+                      : Container(
+                          color: Colors.red,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
                               ),
-                            ),
-                            SizedBox(
-                              height: widget.dropdownOptions.gap.bottom + widget.dropdownOptions.borderSide.width * 0.5,
-                            ),
-                          ],
+                              SizedBox(
+                                height: 52,
+                                child: DropdownItemWidget(
+                                  item: widget.undefinedItem!,
+                                  dropdownItemOptions: widget.dropdownItemOptions,
+                                ),
+                              ),
+                              SizedBox(
+                                height:
+                                    widget.dropdownOptions.gap.bottom + widget.dropdownOptions.borderSide.width * 0.5,
+                              ),
+                            ],
+                          ),
                         ),
                 ),
               ),
