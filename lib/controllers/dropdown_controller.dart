@@ -140,6 +140,10 @@ class DropdownController implements TickerProvider {
       _isOpen = false;
       onOpen?.call(false);
     } else {
+      _overlayEntry = null;
+      _isOpen = false;
+      onOpen?.call(false);
+
       print('Dont close');
     }
   }
