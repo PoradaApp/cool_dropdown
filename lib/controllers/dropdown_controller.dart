@@ -133,12 +133,14 @@ class DropdownController implements TickerProvider {
   }
 
   void close() async {
-    if (_isOpen && _overlayEntry != null && _overlayEntry!.mounted) {
+    if (_overlayEntry != null && _overlayEntry!.mounted) {
       // If the overlay is open and the overlay entry exists and is mounted, close it.
       await _controller.reverse();
       _overlayEntry!.remove();
       _isOpen = false;
       onOpen?.call(false);
+    } else {
+      print('Dont close');
     }
   }
 
