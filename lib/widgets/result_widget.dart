@@ -181,8 +181,6 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                       controller: _controller,
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        fillColor: Colors.transparent,
-                        filled: true,
                         focusColor: Colors.transparent,
                         hoverColor: Colors.transparent,
                         contentPadding: EdgeInsets.zero,
