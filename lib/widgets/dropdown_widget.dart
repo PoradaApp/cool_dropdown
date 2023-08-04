@@ -150,6 +150,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                     itemCount: widget.dropdownList.length,
                     itemBuilder: (_, index) => GestureDetector(
                       onTap: () {
+                        widget.onChangedText.call(widget.dropdownList[index].label);
                         widget.onChange.call(widget.dropdownList[index].value);
                         _setSelectedItem(index);
                       },
