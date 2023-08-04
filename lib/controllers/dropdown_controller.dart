@@ -111,32 +111,14 @@ class DropdownController implements TickerProvider {
       );
 
   void show({required BuildContext context, required DropdownWidget child}) {
-    /*   if (_overlayEntry != null) {
-      // If _overlayEntry already exists replace the child and show the overlay.
-      _child = child;
-      if (_overlayEntry!.mounted) {
-        _overlayEntry!.remove();
-      }
-      _overlayEntry?.remove();
-      _overlayEntry = OverlayEntry(builder: (_) => _child!);
-      Overlay.of(context).insert(_overlayEntry!);
-    } else { */
-    // If _overlayEntry doesn't exist create a new one and show it.
-    _child = child;
-    if (_overlayEntry != null) {
-      _overlayEntry?.remove();
-    } else {
-      return;
-    }
-    _overlayEntry = OverlayEntry(builder: (_) => _child!);
-
+    _overlayEntry = OverlayEntry(builder: (_) => child);
+    if (_overlayEntry == null) return;
     Overlay.of(context).insert(_overlayEntry!);
 
     _isOpen = true;
     onOpen?.call(true);
 
     _controller.forward();
-    //}
   }
 
   void close() async {
