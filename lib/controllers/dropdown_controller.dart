@@ -124,6 +124,10 @@ class DropdownController implements TickerProvider {
     openFunction!.call();
   }
 
+  void updateOverlay() {
+    _overlayEntry.markNeedsBuild();
+  }
+
   void close() async {
     await _controller.reverse();
     if (_overlayEntry == null || !_overlayEntry!.mounted) {
