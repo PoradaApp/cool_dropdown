@@ -187,7 +187,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                               height: widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
                             ),
                             SizedBox(
-                              height: _dropdownCalculator.dropdownHeight,
+                              height: 52,
                               child: DropdownItemWidget(
                                 item: widget.undefinedItem!,
                                 dropdownItemOptions: widget.dropdownItemOptions,
