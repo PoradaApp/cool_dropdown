@@ -15,15 +15,11 @@ class DropdownWidget<T> extends StatefulWidget {
   final DropdownItemOptions dropdownItemOptions;
   final DropdownTriangleOptions dropdownTriangleOptions;
   final DropdownController controller;
-
   final GlobalKey resultKey;
   final BuildContext bodyContext;
-
   final List<CoolDropdownItem<T>> dropdownList;
-
   final Function(T t) onChange;
   final Function(String text) onChangedText;
-
   final SelectedItemCallback<T> selectedItemCallback;
   final CoolDropdownItem<T>? selectedItem;
   final CoolDropdownItem? undefinedItem;
@@ -67,7 +63,9 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final currentIndex = widget.dropdownList.indexWhere((dropdownItem) => dropdownItem == widget.selectedItem);
       if (currentIndex < 0) return;
-      // _setSelectedItem(currentIndex);
+      if (widget.selectedItem != null) {
+        _setSelectedItem(widget.selectedItem!);
+      }
       _dropdownCalculator.setScrollPosition(currentIndex);
     });
     super.initState();
@@ -80,14 +78,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
   }
 
   void _setSelectedItem(CoolDropdownItem<T> item) {
-    /* for (var i = 0; i < widget.dropdownList.length; i++) { */
-    /*  if (index == i) { */
-    /*    widget.dropdownList[i] = widget.dropdownList[i]; */
     widget.selectedItemCallback(item);
-    /* } else {
-        widget.dropdownList[i] = widget.dropdownList[i].copyWith(isSelected: false);
-      } */
-    /*   } */
   }
 
   Widget _buildAnimation({required Widget child}) {
