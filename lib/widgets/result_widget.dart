@@ -176,7 +176,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                       onChanged: (value) {
                         widget.onEditingChange?.call(value);
                         if (value.isEmpty) {
-                          widget.controller.close();
+                          widget.controller.removeOverlay();
                         }
                       },
                       inputFormatters: widget.inputFormatters,
