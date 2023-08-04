@@ -220,7 +220,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: open,
+      onTap: () => open(),
       child: AnimatedBuilder(
           animation: Listenable.merge([widget.controller.controller, widget.controller.errorController]),
           builder: (_, __) {
