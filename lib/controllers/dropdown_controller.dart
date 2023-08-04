@@ -135,7 +135,7 @@ class DropdownController implements TickerProvider {
 
   void close() async {
     await _controller.reverse();
-    _overlayEntry?.remove();
+    removeOverlay();
 
     _isOpen = false;
     onOpen?.call(false);
