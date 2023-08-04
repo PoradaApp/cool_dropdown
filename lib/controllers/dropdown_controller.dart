@@ -123,7 +123,11 @@ class DropdownController implements TickerProvider {
     } else { */
     // If _overlayEntry doesn't exist create a new one and show it.
     _child = child;
-    _overlayEntry?.remove();
+    if (_overlayEntry != null) {
+      _overlayEntry?.remove();
+    } else {
+      return;
+    }
     _overlayEntry = OverlayEntry(builder: (_) => _child!);
 
     Overlay.of(context).insert(_overlayEntry!);
