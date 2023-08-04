@@ -87,7 +87,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
     if (!widget.hasInputField) {
       open();
     } else {
-      if (_controller.text.isNotEmpty && !widget.controller.isOpen) {
+      if (_controller.text.length > 1 && !widget.controller.isOpen) {
         open();
       }
     }
@@ -177,7 +177,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                       maxLines: 1,
                       keyboardType: TextInputType.text,
                       style: widget.resultOptions.inputTextField,
-                      cursorColor: Colors.black,
+                      cursorColor: widget.resultOptions.inputTextField.color,
                       controller: _controller,
                       decoration: InputDecoration(
                         border: InputBorder.none,
