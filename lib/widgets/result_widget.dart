@@ -53,7 +53,7 @@ class ResultWidget<T> extends StatefulWidget {
 }
 
 class _ResultWidgetState<T> extends State<ResultWidget<T>> {
-  late final TextEditingController _controller;
+  late final TextEditingController _textController;
 
   final resultKey = GlobalKey();
   CoolDropdownItem<T>? selectedItem;
@@ -71,9 +71,9 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
       _setSelectedItem(widget.defaultItem!);
     }
     if (widget.hasInputField) {
-      _controller = TextEditingController();
+      _textController = TextEditingController();
       if (widget.defaultItem != null) {
-        _controller.text = widget.defaultItem!.label;
+        _textController.text = widget.defaultItem!.label;
       }
     }
     widget.controller.setFunctions(onError, widget.onOpen, open, _setSelectedItem);
@@ -108,7 +108,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
           resultKey: resultKey,
           onChangedText: (value) {
             if (widget.hasInputField) {
-              _controller.text = value;
+              _textController.text = value;
               setState(() {});
             }
           },
@@ -179,7 +179,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                   child: Center(
                     child: TextField(
                       onTap: () {
-                        _controller.clear();
+                        _textController.clear();
                         setState(() {});
                       },
                       onChanged: (value) {
@@ -199,7 +199,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                       keyboardType: TextInputType.text,
                       style: widget.resultOptions.inputTextField,
                       cursorColor: widget.resultOptions.inputTextField.color,
-                      controller: _controller,
+                      controller: _textController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         focusColor: Colors.transparent,
@@ -270,7 +270,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                             ),
                           ),
                           SizedBox(width: widget.resultOptions.space),
-                          /* if (_shouldBuildIcon())  */ _buildArrow(),
+                          _buildArrow(),
                         ].isReverse(widget.resultOptions.render == ResultRender.reverse),
                       )
                     : _buildArrow(),
@@ -278,13 +278,5 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
             );
           }),
     );
-  }
-
-  bool _shouldBuildIcon() {
-    if (widget.hasInputField) {
-      return widget.resultOptions.icon != null;
-    } else {
-      return widget.resultOptions.icon != null;
-    }
   }
 }

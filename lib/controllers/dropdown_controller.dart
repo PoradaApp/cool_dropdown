@@ -29,6 +29,7 @@ class DropdownController implements TickerProvider {
   final Curve showErrorCurve;
 
   OverlayEntry? _overlayEntry;
+  DropdownWidget? _child;
 
   bool _isOpen = false;
   bool get isOpen => _isOpen;
@@ -110,6 +111,21 @@ class DropdownController implements TickerProvider {
       );
 
   void show({required BuildContext context, required DropdownWidget child}) {
+    if (_overlayEntry != null && _child != null) {
+      _child = child;
+      if (_overlayEntry == null || !_overlayEntry!.mounted) {
+        return;
+      } else {
+        _overlayEntry?.remove();
+      }
+      if (child.dropdownList != _child!.dropdownList) {
+        _overlayEntry = OverlayEntry(builder: (_) => child);
+        if (_overlayEntry == null) return;
+        Overlay.of(context).insert(_overlayEntry!);
+      }
+      return;
+    }
+
     _overlayEntry = OverlayEntry(builder: (_) => child);
     if (_overlayEntry == null) return;
     Overlay.of(context).insert(_overlayEntry!);
