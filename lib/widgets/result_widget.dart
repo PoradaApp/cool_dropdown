@@ -28,6 +28,7 @@ class ResultWidget<T> extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final CoolDropdownItem<T>? defaultItem;
   final String? hintText;
+  final CoolDropdownItem<T>? undefinedItem;
 
   const ResultWidget({
     Key? key,
@@ -44,6 +45,7 @@ class ResultWidget<T> extends StatefulWidget {
     this.onEditingChange,
     this.inputFormatters,
     this.hintText,
+    this.undefinedItem,
   }) : super(key: key);
 
   @override
@@ -117,6 +119,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
           getSelectedItem: (index) => _setSelectedItem(widget.dropdownList[index]),
           selectedItem: selectedItem,
           bodyContext: context,
+          undefinedItem: widget.undefinedItem,
         ));
   }
 

@@ -26,6 +26,7 @@ class DropdownWidget<T> extends StatefulWidget {
 
   final GetSelectedItem getSelectedItem;
   final CoolDropdownItem<T>? selectedItem;
+  final CoolDropdownItem<T>? undefinedItem;
 
   const DropdownWidget({
     Key? key,
@@ -40,6 +41,7 @@ class DropdownWidget<T> extends StatefulWidget {
     required this.getSelectedItem,
     required this.selectedItem,
     required this.onChangedText,
+    required this.undefinedItem,
   }) : super(key: key);
 
   @override
@@ -144,38 +146,49 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                       isTriangleDown: _dropdownCalculator.isArrowDown,
                     ),
                   ),
-                  child: ListView.builder(
-                    controller: _dropdownCalculator.scrollController,
-                    padding: widget.dropdownOptions.calcPadding,
-                    itemCount: widget.dropdownList.length,
-                    itemBuilder: (_, index) => GestureDetector(
-                      onTap: () {
-                        widget.onChangedText.call(widget.dropdownList[index].label);
-                        widget.onChange.call(widget.dropdownList[index].value);
-                        _setSelectedItem(index);
-                      },
-                      child: Column(
-                        children: [
-                          if (index == 0)
-                            SizedBox(
-                              height: widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
+                  child: widget.dropdownList.isNotEmpty && widget.undefinedItem != null
+                      ? ListView.builder(
+                          controller: _dropdownCalculator.scrollController,
+                          padding: widget.dropdownOptions.calcPadding,
+                          itemCount: widget.dropdownList.length,
+                          itemBuilder: (_, index) => GestureDetector(
+                            onTap: () {
+                              widget.onChangedText.call(widget.dropdownList[index].label);
+                              widget.onChange.call(widget.dropdownList[index].value);
+                              _setSelectedItem(index);
+                            },
+                            child: Column(
+                              children: [
+                                if (index == 0)
+                                  SizedBox(
+                                    height:
+                                        widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
+                                  ),
+                                DropdownItemWidget(
+                                  item: widget.dropdownList[index],
+                                  dropdownItemOptions: widget.dropdownItemOptions,
+                                ),
+                                if (index != widget.dropdownList.length - 1)
+                                  SizedBox(
+                                    height: widget.dropdownOptions.gap.betweenItems,
+                                  ),
+                                if (index == widget.dropdownList.length - 1)
+                                  SizedBox(
+                                    height: widget.dropdownOptions.gap.bottom +
+                                        widget.dropdownOptions.borderSide.width * 0.5,
+                                  ),
+                              ],
                             ),
-                          DropdownItemWidget(
-                            item: widget.dropdownList[index],
-                            dropdownItemOptions: widget.dropdownItemOptions,
                           ),
-                          if (index != widget.dropdownList.length - 1)
-                            SizedBox(
-                              height: widget.dropdownOptions.gap.betweenItems,
+                        )
+                      : Column(
+                          children: [
+                            DropdownItemWidget(
+                              item: widget.undefinedItem as CoolDropdownItem<T>,
+                              dropdownItemOptions: widget.dropdownItemOptions,
                             ),
-                          if (index == widget.dropdownList.length - 1)
-                            SizedBox(
-                              height: widget.dropdownOptions.gap.bottom + widget.dropdownOptions.borderSide.width * 0.5,
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
+                          ],
+                        ),
                 ),
               ),
             ),

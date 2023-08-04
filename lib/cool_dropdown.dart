@@ -26,6 +26,7 @@ export 'package:cool_dropdown/options/result_options.dart';
 class CoolDropdown<T> extends StatelessWidget {
   final List<CoolDropdownItem<T>> dropdownList;
   final CoolDropdownItem<T>? defaultItem;
+  final CoolDropdownItem<T>? undefinedItem;
   final ResultOptions resultOptions;
   final DropdownOptions dropdownOptions;
   final DropdownItemOptions dropdownItemOptions;
@@ -55,6 +56,7 @@ class CoolDropdown<T> extends StatelessWidget {
     this.hasInputField = false,
     this.inputFormatters,
     this.hintText,
+    this.undefinedItem,
   }) : super(key: key);
 
   @override
@@ -73,6 +75,7 @@ class CoolDropdown<T> extends StatelessWidget {
       onEditingChange: onEditingChange,
       inputFormatters: inputFormatters,
       hintText: hintText,
+      undefinedItem: undefinedItem,
     );
   }
 }
