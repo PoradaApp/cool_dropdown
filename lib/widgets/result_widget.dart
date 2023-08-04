@@ -175,14 +175,10 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                       },
                       onChanged: (value) {
                         widget.onEditingChange?.call(value);
-                        /* if (value.isEmpty) {
+                        if (value.isEmpty) {
                           widget.controller.close();
-                        } */
+                        }
                       },
-                      /* onEditingComplete: () {
-                        widget.controller.close();
-                        widget.controller.open();
-                      }, */
                       inputFormatters: widget.inputFormatters,
                       maxLines: 1,
                       keyboardType: TextInputType.text,
