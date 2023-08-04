@@ -90,8 +90,11 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
     if (!widget.hasInputField) {
       open();
     } else {
-      if (_controller.text.length > 1 && !widget.controller.isOpen) {
-        open();
+      if (widget.controller.isOpen) {
+        widget.controller.close();
+        widget.controller.open();
+      } else {
+        widget.controller.open();
       }
     }
   }
@@ -183,7 +186,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                       onChanged: (value) {
                         if (value.isNotEmpty) {
                           widget.onEditingChange?.call(value);
-                          //canOpen();
+                          canOpen();
                         } else {
                           widget.controller.close();
                         }
