@@ -107,14 +107,14 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
             widget.onChange(value);
           },
           dropdownList: widget.dropdownList,
-          getSelectedItem: (index) => _setSelectedItem(widget.dropdownList[index]),
+          selectedItemCallback: (item) => _setSelectedItem(item),
           selectedItem: selectedItem,
           bodyContext: context,
           undefinedItem: widget.undefinedItem,
         ));
   }
 
-  void _setSelectedItem(CoolDropdownItem<T>? item) {
+  void _setSelectedItem(CoolDropdownItem<T> item) {
     setState(() {
       selectedItem = item;
     });

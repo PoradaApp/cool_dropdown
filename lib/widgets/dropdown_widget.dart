@@ -19,12 +19,12 @@ class DropdownWidget<T> extends StatefulWidget {
   final GlobalKey resultKey;
   final BuildContext bodyContext;
 
-  final List<CoolDropdownItem> dropdownList;
+  final List<CoolDropdownItem<T>> dropdownList;
 
   final Function(T t) onChange;
   final Function(String text) onChangedText;
 
-  final GetSelectedItem getSelectedItem;
+  final SelectedItemCallback<T> selectedItemCallback;
   final CoolDropdownItem<T>? selectedItem;
   final CoolDropdownItem? undefinedItem;
 
@@ -38,7 +38,7 @@ class DropdownWidget<T> extends StatefulWidget {
     required this.bodyContext,
     required this.dropdownList,
     required this.onChange,
-    required this.getSelectedItem,
+    required this.selectedItemCallback,
     required this.selectedItem,
     required this.onChangedText,
     required this.undefinedItem,
@@ -67,7 +67,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final currentIndex = widget.dropdownList.indexWhere((dropdownItem) => dropdownItem == widget.selectedItem);
       if (currentIndex < 0) return;
-      _setSelectedItem(currentIndex);
+      // _setSelectedItem(currentIndex);
       _dropdownCalculator.setScrollPosition(currentIndex);
     });
     super.initState();
@@ -79,17 +79,15 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
     super.dispose();
   }
 
-  void _setSelectedItem(int i) {
-    setState(() {
-      /* for (var i = 0; i < widget.dropdownList.length; i++) { */
-      /*  if (index == i) { */
-      /*    widget.dropdownList[i] = widget.dropdownList[i]; */
-      widget.getSelectedItem(i);
-      /* } else {
+  void _setSelectedItem(CoolDropdownItem<T> item) {
+    /* for (var i = 0; i < widget.dropdownList.length; i++) { */
+    /*  if (index == i) { */
+    /*    widget.dropdownList[i] = widget.dropdownList[i]; */
+    widget.selectedItemCallback(item);
+    /* } else {
         widget.dropdownList[i] = widget.dropdownList[i].copyWith(isSelected: false);
       } */
-      /*   } */
-    });
+    /*   } */
   }
 
   Widget _buildAnimation({required Widget child}) {
@@ -158,7 +156,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                             onTap: () {
                               widget.onChangedText.call(widget.dropdownList[index].label);
                               widget.onChange.call(widget.dropdownList[index].value);
-                              _setSelectedItem(index);
+                              _setSelectedItem(widget.dropdownList[index]);
                             },
                             child: Column(
                               children: [
