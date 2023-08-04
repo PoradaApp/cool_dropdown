@@ -89,7 +89,10 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
   void canOpen() {
     if (!widget.hasInputField) {
       open();
-    } else {}
+    } else {
+      //HERE
+      open();
+    }
   }
 
   void open() {
