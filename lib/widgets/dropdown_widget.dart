@@ -133,8 +133,9 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                   margin: widget.dropdownOptions.marginGap,
                   clipBehavior: Clip.antiAlias,
                   width: _dropdownCalculator.dropdownWidth,
-                  height: (_dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width) <= 52
-                      ? 52
+                  height: (_dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width) <=
+                          widget.dropdownItemOptions.height
+                      ? widget.dropdownItemOptions.height
                       : _dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width,
                   padding: EdgeInsets.all(widget.dropdownOptions.borderSide.width * 0.5),
                   decoration: ShapeDecoration(
@@ -148,7 +149,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                       isTriangleDown: _dropdownCalculator.isArrowDown,
                     ),
                   ),
-                  child: widget.dropdownList.isNotEmpty
+                  child: widget.dropdownList.isNotEmpty && widget.undefinedItem != null
                       ? ListView.builder(
                           controller: _dropdownCalculator.scrollController,
                           padding: widget.dropdownOptions.calcPadding,
@@ -183,26 +184,19 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                             ),
                           ),
                         )
-                      : Container(
-                          color: Colors.red,
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
-                              ),
-                              SizedBox(
-                                height: 52,
-                                child: DropdownItemWidget(
-                                  item: widget.undefinedItem ?? CoolDropdownItem(label: '', value: 'Undefined'),
-                                  dropdownItemOptions: widget.dropdownItemOptions,
-                                ),
-                              ),
-                              SizedBox(
-                                height:
-                                    widget.dropdownOptions.gap.bottom + widget.dropdownOptions.borderSide.width * 0.5,
-                              ),
-                            ],
-                          ),
+                      : Column(
+                          children: [
+                            SizedBox(
+                              height: widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
+                            ),
+                            DropdownItemWidget(
+                              item: widget.undefinedItem!,
+                              dropdownItemOptions: widget.dropdownItemOptions,
+                            ),
+                            SizedBox(
+                              height: widget.dropdownOptions.gap.bottom + widget.dropdownOptions.borderSide.width * 0.5,
+                            ),
+                          ],
                         ),
                 ),
               ),
