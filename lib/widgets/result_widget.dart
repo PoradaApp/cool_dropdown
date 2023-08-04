@@ -108,6 +108,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
           onChangedText: (value) {
             if (widget.hasInputField) {
               _controller.text = value;
+              setState((){});
             }
           },
           onChange: (value) {
