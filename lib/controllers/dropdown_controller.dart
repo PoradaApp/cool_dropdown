@@ -145,6 +145,7 @@ class DropdownController implements TickerProvider {
     if (_overlayEntry == null || !_overlayEntry!.mounted) {
       return;
     } else {
+      _child = null;
       _overlayEntry?.remove();
     }
     _isOpen = false;
