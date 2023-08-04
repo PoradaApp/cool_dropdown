@@ -70,6 +70,9 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
     }
     if (widget.hasInputField) {
       _controller = TextEditingController();
+      if (widget.defaultItem != null) {
+        _controller.text = widget.defaultItem!.label;
+      }
     }
     widget.controller.setFunctions(onError, widget.onOpen, open, _setSelectedItem);
     widget.controller.setResultOptions(widget.resultOptions);
@@ -168,7 +171,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                       onChanged: (value) {
                         if (value.isNotEmpty) {
                           widget.onEditingChange?.call(value);
-                         //canOpen();
+                          //canOpen();
                         } else {
                           widget.controller.close();
                         }
