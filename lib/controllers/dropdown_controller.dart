@@ -115,7 +115,7 @@ class DropdownController implements TickerProvider {
       // If _overlayEntry already exists replace the child and show the overlay.
       _child = child;
       if (_overlayEntry!.mounted) {
-        _overlayEntry?.remove();
+        _overlayEntry = null;
       }
       _overlayEntry = OverlayEntry(builder: (_) => _child!);
       Overlay.of(context).insert(_overlayEntry!);
@@ -142,7 +142,7 @@ class DropdownController implements TickerProvider {
       return;
     } else {
       _child = null;
-      _overlayEntry!.remove();
+      _overlayEntry = null;
     }
     _isOpen = false;
     onOpen?.call(false);
