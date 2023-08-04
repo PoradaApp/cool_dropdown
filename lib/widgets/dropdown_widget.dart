@@ -26,7 +26,7 @@ class DropdownWidget<T> extends StatefulWidget {
 
   final GetSelectedItem getSelectedItem;
   final CoolDropdownItem<T>? selectedItem;
-  final CoolDropdownItem<T>? undefinedItem;
+  final CoolDropdownItem? undefinedItem;
 
   const DropdownWidget({
     Key? key,
@@ -184,7 +184,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                       : Column(
                           children: [
                             DropdownItemWidget(
-                              item: widget.undefinedItem as CoolDropdownItem<T>,
+                              item: widget.undefinedItem!,
                               dropdownItemOptions: widget.dropdownItemOptions,
                             ),
                           ],
