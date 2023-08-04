@@ -108,7 +108,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
           onChangedText: (value) {
             if (widget.hasInputField) {
               _controller.text = value;
-              setState((){});
+              setState(() {});
             }
           },
           onChange: (value) {
@@ -176,6 +176,9 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                   width: width,
                   child: Center(
                     child: TextField(
+                      onTap: () {
+                        _controller.clear();
+                      },
                       onChanged: (value) {
                         if (value.isNotEmpty) {
                           widget.onEditingChange?.call(value);
