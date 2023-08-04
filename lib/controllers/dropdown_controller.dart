@@ -112,6 +112,7 @@ class DropdownController implements TickerProvider {
   void show({required BuildContext context, required DropdownWidget child}) {
     if (_overlayEntry != null && Overlay.of(context).mounted) {
       _overlayEntry!.remove();
+      _overlayEntry = null;
     }
     _overlayEntry = OverlayEntry(builder: (_) => child);
     if (_overlayEntry == null) return;
@@ -130,6 +131,7 @@ class DropdownController implements TickerProvider {
   void removeOverlay() {
     if (_overlayEntry != null) {
       _overlayEntry!.remove();
+      _overlayEntry = null;
     }
   }
 
