@@ -123,12 +123,8 @@ class DropdownController implements TickerProvider {
 
   void close() async {
     await _controller.reverse();
-    if (_overlayEntry == null || !_overlayEntry!.mounted) {
-      print('returned');
-      return;
-    } else {
-      _overlayEntry?.remove();
-    }
+    _overlayEntry?.remove();
+
     _isOpen = false;
     onOpen?.call(false);
   }
