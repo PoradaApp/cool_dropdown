@@ -79,8 +79,7 @@ class DropdownController implements TickerProvider {
     ),
   );
 
-  Animation<Decoration> get errorDecoration =>
-      errorDecorationTween.animate(_errorController);
+  Animation<Decoration> get errorDecoration => errorDecorationTween.animate(_errorController);
 
   Animation<double> get rotation => Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(
@@ -127,8 +126,11 @@ class DropdownController implements TickerProvider {
 
   void close() async {
     await _controller.reverse();
-    _overlayEntry?.remove();
-
+    if (_overlayEntry == null || !_overlayEntry!.mounted) {
+      return;
+    } else {
+      _overlayEntry?.remove();
+    }
     _isOpen = false;
     onOpen?.call(false);
   }
@@ -139,8 +141,7 @@ class DropdownController implements TickerProvider {
 
   Future<void> error() async {
     if (_isError) return;
-    _setErrorDecorationTween(
-        _resultOptions.boxDecoration, _resultOptions.errorBoxDecoration);
+    _setErrorDecorationTween(_resultOptions.boxDecoration, _resultOptions.errorBoxDecoration);
     _onError?.call(true);
     _isError = true;
     _errorController.reset();
@@ -149,18 +150,15 @@ class DropdownController implements TickerProvider {
 
   Future<void> resetError() async {
     _setErrorDecorationTween(
-        errorDecorationTween.end!,
-        _isOpen
-            ? _resultOptions.openBoxDecoration
-            : _resultOptions.boxDecoration);
+        errorDecorationTween.end!, _isOpen ? _resultOptions.openBoxDecoration : _resultOptions.boxDecoration);
     _errorController.reset();
     await _errorController.forward();
     _onError?.call(false);
     _isError = false;
   }
 
-  void setFunctions(Function errorFunction, Function(bool)? onOpenCallback,
-      Function openFunction, Function resetFunction) {
+  void setFunctions(
+      Function errorFunction, Function(bool)? onOpenCallback, Function openFunction, Function resetFunction) {
     _onError = errorFunction;
     onOpen = onOpenCallback;
     _openFunction = openFunction;

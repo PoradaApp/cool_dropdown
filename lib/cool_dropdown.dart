@@ -2,40 +2,42 @@ library cool_dropdown;
 
 import 'package:cool_dropdown/controllers/dropdown_controller.dart';
 import 'package:cool_dropdown/models/cool_dropdown_item.dart';
-import 'package:cool_dropdown/options/dropdown_triangle_options.dart';
 import 'package:cool_dropdown/options/dropdown_item_options.dart';
 import 'package:cool_dropdown/options/dropdown_options.dart';
+import 'package:cool_dropdown/options/dropdown_triangle_options.dart';
 import 'package:cool_dropdown/options/result_options.dart';
 import 'package:cool_dropdown/widgets/result_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 export 'package:cool_dropdown/controllers/dropdown_controller.dart';
+export 'package:cool_dropdown/customPaints/arrow_down_painter.dart';
 export 'package:cool_dropdown/enums/dropdown_align.dart';
-export 'package:cool_dropdown/enums/dropdown_triangle_align.dart';
-export 'package:cool_dropdown/enums/selected_item_align.dart';
-export 'package:cool_dropdown/enums/result_render.dart';
-export 'package:cool_dropdown/enums/dropdown_item_render.dart';
 export 'package:cool_dropdown/enums/dropdown_animation.dart';
-export 'package:cool_dropdown/options/dropdown_triangle_options.dart';
+export 'package:cool_dropdown/enums/dropdown_item_render.dart';
+export 'package:cool_dropdown/enums/dropdown_triangle_align.dart';
+export 'package:cool_dropdown/enums/result_render.dart';
+export 'package:cool_dropdown/enums/selected_item_align.dart';
 export 'package:cool_dropdown/options/dropdown_item_options.dart';
 export 'package:cool_dropdown/options/dropdown_options.dart';
+export 'package:cool_dropdown/options/dropdown_triangle_options.dart';
 export 'package:cool_dropdown/options/result_options.dart';
-export 'package:cool_dropdown/customPaints/arrow_down_painter.dart';
 
 class CoolDropdown<T> extends StatelessWidget {
   final List<CoolDropdownItem<T>> dropdownList;
   final CoolDropdownItem<T>? defaultItem;
-
   final ResultOptions resultOptions;
   final DropdownOptions dropdownOptions;
   final DropdownItemOptions dropdownItemOptions;
   final DropdownTriangleOptions dropdownTriangleOptions;
   final DropdownController controller;
-
   final Function(T) onChange;
   final Function(bool)? onOpen;
-
+  final bool hasInputField;
   final bool isMarquee;
+  final Function(String value)? onEditingChange;
+  final List<TextInputFormatter>? inputFormatters;
+  final String? hintText;
 
   CoolDropdown({
     Key? key,
@@ -47,8 +49,12 @@ class CoolDropdown<T> extends StatelessWidget {
     this.dropdownTriangleOptions = const DropdownTriangleOptions(),
     required this.controller,
     required this.onChange,
+    this.onEditingChange,
     this.onOpen,
     this.isMarquee = false,
+    this.hasInputField = false,
+    this.inputFormatters,
+    this.hintText,
   }) : super(key: key);
 
   @override
@@ -63,6 +69,10 @@ class CoolDropdown<T> extends StatelessWidget {
       onChange: onChange,
       onOpen: onOpen,
       defaultItem: defaultItem,
+      hasInputField: hasInputField,
+      onEditingChange: onEditingChange,
+      inputFormatters: inputFormatters,
+      hintText: hintText,
     );
   }
 }

@@ -4,28 +4,30 @@ import 'package:cool_dropdown/controllers/dropdown_controller.dart';
 import 'package:cool_dropdown/enums/dropdown_item_render.dart';
 import 'package:cool_dropdown/enums/result_render.dart';
 import 'package:cool_dropdown/models/cool_dropdown_item.dart';
-import 'package:cool_dropdown/options/dropdown_triangle_options.dart';
 import 'package:cool_dropdown/options/dropdown_item_options.dart';
 import 'package:cool_dropdown/options/dropdown_options.dart';
+import 'package:cool_dropdown/options/dropdown_triangle_options.dart';
 import 'package:cool_dropdown/options/result_options.dart';
 import 'package:cool_dropdown/utils/extension_util.dart';
 import 'package:cool_dropdown/widgets/dropdown_widget.dart';
 import 'package:cool_dropdown/widgets/marquee_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ResultWidget<T> extends StatefulWidget {
   final List<CoolDropdownItem<T>> dropdownList;
-
   final ResultOptions resultOptions;
   final DropdownOptions dropdownOptions;
   final DropdownItemOptions dropdownItemOptions;
   final DropdownTriangleOptions dropdownArrowOptions;
   final DropdownController controller;
-
   final Function(T t) onChange;
   final Function(bool)? onOpen;
-
+  final bool hasInputField;
+  final Function(String value)? onEditingChange;
+  final List<TextInputFormatter>? inputFormatters;
   final CoolDropdownItem<T>? defaultItem;
+  final String? hintText;
 
   const ResultWidget({
     Key? key,
@@ -36,8 +38,12 @@ class ResultWidget<T> extends StatefulWidget {
     required this.dropdownArrowOptions,
     required this.controller,
     required this.onChange,
+    this.hasInputField = false,
     this.onOpen,
     this.defaultItem,
+    this.onEditingChange,
+    this.inputFormatters,
+    this.hintText,
   }) : super(key: key);
 
   @override
@@ -45,6 +51,8 @@ class ResultWidget<T> extends StatefulWidget {
 }
 
 class _ResultWidgetState<T> extends State<ResultWidget<T>> {
+  late final TextEditingController _controller;
+  late final FocusNode _focusNode;
   final resultKey = GlobalKey();
   CoolDropdownItem<T>? selectedItem;
 
@@ -60,9 +68,11 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
     if (widget.defaultItem != null) {
       _setSelectedItem(widget.defaultItem!);
     }
-
-    widget.controller
-        .setFunctions(onError, widget.onOpen, open, _setSelectedItem);
+    if (widget.hasInputField) {
+      _controller = TextEditingController();
+      _focusNode = FocusNode();
+    }
+    widget.controller.setFunctions(onError, widget.onOpen, open, _setSelectedItem);
     widget.controller.setResultOptions(widget.resultOptions);
 
     super.initState();
@@ -72,6 +82,16 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
     setState(() {
       _isError = value;
     });
+  }
+
+  void canOpen() {
+    if (!widget.hasInputField) {
+      open();
+    } else {
+      if (_controller.text.isNotEmpty && !widget.controller.isOpen) {
+        open();
+      }
+    }
   }
 
   void open() {
@@ -85,8 +105,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
           resultKey: resultKey,
           onChange: widget.onChange,
           dropdownList: widget.dropdownList,
-          getSelectedItem: (index) =>
-              _setSelectedItem(widget.dropdownList[index]),
+          getSelectedItem: (index) => _setSelectedItem(widget.dropdownList[index]),
           selectedItem: selectedItem,
           bodyContext: context,
         ));
@@ -119,9 +138,8 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
               Text(
                 selectedItem?.label ?? widget.resultOptions.placeholder ?? '',
                 overflow: widget.resultOptions.textOverflow,
-                style: selectedItem != null
-                    ? widget.resultOptions.textStyle
-                    : widget.resultOptions.placeholderTextStyle,
+                style:
+                    selectedItem != null ? widget.resultOptions.textStyle : widget.resultOptions.placeholderTextStyle,
               ),
             ),
           ),
@@ -133,8 +151,61 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
           selectedItem?.icon ?? const SizedBox(),
 
         /// if you want to show icon + label in result widget
-      ].isReverse(
-          widget.dropdownItemOptions.render == DropdownItemRender.reverse);
+      ].isReverse(widget.dropdownItemOptions.render == DropdownItemRender.reverse);
+
+  List<Widget> _buildInputFieldItem() => [
+        if (widget.resultOptions.render == ResultRender.all ||
+            widget.resultOptions.render == ResultRender.label ||
+            widget.resultOptions.render == ResultRender.reverse)
+          Flexible(child: LayoutBuilder(
+            builder: (context, constrainst) {
+              final width = constrainst.maxWidth;
+              return _buildMarquee(
+                Container(
+                  height: widget.resultOptions.height,
+                  width: width,
+                  child: Center(
+                    child: TextField(
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
+                          widget.onEditingChange?.call(value);
+                          canOpen();
+                        } else {
+                          widget.controller.close();
+                        }
+                      },
+                      inputFormatters: widget.inputFormatters,
+                      maxLines: 1,
+                      keyboardType: TextInputType.text,
+                      style: widget.resultOptions.inputTextField,
+                      cursorColor: Colors.black,
+                      controller: _controller,
+                      focusNode: _focusNode,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        fillColor: Colors.transparent,
+                        filled: true,
+                        focusColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        contentPadding: EdgeInsets.zero,
+                        hintText: widget.hintText,
+                        hintStyle: widget.resultOptions.inputTextField,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          )),
+
+        /// if you want to show label in result widget
+        if (widget.resultOptions.render == ResultRender.all ||
+            widget.resultOptions.render == ResultRender.icon ||
+            widget.resultOptions.render == ResultRender.reverse)
+          selectedItem?.icon ?? const SizedBox(),
+
+        /// if you want to show icon + label in result widget
+      ].isReverse(widget.dropdownItemOptions.render == DropdownItemRender.reverse);
 
   Widget _buildMarquee(Widget child) {
     return widget.resultOptions.isMarquee
@@ -147,21 +218,16 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => open(),
+      onTap: canOpen,
       child: AnimatedBuilder(
-          animation: Listenable.merge([
-            widget.controller.controller,
-            widget.controller.errorController
-          ]),
+          animation: Listenable.merge([widget.controller.controller, widget.controller.errorController]),
           builder: (_, __) {
             return Container(
               key: resultKey,
               width: widget.resultOptions.width,
               height: widget.resultOptions.height,
               padding: widget.resultOptions.padding,
-              decoration: _isError
-                  ? widget.controller.errorDecoration.value
-                  : _decorationBoxTween.value,
+              decoration: _isError ? widget.controller.errorDecoration.value : _decorationBoxTween.value,
               child: Align(
                 alignment: widget.resultOptions.alignment,
                 child: widget.resultOptions.render != ResultRender.none
@@ -181,21 +247,27 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                               },
                               child: Row(
                                 key: ValueKey(selectedItem?.label),
-                                mainAxisAlignment:
-                                    widget.resultOptions.mainAxisAlignment,
-                                children: _buildResultItem(),
+                                mainAxisAlignment: widget.resultOptions.mainAxisAlignment,
+                                children: widget.hasInputField ? _buildInputFieldItem() : _buildResultItem(),
                               ),
                             ),
                           ),
                           SizedBox(width: widget.resultOptions.space),
-                          if (widget.resultOptions.icon != null) _buildArrow(),
-                        ].isReverse(widget.resultOptions.render ==
-                            ResultRender.reverse),
+                          if (_shouldBuildIcon()) _buildArrow(),
+                        ].isReverse(widget.resultOptions.render == ResultRender.reverse),
                       )
                     : _buildArrow(),
               ),
             );
           }),
     );
+  }
+
+  bool _shouldBuildIcon() {
+    if (widget.hasInputField) {
+      return _controller.text.isNotEmpty;
+    } else {
+      return widget.resultOptions.icon != null;
+    }
   }
 }

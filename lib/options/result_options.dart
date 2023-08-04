@@ -22,7 +22,7 @@ class ResultOptions {
   final BoxDecoration boxDecoration, openBoxDecoration, errorBoxDecoration;
 
   /// Result text style
-  final TextStyle textStyle, placeholderTextStyle;
+  final TextStyle textStyle, placeholderTextStyle, inputTextField;
 
   /// Result text is overflow
   final TextOverflow textOverflow;
@@ -96,6 +96,11 @@ class ResultOptions {
       ],
     ),
     this.textStyle = const TextStyle(
+      color: Color(0xff000000),
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+    ),
+    this.inputTextField = const TextStyle(
       color: Color(0xff000000),
       fontSize: 16,
       fontWeight: FontWeight.w400,
