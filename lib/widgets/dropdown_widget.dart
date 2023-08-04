@@ -149,7 +149,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                       isTriangleDown: _dropdownCalculator.isArrowDown,
                     ),
                   ),
-                  child: widget.dropdownList.isNotEmpty && widget.undefinedItem != null
+                  child: widget.dropdownList.isNotEmpty
                       ? ListView.builder(
                           controller: _dropdownCalculator.scrollController,
                           padding: widget.dropdownOptions.calcPadding,
@@ -184,20 +184,24 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                             ),
                           ),
                         )
-                      : Column(
-                          children: [
-                            SizedBox(
-                              height: widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
-                            ),
-                            DropdownItemWidget(
-                              item: widget.undefinedItem!,
-                              dropdownItemOptions: widget.dropdownItemOptions,
-                            ),
-                            SizedBox(
-                              height: widget.dropdownOptions.gap.bottom + widget.dropdownOptions.borderSide.width * 0.5,
-                            ),
-                          ],
-                        ),
+                      : (widget.undefinedItem != null)
+                          ? Column(
+                              children: [
+                                SizedBox(
+                                  height:
+                                      widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
+                                ),
+                                DropdownItemWidget(
+                                  item: widget.undefinedItem!,
+                                  dropdownItemOptions: widget.dropdownItemOptions,
+                                ),
+                                SizedBox(
+                                  height:
+                                      widget.dropdownOptions.gap.bottom + widget.dropdownOptions.borderSide.width * 0.5,
+                                ),
+                              ],
+                            )
+                          : SizedBox(),
                 ),
               ),
             ),
