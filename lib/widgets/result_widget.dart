@@ -52,7 +52,7 @@ class ResultWidget<T> extends StatefulWidget {
 
 class _ResultWidgetState<T> extends State<ResultWidget<T>> {
   late final TextEditingController _controller;
-  late final FocusNode _focusNode;
+
   final resultKey = GlobalKey();
   CoolDropdownItem<T>? selectedItem;
 
@@ -70,7 +70,6 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
     }
     if (widget.hasInputField) {
       _controller = TextEditingController();
-      _focusNode = FocusNode();
     }
     widget.controller.setFunctions(onError, widget.onOpen, open, _setSelectedItem);
     widget.controller.setResultOptions(widget.resultOptions);
@@ -180,7 +179,6 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                       style: widget.resultOptions.inputTextField,
                       cursorColor: Colors.black,
                       controller: _controller,
-                      focusNode: _focusNode,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         fillColor: Colors.transparent,
