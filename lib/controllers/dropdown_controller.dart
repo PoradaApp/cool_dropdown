@@ -1,7 +1,7 @@
 import 'package:cool_dropdown/options/result_options.dart';
 import 'package:cool_dropdown/widgets/dropdown_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:flutter/src/scheduler/ticker.dart';
 
 class DropdownController implements TickerProvider {
   /// dropdown staggered animation controller
@@ -38,9 +38,6 @@ class DropdownController implements TickerProvider {
 
   Function? _openFunction;
   Function? get openFunction => _openFunction;
-
-  Function? _resetFunction;
-  Function? get resetFunction => _resetFunction;
 
   Function(bool)? onOpen;
 
@@ -120,23 +117,16 @@ class DropdownController implements TickerProvider {
     _controller.forward();
   }
 
-  void close() async {
-    if (_overlayEntry == null) {
-      return;
-    }
-    _overlayEntry?.remove();
-    await _controller.reverse();
-
-    _isOpen = false;
-    onOpen?.call(false);
-  }
-
   void open() {
     openFunction!.call();
   }
 
-  void resetValue() {
-    resetFunction!.call(null);
+  void close() async {
+    await _controller.reverse();
+    _overlayEntry?.remove();
+
+    _isOpen = false;
+    onOpen?.call(false);
   }
 
   Future<void> error() async {
@@ -157,12 +147,10 @@ class DropdownController implements TickerProvider {
     _isError = false;
   }
 
-  void setFunctions(
-      Function errorFunction, Function(bool)? onOpenCallback, Function openFunction, Function resetFunction) {
+  void setFunctions(Function errorFunction, Function(bool)? onOpenCallback, Function openFunction) {
     _onError = errorFunction;
     onOpen = onOpenCallback;
     _openFunction = openFunction;
-    _resetFunction = resetFunction;
   }
 
   void setResultOptions(ResultOptions resultOptions) {
