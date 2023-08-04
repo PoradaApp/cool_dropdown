@@ -105,7 +105,14 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
           dropdownItemOptions: widget.dropdownItemOptions,
           dropdownTriangleOptions: widget.dropdownArrowOptions,
           resultKey: resultKey,
-          onChange: widget.onChange,
+          onChangedText: (value) {
+            if (widget.hasInputField) {
+              _controller.text = value;
+            }
+          },
+          onChange: (value) {
+            widget.onChange(value);
+          },
           dropdownList: widget.dropdownList,
           getSelectedItem: (index) => _setSelectedItem(widget.dropdownList[index]),
           selectedItem: selectedItem,
