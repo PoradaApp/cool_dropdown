@@ -125,7 +125,7 @@ class DropdownController implements TickerProvider {
   }
 
   void updateOverlay() {
-    _overlayEntry.markNeedsBuild();
+    _overlayEntry?.markNeedsBuild();
   }
 
   void close() async {
