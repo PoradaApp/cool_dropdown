@@ -146,7 +146,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                       isTriangleDown: _dropdownCalculator.isArrowDown,
                     ),
                   ),
-                  child: widget.dropdownList.isNotEmpty && widget.undefinedItem != null
+                  child: widget.dropdownList.isNotEmpty
                       ? ListView.builder(
                           controller: _dropdownCalculator.scrollController,
                           padding: widget.dropdownOptions.calcPadding,
@@ -191,7 +191,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                               SizedBox(
                                 height: 52,
                                 child: DropdownItemWidget(
-                                  item: widget.undefinedItem!,
+                                  item: widget.undefinedItem ?? CoolDropdownItem(label: '', value: 'Undefined'),
                                   dropdownItemOptions: widget.dropdownItemOptions,
                                 ),
                               ),
