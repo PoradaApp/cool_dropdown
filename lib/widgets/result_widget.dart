@@ -190,10 +190,10 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                           widget.controller.close();
                         }
                       },
-                      onEditingComplete: () {
+                      /* onEditingComplete: () {
                         widget.controller.close();
                         widget.controller.open();
-                      },
+                      }, */
                       inputFormatters: widget.inputFormatters,
                       maxLines: 1,
                       keyboardType: TextInputType.text,
@@ -282,7 +282,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
 
   bool _shouldBuildIcon() {
     if (widget.hasInputField) {
-      return _controller.text.isNotEmpty;
+      return _controller.text.isNotEmpty && widget.resultOptions.icon != null;
     } else {
       return widget.resultOptions.icon != null;
     }
