@@ -178,6 +178,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                     child: TextField(
                       onTap: () {
                         _controller.clear();
+                        setState(() {});
                       },
                       onChanged: (value) {
                         if (value.isNotEmpty) {
