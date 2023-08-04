@@ -88,15 +88,6 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
     });
   }
 
-  void canOpen() {
-    if (!widget.hasInputField) {
-      open();
-    } else {
-      //HERE
-      open();
-    }
-  }
-
   void open() {
     widget.controller.show(
         context: context,
@@ -235,7 +226,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: canOpen,
+      onTap: open,
       child: AnimatedBuilder(
           animation: Listenable.merge([widget.controller.controller, widget.controller.errorController]),
           builder: (_, __) {
