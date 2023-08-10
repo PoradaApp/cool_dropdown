@@ -22,7 +22,7 @@ class DropdownWidget<T> extends StatefulWidget {
   final Function(String text) onChangedText;
   final SelectedItemCallback<T> selectedItemCallback;
   final CoolDropdownItem<T>? selectedItem;
-  final CoolDropdownItem? undefinedItem;
+  final CoolDropdownItem<T>? undefinedItem;
 
   const DropdownWidget({
     Key? key,
@@ -180,8 +180,8 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                           ? GestureDetector(
                               onTap: () {
                                 widget.controller.close();
-                                /*  widget.onChange.call(widget.undefinedItem!.value);
-                                _setSelectedItem(widget.undefinedItem!); */
+                                widget.onChange.call(widget.undefinedItem!.value);
+                                _setSelectedItem(widget.undefinedItem!);
                               },
                               child: Column(
                                 children: [

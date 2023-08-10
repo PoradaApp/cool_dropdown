@@ -106,7 +106,7 @@ class _MyAppState extends State<MyApp> {
         body: ListView(
           children: [
             SizedBox(
-              height: 700,
+              height: 70,
             ),
             Center(
               child: WillPopScope(

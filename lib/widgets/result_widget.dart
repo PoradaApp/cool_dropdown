@@ -234,22 +234,10 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                           ? Container(
                               padding: widget.resultOptions.padding,
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 verticalDirection: VerticalDirection.down,
                                 children: [
-                                  Container(
-                                    child: Row(
-                                      key: ValueKey(selectedItem?.label),
-                                      mainAxisAlignment: widget.resultOptions.mainAxisAlignment,
-                                      children: (!widget.hasInputField)
-                                          ? [
-                                              Container(
-                                                color: Colors.black,
-                                              )
-                                            ]
-                                          : [SizedBox()],
-                                    ),
-                                  ),
-                                  Flexible(
+                                  Expanded(
                                     child: AnimatedSwitcher(
                                       duration: widget.resultOptions.duration,
                                       transitionBuilder: (child, animation) {
