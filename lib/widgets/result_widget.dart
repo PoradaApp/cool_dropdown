@@ -254,7 +254,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                                   SizedBox(width: widget.resultOptions.space),
                                   Container(
                                     height: widget.resultOptions.height,
-                                    color: Colors.transparent,
+                                    color: Colors.red,
                                     child: Center(
                                       child: _buildArrow(),
                                     ),
