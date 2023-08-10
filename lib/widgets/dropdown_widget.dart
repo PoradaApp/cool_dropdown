@@ -146,6 +146,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                           itemCount: widget.dropdownList.length,
                           itemBuilder: (_, index) => GestureDetector(
                             onTap: () {
+                              widget.dropdownList[index].onTap?.call();
                               widget.onChangedText.call(widget.dropdownList[index].label);
                               widget.onChange.call(widget.dropdownList[index].value);
                               _setSelectedItem(widget.dropdownList[index]);
@@ -177,6 +178,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                       : (widget.undefinedItem != null)
                           ? GestureDetector(
                               onTap: () {
+                                widget.undefinedItem?.onTap?.call();
                                 widget.controller.close();
                                 widget.onChange.call(widget.undefinedItem!.value);
                                 _setSelectedItem(widget.undefinedItem!);
