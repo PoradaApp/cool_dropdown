@@ -181,21 +181,24 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                                 widget.onChange.call(widget.undefinedItem!.value);
                                 _setSelectedItem(widget.undefinedItem!);
                               }, */
-                          Column(
-                              children: [
-                                SizedBox(
-                                  height:
-                                      widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
-                                ),
-                                DropdownItemWidget(
-                                  item: widget.undefinedItem!,
-                                  dropdownItemOptions: widget.dropdownItemOptions,
-                                ),
-                                SizedBox(
-                                  height:
-                                      widget.dropdownOptions.gap.bottom + widget.dropdownOptions.borderSide.width * 0.5,
-                                ),
-                              ],
+                          Container(
+                              height: 52,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height:
+                                        widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
+                                  ),
+                                  DropdownItemWidget(
+                                    item: widget.undefinedItem!,
+                                    dropdownItemOptions: widget.dropdownItemOptions,
+                                  ),
+                                  SizedBox(
+                                    height: widget.dropdownOptions.gap.bottom +
+                                        widget.dropdownOptions.borderSide.width * 0.5,
+                                  ),
+                                ],
+                              ),
                             )
                           : SizedBox(),
                 ),
