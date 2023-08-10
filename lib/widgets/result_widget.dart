@@ -249,7 +249,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                                     Container(
                                       height: widget.resultOptions.height,
                                       width: 48,
-                                      color: Colors.transparent,
+                                      color: widget.resultOptions.backgroundIconColor ?? Colors.transparent,
                                       child: Center(
                                         child: _buildArrow(),
                                       ),

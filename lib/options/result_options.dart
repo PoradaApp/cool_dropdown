@@ -36,6 +36,8 @@ class ResultOptions {
   /// Result is marquee
   final bool isMarquee;
 
+  final Color? backgroundIconColor;
+
   /// The duration of the switch animation.
   final Duration duration, marqueeDuration, backDuration, pauseDuration;
 
@@ -47,6 +49,7 @@ class ResultOptions {
     this.padding = const EdgeInsets.symmetric(horizontal: 10),
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
     this.render = ResultRender.all,
+    this.backgroundIconColor,
     this.boxDecoration = const BoxDecoration(
       color: Color(0xFFFFFFFF),
       borderRadius: BorderRadius.all(Radius.circular(10)),
