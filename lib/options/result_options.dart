@@ -38,6 +38,8 @@ class ResultOptions {
 
   final Color? backgroundIconColor;
 
+  final BorderRadius? iconRadius;
+
   /// The duration of the switch animation.
   final Duration duration, marqueeDuration, backDuration, pauseDuration;
 
@@ -50,6 +52,7 @@ class ResultOptions {
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
     this.render = ResultRender.all,
     this.backgroundIconColor,
+    this.iconRadius,
     this.boxDecoration = const BoxDecoration(
       color: Color(0xFFFFFFFF),
       borderRadius: BorderRadius.all(Radius.circular(10)),

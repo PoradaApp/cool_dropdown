@@ -246,12 +246,18 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                                       ),
                                     ),
                                     SizedBox(width: widget.resultOptions.space),
-                                    Container(
-                                      height: widget.resultOptions.height,
-                                      width: 48,
+                                    Material(
                                       color: widget.resultOptions.backgroundIconColor ?? Colors.transparent,
-                                      child: Center(
-                                        child: _buildArrow(),
+                                      borderRadius: widget.resultOptions.iconRadius,
+                                      child: ClipRRect(
+                                        borderRadius: widget.resultOptions.iconRadius,
+                                        child: Container(
+                                          height: widget.resultOptions.height,
+                                          width: 48,
+                                          child: Center(
+                                            child: _buildArrow(),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ].isReverse(widget.resultOptions.render == ResultRender.reverse),
