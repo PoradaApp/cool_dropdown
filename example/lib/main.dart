@@ -106,7 +106,7 @@ class _MyAppState extends State<MyApp> {
         body: ListView(
           children: [
             SizedBox(
-              height: 70,
+              height: 10,
             ),
             Center(
               child: WillPopScope(
@@ -158,10 +158,9 @@ class _MyAppState extends State<MyApp> {
                       hintText: "widget.hintText",
                       counterText: '',
                       labelText: "widget.labelText",
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     ),
                     resultOptions: ResultOptions(
-                      padding: EdgeInsets.symmetric(horizontal: 0),
                       width: 700,
                       icon: const SizedBox(
                         width: 10,
@@ -184,8 +183,8 @@ class _MyAppState extends State<MyApp> {
                       gap: DropdownGap.zero,
                       shadows: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 5, spreadRadius: 1)],
                       borderSide: BorderSide.none,
-                      color: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 0),
+                      color: Colors.green,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       align: DropdownAlign.left,
                       animationType:
                           DropdownAnimationType.size, //DropdownAnimation.size has problems with opening above ResultBox
@@ -204,7 +203,7 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             SizedBox(
-              height: 200,
+              height: 10,
             ),
             Center(
               child: CoolDropdown<String>(
@@ -216,8 +215,8 @@ class _MyAppState extends State<MyApp> {
                 },
                 hasInputField: false,
                 resultOptions: ResultOptions(
-                  padding: EdgeInsets.symmetric(horizontal: 0),
-                  width: 100,
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  width: 700,
                   icon: const SizedBox(
                     width: 10,
                     height: 10,

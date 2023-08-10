@@ -156,45 +156,40 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
     if (widget.resultOptions.render == ResultRender.all ||
         widget.resultOptions.render == ResultRender.label ||
         widget.resultOptions.render == ResultRender.reverse)
-      return LayoutBuilder(
-        builder: (context, constrainst) {
-          final width = constrainst.maxWidth;
-          return _buildMarquee(
-            Container(
-              width: width,
-              child: Center(
-                child: TextFormField(
-                  onTap: () {
-                    _textController.clear();
-                    setState(() {});
-                  },
-                  onChanged: (value) {
-                    widget.onEditingChange?.call(value);
-                    if (value.isEmpty) {
-                      widget.controller.removeOverlay();
-                    }
-                  },
-                  validator: (value) => widget.onValidate?.call(value),
-                  inputFormatters: widget.inputFormatters,
-                  maxLines: 1,
-                  keyboardType: TextInputType.text,
-                  style: widget.resultOptions.inputTextField,
-                  cursorColor: widget.resultOptions.inputTextField.color,
-                  controller: _textController,
-                  decoration: widget.inputDecoration ??
-                      InputDecoration(
-                        border: InputBorder.none,
-                        focusColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        contentPadding: EdgeInsets.zero,
-                        hintText: widget.hintText,
-                        hintStyle: widget.resultOptions.inputTextField,
-                      ),
-                ),
-              ),
+      return _buildMarquee(
+        Container(
+          width: widget.resultOptions.width,
+          child: Center(
+            child: TextFormField(
+              onTap: () {
+                _textController.clear();
+                setState(() {});
+              },
+              onChanged: (value) {
+                widget.onEditingChange?.call(value);
+                if (value.isEmpty) {
+                  widget.controller.removeOverlay();
+                }
+              },
+              validator: (value) => widget.onValidate?.call(value),
+              inputFormatters: widget.inputFormatters,
+              maxLines: 1,
+              keyboardType: TextInputType.text,
+              style: widget.resultOptions.inputTextField,
+              cursorColor: widget.resultOptions.inputTextField.color,
+              controller: _textController,
+              decoration: widget.inputDecoration ??
+                  InputDecoration(
+                    border: InputBorder.none,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    contentPadding: EdgeInsets.zero,
+                    hintText: widget.hintText,
+                    hintStyle: widget.resultOptions.inputTextField,
+                  ),
             ),
-          );
-        },
+          ),
+        ),
       );
     else {
       return SizedBox();
@@ -224,42 +219,43 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                   Container(
                     key: resultKey,
                     height: widget.hasInputField ? null : widget.resultOptions.height,
-                    padding: widget.hasInputField ? null : widget.resultOptions.padding,
                     decoration: widget.hasInputField
                         ? null
                         : (_isError ? widget.controller.errorDecoration.value : _decorationBoxTween.value),
                     child: Align(
                       alignment: widget.resultOptions.alignment,
                       child: widget.resultOptions.render != ResultRender.none
-                          ? Container(
+                          ? Padding(
                               padding: widget.resultOptions.padding,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                verticalDirection: VerticalDirection.down,
-                                children: [
-                                  Expanded(
-                                    child: AnimatedSwitcher(
-                                      duration: widget.resultOptions.duration,
-                                      transitionBuilder: (child, animation) {
-                                        return SizeTransition(
-                                          sizeFactor: animation,
-                                          axisAlignment: 1,
-                                          child: child,
-                                        );
-                                      },
-                                      child:
-                                          widget.hasInputField ? SizedBox(width: double.infinity) : _buildResultItem(),
+                              child: Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  verticalDirection: VerticalDirection.down,
+                                  children: [
+                                    Expanded(
+                                      child: AnimatedSwitcher(
+                                        duration: widget.resultOptions.duration,
+                                        transitionBuilder: (child, animation) {
+                                          return SizeTransition(
+                                            sizeFactor: animation,
+                                            axisAlignment: 1,
+                                            child: child,
+                                          );
+                                        },
+                                        child: widget.hasInputField ? Container() : _buildResultItem(),
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: widget.resultOptions.space),
-                                  Container(
-                                    height: widget.resultOptions.height,
-                                    color: Colors.red,
-                                    child: Center(
-                                      child: _buildArrow(),
+                                    SizedBox(width: widget.resultOptions.space),
+                                    Container(
+                                      height: widget.resultOptions.height,
+                                      width: 48,
+                                      color: Colors.transparent,
+                                      child: Center(
+                                        child: _buildArrow(),
+                                      ),
                                     ),
-                                  ),
-                                ].isReverse(widget.resultOptions.render == ResultRender.reverse),
+                                  ].isReverse(widget.resultOptions.render == ResultRender.reverse),
+                                ),
                               ),
                             )
                           : _buildArrow(),
