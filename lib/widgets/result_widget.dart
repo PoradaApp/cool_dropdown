@@ -248,7 +248,6 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                                     SizedBox(width: widget.resultOptions.space),
                                     Material(
                                       color: widget.resultOptions.backgroundIconColor ?? Colors.transparent,
-                                      borderRadius: widget.resultOptions.iconRadius,
                                       child: ClipRRect(
                                         borderRadius: widget.resultOptions.iconRadius,
                                         child: Container(
