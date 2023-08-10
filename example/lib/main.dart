@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
             value: '${pokemons[i]}'),
       );
     }
-    for (var i = 0; i < fruits.length; i++) {
+    /* for (var i = 0; i < fruits.length; i++) {
       fruitDropdownItems.add(CoolDropdownItem<String>(
           label: 'Delicious ${fruits[i]}',
           icon: Container(
@@ -61,13 +61,12 @@ class _MyAppState extends State<MyApp> {
             width: 25,
           ),
           value: '${fruits[i]}'));
-    }
+    } */
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -107,7 +106,7 @@ class _MyAppState extends State<MyApp> {
         body: ListView(
           children: [
             SizedBox(
-              height: 50,
+              height: 700,
             ),
             Center(
               child: WillPopScope(
@@ -130,6 +129,7 @@ class _MyAppState extends State<MyApp> {
                     hintText: 'Select language',
                     onOpen: (value) {},
                     isMarquee: false,
+                    undefinedItem: CoolDropdownItem(label: 'Create with this name', value: 'test'),
                     onValidate: (value) {
                       if (value == null) return null;
                       if (value.isEmpty) return 'gfdgdf';
@@ -154,7 +154,7 @@ class _MyAppState extends State<MyApp> {
                       disabledBorder: InputBorder.none,
                       filled: true,
                       fillColor: Colors.transparent,
-                      errorStyle: TextStyle(color: Colors.black),
+                      errorStyle: TextStyle(color: Colors.white),
                       hintText: "widget.hintText",
                       counterText: '',
                       labelText: "widget.labelText",
@@ -184,11 +184,11 @@ class _MyAppState extends State<MyApp> {
                       gap: DropdownGap.zero,
                       shadows: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 5, spreadRadius: 1)],
                       borderSide: BorderSide.none,
-                      color: Colors.black,
+                      color: Colors.white,
                       padding: const EdgeInsets.symmetric(horizontal: 0),
                       align: DropdownAlign.left,
-                      animationType: DropdownAnimationType
-                          .scale, //DropdownAnimation.size has problems with opening above ResultBox
+                      animationType:
+                          DropdownAnimationType.size, //DropdownAnimation.size has problems with opening above ResultBox
                     ),
                     dropdownTriangleOptions: const DropdownTriangleOptions(
                       height: 0,
@@ -283,17 +283,5 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
-  }
-
-  Widget? _buildIcon(BuildContext context, String? iconPath) {
-    final theme = Theme.of(context);
-    if (iconPath != null) {
-      return Padding(
-          padding: const EdgeInsets.all(8),
-          child: Container(
-            color: Colors.red,
-          ));
-    }
-    return null;
   }
 }

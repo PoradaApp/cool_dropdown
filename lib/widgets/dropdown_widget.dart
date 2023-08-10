@@ -22,7 +22,7 @@ class DropdownWidget<T> extends StatefulWidget {
   final Function(String text) onChangedText;
   final SelectedItemCallback<T> selectedItemCallback;
   final CoolDropdownItem<T>? selectedItem;
-  final CoolDropdownItem? undefinedItem;
+  final CoolDropdownItem<T>? undefinedItem;
 
   const DropdownWidget({
     Key? key,
@@ -93,8 +93,9 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
         return ScaleTransition(
           scale: widget.controller.showDropdown,
           alignment: Alignment(_dropdownCalculator.calcArrowAlignmentDx, _dropdownCalculator.isArrowDown ? 1 : -1),
-          child: child,
         );
+      case DropdownAnimationType.none:
+        return child;
     }
   }
 
@@ -174,21 +175,28 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                           ),
                         )
                       : (widget.undefinedItem != null)
-                          ? Column(
-                              children: [
-                                SizedBox(
-                                  height:
-                                      widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
-                                ),
-                                DropdownItemWidget(
-                                  item: widget.undefinedItem!,
-                                  dropdownItemOptions: widget.dropdownItemOptions,
-                                ),
-                                SizedBox(
-                                  height:
-                                      widget.dropdownOptions.gap.bottom + widget.dropdownOptions.borderSide.width * 0.5,
-                                ),
-                              ],
+                          ? GestureDetector(
+                              onTap: () {
+                                widget.controller.close();
+                                widget.onChange.call(widget.undefinedItem!.value);
+                                _setSelectedItem(widget.undefinedItem!);
+                              },
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height:
+                                        widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
+                                  ),
+                                  DropdownItemWidget(
+                                    item: widget.undefinedItem!,
+                                    dropdownItemOptions: widget.dropdownItemOptions,
+                                  ),
+                                  SizedBox(
+                                    height: widget.dropdownOptions.gap.bottom +
+                                        widget.dropdownOptions.borderSide.width * 0.5,
+                                  ),
+                                ],
+                              ),
                             )
                           : SizedBox(),
                 ),
