@@ -161,7 +161,6 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
           final width = constrainst.maxWidth;
           return _buildMarquee(
             Container(
-              //height: widget.resultOptions.height,
               width: width,
               child: Center(
                 child: TextFormField(
@@ -268,6 +267,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                                   Container(
                                     height: widget.resultOptions.height,
                                     width: widget.resultOptions.height,
+                                    color: Colors.transparent,
                                     child: Center(
                                       child: _buildArrow(),
                                     ),

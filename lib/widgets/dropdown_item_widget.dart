@@ -19,8 +19,7 @@ class DropdownItemWidget extends StatefulWidget {
   State<DropdownItemWidget> createState() => _DropdownItemWidgetState();
 }
 
-class _DropdownItemWidgetState extends State<DropdownItemWidget>
-    with SingleTickerProviderStateMixin {
+class _DropdownItemWidgetState extends State<DropdownItemWidget> with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: widget.dropdownItemOptions.duration,
@@ -78,8 +77,7 @@ class _DropdownItemWidgetState extends State<DropdownItemWidget>
           widget.dropdownItemOptions.render == DropdownItemRender.icon ||
           widget.dropdownItemOptions.render == DropdownItemRender.reverse)
         _buildIcon(),
-    ].isReverse(
-        widget.dropdownItemOptions.render == DropdownItemRender.reverse);
+    ].isReverse(widget.dropdownItemOptions.render == DropdownItemRender.reverse);
   }
 
   Widget _buildLabel(Widget child) {
@@ -105,9 +103,7 @@ class _DropdownItemWidgetState extends State<DropdownItemWidget>
         },
         child: Container(
           key: ValueKey(widget.item.isSelected),
-          child: widget.item.isSelected
-              ? widget.item.selectedIcon
-              : widget.item.icon,
+          child: widget.item.isSelected ? widget.item.selectedIcon : widget.item.icon,
         ),
       );
     }
@@ -116,21 +112,22 @@ class _DropdownItemWidgetState extends State<DropdownItemWidget>
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-        animation: _controller,
-        builder: (_, __) {
-          return Container(
-            padding: _paddingTween.value,
-            height: widget.dropdownItemOptions.height,
+      animation: _controller,
+      builder: (_, __) {
+        return Container(
+          padding: _paddingTween.value,
+          height: widget.dropdownItemOptions.height,
+          alignment: widget.dropdownItemOptions.alignment,
+          decoration: _decorationBoxTween.value,
+          child: Align(
             alignment: widget.dropdownItemOptions.alignment,
-            decoration: _decorationBoxTween.value,
-            child: Align(
-              alignment: widget.dropdownItemOptions.alignment,
-              child: Row(
-                mainAxisAlignment: widget.dropdownItemOptions.mainAxisAlignment,
-                children: _buildDropdownItem(),
-              ),
+            child: Row(
+              mainAxisAlignment: widget.dropdownItemOptions.mainAxisAlignment,
+              children: _buildDropdownItem(),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
