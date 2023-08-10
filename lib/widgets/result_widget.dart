@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:cool_dropdown/controllers/dropdown_controller.dart';
-import 'package:cool_dropdown/enums/dropdown_item_render.dart';
 import 'package:cool_dropdown/enums/result_render.dart';
 import 'package:cool_dropdown/models/cool_dropdown_item.dart';
 import 'package:cool_dropdown/options/dropdown_item_options.dart';
@@ -29,6 +28,8 @@ class ResultWidget<T> extends StatefulWidget {
   final CoolDropdownItem<T>? defaultItem;
   final String? hintText;
   final CoolDropdownItem<T>? undefinedItem;
+  final InputDecoration? inputDecoration;
+  final String? Function(String? value)? onValidate;
 
   const ResultWidget({
     Key? key,
@@ -46,6 +47,8 @@ class ResultWidget<T> extends StatefulWidget {
     this.inputFormatters,
     this.hintText,
     this.undefinedItem,
+    this.inputDecoration,
+    this.onValidate,
   }) : super(key: key);
 
   @override
@@ -131,61 +134,56 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
         });
   }
 
-  List<Widget> _buildResultItem() => [
-        /// if you want to show icon in result widget
-        if (widget.resultOptions.render == ResultRender.all ||
-            widget.resultOptions.render == ResultRender.label ||
-            widget.resultOptions.render == ResultRender.reverse)
-          Flexible(
-            child: _buildMarquee(
-              Text(
-                selectedItem?.label ?? widget.resultOptions.placeholder ?? '',
-                overflow: widget.resultOptions.textOverflow,
-                style:
-                    selectedItem != null ? widget.resultOptions.textStyle : widget.resultOptions.placeholderTextStyle,
-              ),
-            ),
+  Widget _buildResultItem() {
+    if (widget.resultOptions.render == ResultRender.all ||
+        widget.resultOptions.render == ResultRender.label ||
+        widget.resultOptions.render == ResultRender.reverse) {
+      return _buildMarquee(
+        Container(
+          child: Text(
+            selectedItem?.label ?? widget.resultOptions.placeholder ?? '',
+            overflow: widget.resultOptions.textOverflow,
+            style: selectedItem != null ? widget.resultOptions.textStyle : widget.resultOptions.placeholderTextStyle,
           ),
+        ),
+      );
+    } else {
+      return selectedItem?.icon ?? const SizedBox();
+    }
+  }
 
-        /// if you want to show label in result widget
-        if (widget.resultOptions.render == ResultRender.all ||
-            widget.resultOptions.render == ResultRender.icon ||
-            widget.resultOptions.render == ResultRender.reverse)
-          selectedItem?.icon ?? const SizedBox(),
-
-        /// if you want to show icon + label in result widget
-      ].isReverse(widget.dropdownItemOptions.render == DropdownItemRender.reverse);
-
-  List<Widget> _buildInputFieldItem() => [
-        if (widget.resultOptions.render == ResultRender.all ||
-            widget.resultOptions.render == ResultRender.label ||
-            widget.resultOptions.render == ResultRender.reverse)
-          Flexible(child: LayoutBuilder(
-            builder: (context, constrainst) {
-              final width = constrainst.maxWidth;
-              return _buildMarquee(
-                Container(
-                  height: widget.resultOptions.height,
-                  width: width,
-                  child: Center(
-                    child: TextField(
-                      onTap: () {
-                        _textController.clear();
-                        setState(() {});
-                      },
-                      onChanged: (value) {
-                        widget.onEditingChange?.call(value);
-                        if (value.isEmpty) {
-                          widget.controller.removeOverlay();
-                        }
-                      },
-                      inputFormatters: widget.inputFormatters,
-                      maxLines: 1,
-                      keyboardType: TextInputType.text,
-                      style: widget.resultOptions.inputTextField,
-                      cursorColor: widget.resultOptions.inputTextField.color,
-                      controller: _textController,
-                      decoration: InputDecoration(
+  Widget _buildInputFieldItem() {
+    if (widget.resultOptions.render == ResultRender.all ||
+        widget.resultOptions.render == ResultRender.label ||
+        widget.resultOptions.render == ResultRender.reverse)
+      return LayoutBuilder(
+        builder: (context, constrainst) {
+          final width = constrainst.maxWidth;
+          return _buildMarquee(
+            Container(
+              //height: widget.resultOptions.height,
+              width: width,
+              child: Center(
+                child: TextFormField(
+                  onTap: () {
+                    _textController.clear();
+                    setState(() {});
+                  },
+                  onChanged: (value) {
+                    widget.onEditingChange?.call(value);
+                    if (value.isEmpty) {
+                      widget.controller.removeOverlay();
+                    }
+                  },
+                  validator: (value) => widget.onValidate?.call(value),
+                  inputFormatters: widget.inputFormatters,
+                  maxLines: 1,
+                  keyboardType: TextInputType.text,
+                  style: widget.resultOptions.inputTextField,
+                  cursorColor: widget.resultOptions.inputTextField.color,
+                  controller: _textController,
+                  decoration: widget.inputDecoration ??
+                      InputDecoration(
                         border: InputBorder.none,
                         focusColor: Colors.transparent,
                         hoverColor: Colors.transparent,
@@ -193,21 +191,16 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                         hintText: widget.hintText,
                         hintStyle: widget.resultOptions.inputTextField,
                       ),
-                    ),
-                  ),
                 ),
-              );
-            },
-          )),
-
-        /// if you want to show label in result widget
-        if (widget.resultOptions.render == ResultRender.all ||
-            widget.resultOptions.render == ResultRender.icon ||
-            widget.resultOptions.render == ResultRender.reverse)
-          selectedItem?.icon ?? const SizedBox(),
-
-        /// if you want to show icon + label in result widget
-      ].isReverse(widget.dropdownItemOptions.render == DropdownItemRender.reverse);
+              ),
+            ),
+          );
+        },
+      );
+    else {
+      return SizedBox();
+    }
+  }
 
   Widget _buildMarquee(Widget child) {
     return widget.resultOptions.isMarquee
@@ -225,40 +218,68 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
           animation: Listenable.merge([widget.controller.controller, widget.controller.errorController]),
           builder: (_, __) {
             return Container(
-              key: resultKey,
               width: widget.resultOptions.width,
-              height: widget.resultOptions.height,
-              padding: widget.resultOptions.padding,
-              decoration: _isError ? widget.controller.errorDecoration.value : _decorationBoxTween.value,
-              child: Align(
-                alignment: widget.resultOptions.alignment,
-                child: widget.resultOptions.render != ResultRender.none
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        verticalDirection: VerticalDirection.down,
-                        children: [
-                          Expanded(
-                            child: AnimatedSwitcher(
-                              duration: widget.resultOptions.duration,
-                              transitionBuilder: (child, animation) {
-                                return SizeTransition(
-                                  sizeFactor: animation,
-                                  axisAlignment: -2,
-                                  child: child,
-                                );
-                              },
+              child: Stack(
+                children: [
+                  if (widget.hasInputField) _buildInputFieldItem(),
+                  Container(
+                    key: resultKey,
+                    height: widget.hasInputField ? null : widget.resultOptions.height,
+                    padding: widget.hasInputField ? null : widget.resultOptions.padding,
+                    decoration: widget.hasInputField
+                        ? null
+                        : (_isError ? widget.controller.errorDecoration.value : _decorationBoxTween.value),
+                    child: Align(
+                      alignment: widget.resultOptions.alignment,
+                      child: widget.resultOptions.render != ResultRender.none
+                          ? Container(
+                              padding: widget.resultOptions.padding,
                               child: Row(
-                                key: ValueKey(selectedItem?.label),
-                                mainAxisAlignment: widget.resultOptions.mainAxisAlignment,
-                                children: widget.hasInputField ? _buildInputFieldItem() : _buildResultItem(),
+                                verticalDirection: VerticalDirection.down,
+                                children: [
+                                  Container(
+                                    child: Row(
+                                      key: ValueKey(selectedItem?.label),
+                                      mainAxisAlignment: widget.resultOptions.mainAxisAlignment,
+                                      children: (!widget.hasInputField)
+                                          ? [
+                                              Container(
+                                                color: Colors.black,
+                                              )
+                                            ]
+                                          : [SizedBox()],
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: AnimatedSwitcher(
+                                      duration: widget.resultOptions.duration,
+                                      transitionBuilder: (child, animation) {
+                                        return SizeTransition(
+                                          sizeFactor: animation,
+                                          axisAlignment: 1,
+                                          child: child,
+                                        );
+                                      },
+                                      child:
+                                          widget.hasInputField ? SizedBox(width: double.infinity) : _buildResultItem(),
+                                    ),
+                                  ),
+                                  SizedBox(width: widget.resultOptions.space),
+                                  Container(
+                                    height: widget.resultOptions.height,
+                                    width: widget.resultOptions.height,
+                                    color: Colors.red,
+                                    child: Center(
+                                      child: _buildArrow(),
+                                    ),
+                                  ),
+                                ].isReverse(widget.resultOptions.render == ResultRender.reverse),
                               ),
-                            ),
-                          ),
-                          SizedBox(width: widget.resultOptions.space),
-                          _buildArrow(),
-                        ].isReverse(widget.resultOptions.render == ResultRender.reverse),
-                      )
-                    : _buildArrow(),
+                            )
+                          : _buildArrow(),
+                    ),
+                  ),
+                ],
               ),
             );
           }),

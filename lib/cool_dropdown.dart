@@ -38,7 +38,9 @@ class CoolDropdown<T> extends StatelessWidget {
   final bool isMarquee;
   final Function(String value)? onEditingChange;
   final List<TextInputFormatter>? inputFormatters;
+  final InputDecoration? inputDecoration;
   final String? hintText;
+  final String? Function(String? value)? onValidate;
 
   CoolDropdown({
     Key? key,
@@ -57,6 +59,8 @@ class CoolDropdown<T> extends StatelessWidget {
     this.inputFormatters,
     this.hintText,
     this.undefinedItem,
+    this.inputDecoration,
+    this.onValidate,
   }) : super(key: key);
 
   @override
@@ -76,6 +80,8 @@ class CoolDropdown<T> extends StatelessWidget {
       inputFormatters: inputFormatters,
       hintText: hintText,
       undefinedItem: undefinedItem,
+      inputDecoration: inputDecoration,
+      onValidate: onValidate,
     );
   }
 }

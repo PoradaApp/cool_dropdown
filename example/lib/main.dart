@@ -29,7 +29,7 @@ List<String> fruits = [
 class _MyAppState extends State<MyApp> {
   List<CoolDropdownItem<String>> pokemonDropdownItems = [];
   List<CoolDropdownItem<String>> fruitDropdownItems = [];
-
+  final _formKey = GlobalKey<FormState>();
   final fruitDropdownController = DropdownController();
   final pokemonDropdownController = DropdownController();
   final listDropdownController = DropdownController();
@@ -67,6 +67,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -80,9 +81,9 @@ class _MyAppState extends State<MyApp> {
           children: [
             FloatingActionButton.extended(
               onPressed: () async {
-                fruitDropdownController.resetValue();
+                _formKey.currentState?.validate();
               },
-              label: Text('Reset'),
+              label: Text('Validate'),
             ),
             SizedBox(
               width: 10,
@@ -106,7 +107,7 @@ class _MyAppState extends State<MyApp> {
         body: ListView(
           children: [
             SizedBox(
-              height: 100,
+              height: 50,
             ),
             Center(
               child: WillPopScope(
@@ -118,23 +119,50 @@ class _MyAppState extends State<MyApp> {
                     return Future.value(true);
                   }
                 },
-                child: CoolDropdown<String>(
-                  controller: fruitDropdownController,
-                  dropdownList: fruitDropdownItems,
-                  defaultItem: null,
-                  hasInputField: true,
-                  onChange: (value) async {
-                    if (fruitDropdownController.isError) {
-                      await fruitDropdownController.resetError();
-                    }
-                    // fruitDropdownController.close();
-                  },
-                  hintText: 'Select language',
-                  onOpen: (value) {},
-                  isMarquee: true,
-                  resultOptions: ResultOptions(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      width: 200,
+                child: Form(
+                  key: _formKey,
+                  child: CoolDropdown<String>(
+                    controller: fruitDropdownController,
+                    dropdownList: fruitDropdownItems,
+                    defaultItem: null,
+                    hasInputField: true,
+                    onChange: (value) async {},
+                    hintText: 'Select language',
+                    onOpen: (value) {},
+                    isMarquee: false,
+                    onValidate: (value) {
+                      if (value == null) return null;
+                      if (value.isEmpty) return 'gfdgdf';
+                      return null;
+                    },
+                    inputDecoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.cyan),
+                      ),
+                      disabledBorder: InputBorder.none,
+                      filled: true,
+                      fillColor: Colors.transparent,
+                      errorStyle: TextStyle(color: Colors.black),
+                      hintText: "widget.hintText",
+                      counterText: '',
+                      labelText: "widget.labelText",
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    ),
+                    resultOptions: ResultOptions(
+                      padding: EdgeInsets.symmetric(horizontal: 0),
+                      width: 700,
                       icon: const SizedBox(
                         width: 10,
                         height: 10,
@@ -142,39 +170,35 @@ class _MyAppState extends State<MyApp> {
                           painter: DropdownArrowPainter(),
                         ),
                       ),
-                      duration: Duration(seconds: 1),
-                      backDuration: Duration(seconds: 2),
-                      pauseDuration: Duration(seconds: 3),
-                      marqueeDuration: Duration(seconds: 4),
+                      duration: Duration.zero,
                       render: ResultRender.all,
-                      placeholder: 'Select Fruit',
-                      isMarquee: true,
-                      inputTextField: TextStyle(color: Colors.black, fontSize: 15)),
-                  dropdownOptions: DropdownOptions(
-                      top: 20,
-                      height: 400,
-                      gap: DropdownGap.all(5),
-                      borderSide: BorderSide(width: 1, color: Colors.black),
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      placeholder: "widget.hintText,",
+                      isMarquee: false,
+
+                      //isMarquee: true,
+                      //inputTextField: TextStyle(color: Colors.black, fontSize: 15),
+                    ),
+                    dropdownOptions: DropdownOptions(
+                      top: 8,
+                      height: 364,
+                      gap: DropdownGap.zero,
+                      shadows: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 5, spreadRadius: 1)],
+                      borderSide: BorderSide.none,
+                      color: Colors.black,
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
                       align: DropdownAlign.left,
-                      duration: Duration(seconds: 5),
-                      animationType: DropdownAnimationType.size),
-                  dropdownTriangleOptions: DropdownTriangleOptions(
-                    width: 20,
-                    height: 30,
-                    align: DropdownTriangleAlign.left,
-                    borderRadius: 3,
-                    left: 20,
-                  ),
-                  dropdownItemOptions: DropdownItemOptions(
-                    isMarquee: true,
-                    duration: Duration(seconds: 1),
-                    backDuration: Duration(seconds: 2),
-                    pauseDuration: Duration(seconds: 3),
-                    marqueeDuration: Duration(seconds: 4),
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    render: DropdownItemRender.all,
-                    height: 50,
+                      animationType: DropdownAnimationType
+                          .scale, //DropdownAnimation.size has problems with opening above ResultBox
+                    ),
+                    dropdownTriangleOptions: const DropdownTriangleOptions(
+                      height: 0,
+                    ),
+                    dropdownItemOptions: DropdownItemOptions(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      selectedBoxDecoration: BoxDecoration(
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -190,24 +214,32 @@ class _MyAppState extends State<MyApp> {
                 onChange: (a) {
                   pokemonDropdownController.close();
                 },
+                hasInputField: false,
                 resultOptions: ResultOptions(
-                  width: 70,
-                  render: ResultRender.icon,
-                  icon: SizedBox(
+                  padding: EdgeInsets.symmetric(horizontal: 0),
+                  width: 100,
+                  icon: const SizedBox(
                     width: 10,
                     height: 10,
                     child: CustomPaint(
-                      painter: DropdownArrowPainter(color: Colors.green),
+                      painter: DropdownArrowPainter(),
                     ),
                   ),
+                  duration: Duration.zero,
+                  render: ResultRender.all,
+                  placeholder: "widget.hintText,",
+                  isMarquee: false,
+
+                  //isMarquee: true,
+                  //inputTextField: TextStyle(color: Colors.black, fontSize: 15),
                 ),
                 dropdownOptions: DropdownOptions(
-                  width: 140,
+                  width: 160,
                 ),
                 dropdownItemOptions: DropdownItemOptions(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   selectedBoxDecoration: BoxDecoration(
-                    color: Color(0XFFEFFAF0),
+                    color: Colors.black,
                   ),
                 ),
               ),
@@ -215,7 +247,7 @@ class _MyAppState extends State<MyApp> {
             SizedBox(
               height: 200,
             ),
-            /* Center(
+            Center(
               child: CoolDropdown(
                 controller: listDropdownController,
                 dropdownList: pokemonDropdownItems,
@@ -226,9 +258,7 @@ class _MyAppState extends State<MyApp> {
                   icon: Container(
                     width: 25,
                     height: 25,
-                    child: SvgPicture.asset(
-                      'assets/pokeball.svg',
-                    ),
+                    color: Colors.red,
                   ),
                 ),
                 dropdownItemOptions: DropdownItemOptions(
@@ -245,7 +275,7 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
               ),
-            ), */
+            ),
             SizedBox(
               height: 500,
             ),
@@ -253,5 +283,17 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  Widget? _buildIcon(BuildContext context, String? iconPath) {
+    final theme = Theme.of(context);
+    if (iconPath != null) {
+      return Padding(
+          padding: const EdgeInsets.all(8),
+          child: Container(
+            color: Colors.red,
+          ));
+    }
+    return null;
   }
 }
