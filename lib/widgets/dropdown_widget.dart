@@ -175,28 +175,27 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                           ),
                         )
                       : (widget.undefinedItem != null)
-                          ? GestureDetector(
-                              onTap: () {
+                          ? // GestureDetector(
+                          /* onTap: () {
                                 widget.controller.close();
                                 widget.onChange.call(widget.undefinedItem!.value);
                                 _setSelectedItem(widget.undefinedItem!);
-                              },
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height:
-                                        widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
-                                  ),
-                                  DropdownItemWidget(
-                                    item: widget.undefinedItem!,
-                                    dropdownItemOptions: widget.dropdownItemOptions,
-                                  ),
-                                  SizedBox(
-                                    height: widget.dropdownOptions.gap.bottom +
-                                        widget.dropdownOptions.borderSide.width * 0.5,
-                                  ),
-                                ],
-                              ),
+                              }, */
+                          Column(
+                              children: [
+                                SizedBox(
+                                  height:
+                                      widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
+                                ),
+                                DropdownItemWidget(
+                                  item: widget.undefinedItem!,
+                                  dropdownItemOptions: widget.dropdownItemOptions,
+                                ),
+                                SizedBox(
+                                  height:
+                                      widget.dropdownOptions.gap.bottom + widget.dropdownOptions.borderSide.width * 0.5,
+                                ),
+                              ],
                             )
                           : SizedBox(),
                 ),
