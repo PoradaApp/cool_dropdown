@@ -22,7 +22,7 @@ class DropdownWidget<T> extends StatefulWidget {
   final Function(String text) onChangedText;
   final SelectedItemCallback<T> selectedItemCallback;
   final CoolDropdownItem<T>? selectedItem;
-  final CoolDropdownItem<T>? undefinedItem;
+  final CoolDropdownItem? undefinedItem;
 
   const DropdownWidget({
     Key? key,
@@ -101,6 +101,8 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.dropdownList.isNotEmpty);
+    print(1);
     return Material(
       color: Colors.transparent,
       child: Stack(
@@ -175,14 +177,12 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                           ),
                         )
                       : (widget.undefinedItem != null)
-                          ? // GestureDetector(
-                          /* onTap: () {
+                          ? GestureDetector(
+                              onTap: () {
                                 widget.controller.close();
-                                widget.onChange.call(widget.undefinedItem!.value);
-                                _setSelectedItem(widget.undefinedItem!);
-                              }, */
-                          Container(
-                              height: 52,
+                                /*  widget.onChange.call(widget.undefinedItem!.value);
+                                _setSelectedItem(widget.undefinedItem!); */
+                              },
                               child: Column(
                                 children: [
                                   SizedBox(
