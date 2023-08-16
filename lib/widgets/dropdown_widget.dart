@@ -162,6 +162,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                                 DropdownItemWidget(
                                   item: widget.dropdownList[index],
                                   dropdownItemOptions: widget.dropdownItemOptions,
+                                  decoration: widget.dropdownItemOptions.selectedBoxDecoration,
                                 ),
                                 if (index != widget.dropdownList.length - 1)
                                   SizedBox(
@@ -185,21 +186,10 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                               },
                               child: Container(
                                 decoration: widget.dropdownOptions.undefinedDecoration,
-                                child: Column(
-                                  children: [
-/*                                     SizedBox(
-                                      height: widget.dropdownOptions.gap.top +
-                                          widget.dropdownOptions.borderSide.width * 0.5,
-                                    ), */
-                                    DropdownItemWidget(
-                                      item: widget.undefinedItem!,
-                                      dropdownItemOptions: widget.dropdownItemOptions,
-                                    ),
-                                    /*  SizedBox(
-                                      height: widget.dropdownOptions.gap.bottom +
-                                          widget.dropdownOptions.borderSide.width * 0.5,
-                                    ), */
-                                  ],
+                                child: DropdownItemWidget(
+                                  item: widget.undefinedItem!,
+                                  dropdownItemOptions: widget.dropdownItemOptions,
+                                  decoration: widget.dropdownOptions.undefinedDecoration ?? BoxDecoration(),
                                 ),
                               ),
                             )

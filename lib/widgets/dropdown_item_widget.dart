@@ -8,11 +8,13 @@ import 'package:flutter/material.dart';
 class DropdownItemWidget extends StatefulWidget {
   final CoolDropdownItem item;
   final DropdownItemOptions dropdownItemOptions;
+  final BoxDecoration decoration;
 
   const DropdownItemWidget({
     Key? key,
     required this.item,
     required this.dropdownItemOptions,
+    required this.decoration,
   }) : super(key: key);
 
   @override
@@ -26,7 +28,7 @@ class _DropdownItemWidgetState extends State<DropdownItemWidget> with SingleTick
   );
   late final _decorationBoxTween = DecorationTween(
     begin: BoxDecoration(),
-    end: widget.dropdownItemOptions.selectedBoxDecoration,
+    end: widget.decoration,
   ).animate(_controller);
 
   late final _textStyleTween = TextStyleTween(
