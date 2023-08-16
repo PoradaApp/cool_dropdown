@@ -163,6 +163,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                                   item: widget.dropdownList[index],
                                   dropdownItemOptions: widget.dropdownItemOptions,
                                   decoration: widget.dropdownItemOptions.selectedBoxDecoration,
+                                  height: widget.dropdownItemOptions.height,
                                 ),
                                 if (index != widget.dropdownList.length - 1)
                                   SizedBox(
@@ -190,6 +191,8 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                                   item: widget.undefinedItem!,
                                   dropdownItemOptions: widget.dropdownItemOptions,
                                   decoration: widget.dropdownOptions.undefinedDecoration ?? BoxDecoration(),
+                                  height: widget.dropdownItemOptions.height -
+                                      (widget.dropdownOptions.undefinedDecoration?.border?.top.width ?? 0),
                                 ),
                               ),
                             )
@@ -198,33 +201,6 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
               ),
             ),
           ),
-
-          /// center line test
-          // Positioned(
-          //   top: dropdownOffset.dy - widget.dropdownOptions.marginGap.top,
-          //   left: dropdownOffset.dx - widget.dropdownOptions.marginGap.left,
-          //   child: IgnorePointer(
-          //     child: GestureDetector(
-          //       onTap: () {},
-          //       child: _buildAnimation(
-          //         child: Container(
-          //           margin: widget.dropdownOptions.marginGap,
-          //           width: _dropdownCalculator.dropdownWidth,
-          //           height: _dropdownCalculator.dropdownHeight +
-          //               widget.dropdownOptions.borderSide.width,
-          //           padding: EdgeInsets.all(
-          //               widget.dropdownOptions.borderSide.width * 0.5),
-          //           child: Center(
-          //             child: Container(
-          //               height: 3,
-          //               color: Colors.blue.withOpacity(0.8),
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );

@@ -9,12 +9,14 @@ class DropdownItemWidget extends StatefulWidget {
   final CoolDropdownItem item;
   final DropdownItemOptions dropdownItemOptions;
   final BoxDecoration decoration;
+  final double height;
 
   const DropdownItemWidget({
     Key? key,
     required this.item,
     required this.dropdownItemOptions,
     required this.decoration,
+    required this.height,
   }) : super(key: key);
 
   @override
@@ -118,7 +120,7 @@ class _DropdownItemWidgetState extends State<DropdownItemWidget> with SingleTick
       builder: (_, __) {
         return Container(
           padding: _paddingTween.value,
-          height: widget.dropdownItemOptions.height,
+          height: widget.height,
           alignment: widget.dropdownItemOptions.alignment,
           decoration: _decorationBoxTween.value,
           child: Align(
