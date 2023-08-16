@@ -43,6 +43,8 @@ class DropdownOptions {
   /// The curve of the dropdown scroll animation.
   final Curve curve;
 
+  final BoxDecoration? undefinedDecoration;
+
   const DropdownOptions({
     this.width,
     this.height = 220,
@@ -66,6 +68,7 @@ class DropdownOptions {
     this.padding = EdgeInsets.zero,
     this.duration = const Duration(milliseconds: 300),
     this.curve = Curves.easeInOut,
+    this.undefinedDecoration,
   });
 
   /// The max blur radius plus max spread radius of the dropdown.
@@ -75,8 +78,7 @@ class DropdownOptions {
       final blurRadius = shadow.blurRadius;
       final spreadRadius = shadow.spreadRadius;
       final offset = shadow.offset;
-      final maxBlurRadiusPlusMaxSpreadRadius =
-          blurRadius + spreadRadius + offset.distance;
+      final maxBlurRadiusPlusMaxSpreadRadius = blurRadius + spreadRadius + offset.distance;
       if (maxBlurRadiusPlusMaxSpreadRadius > max) {
         max = maxBlurRadiusPlusMaxSpreadRadius;
       }
@@ -98,11 +100,9 @@ class DropdownOptions {
   EdgeInsets get marginGap => animationType == DropdownAnimationType.size
       ? EdgeInsets.only(
           top: borderSide.width * 0.5 + shadowMaxBlurRadiusPlusMaxSpreadRadius,
-          bottom:
-              borderSide.width * 0.5 + shadowMaxBlurRadiusPlusMaxSpreadRadius,
+          bottom: borderSide.width * 0.5 + shadowMaxBlurRadiusPlusMaxSpreadRadius,
           left: borderSide.width * 0.5 + shadowMaxBlurRadiusPlusMaxSpreadRadius,
-          right:
-              borderSide.width * 0.5 + shadowMaxBlurRadiusPlusMaxSpreadRadius,
+          right: borderSide.width * 0.5 + shadowMaxBlurRadiusPlusMaxSpreadRadius,
         )
       : EdgeInsets.zero;
 }
