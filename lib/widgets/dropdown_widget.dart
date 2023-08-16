@@ -181,7 +181,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                               onTap: () {
                                 widget.controller.close();
                                 //widget.onChange.call(widget.undefinedItem!.value);
-                                _setSelectedItem(widget.undefinedItem!);
+                                //_setSelectedItem(widget.undefinedItem!);
                               },
                               child: Column(
                                 children: [
