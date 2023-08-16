@@ -187,18 +187,18 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                                 decoration: widget.dropdownOptions.undefinedDecoration,
                                 child: Column(
                                   children: [
-                                    SizedBox(
+/*                                     SizedBox(
                                       height: widget.dropdownOptions.gap.top +
                                           widget.dropdownOptions.borderSide.width * 0.5,
-                                    ),
+                                    ), */
                                     DropdownItemWidget(
                                       item: widget.undefinedItem!,
                                       dropdownItemOptions: widget.dropdownItemOptions,
                                     ),
-                                    SizedBox(
+                                    /*  SizedBox(
                                       height: widget.dropdownOptions.gap.bottom +
                                           widget.dropdownOptions.borderSide.width * 0.5,
-                                    ),
+                                    ), */
                                   ],
                                 ),
                               ),
