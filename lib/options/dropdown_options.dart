@@ -16,6 +16,8 @@ class DropdownOptions {
   /// The border radius of the dropdown.
   final BorderRadius borderRadius;
 
+  final BorderRadius? splashRadius;
+
   /// The border of the dropdown.
   final BorderSide borderSide;
 
@@ -49,6 +51,7 @@ class DropdownOptions {
 
   const DropdownOptions({
     this.splashColor,
+    this.splashRadius,
     this.width,
     this.height = 220,
     this.top = 0,
