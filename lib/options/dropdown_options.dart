@@ -45,7 +45,10 @@ class DropdownOptions {
 
   final BoxDecoration? undefinedDecoration;
 
+  final Color? splashColor;
+
   const DropdownOptions({
+    this.splashColor,
     this.width,
     this.height = 220,
     this.top = 0,

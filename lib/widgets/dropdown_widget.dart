@@ -123,70 +123,71 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
           Positioned(
             top: dropdownOffset.dy - widget.dropdownOptions.marginGap.top,
             left: dropdownOffset.dx - widget.dropdownOptions.marginGap.left,
-            child: GestureDetector(
-              onTap: () {},
-              child: _buildAnimation(
-                child: Container(
-                  margin: widget.dropdownOptions.marginGap,
-                  clipBehavior: Clip.antiAlias,
-                  width: _dropdownCalculator.dropdownWidth,
-                  height: (_dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width) <=
-                          widget.dropdownItemOptions.height
-                      ? widget.dropdownItemOptions.height
-                      : _dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width,
-                  padding: EdgeInsets.all(widget.dropdownOptions.borderSide.width * 0.5),
-                  decoration: ShapeDecoration(
-                    color: widget.dropdownOptions.color,
-                    shadows: widget.dropdownOptions.shadows,
-                    shape: DropdownShapeBorder(
-                      triangle: widget.dropdownTriangleOptions,
-                      radius: widget.dropdownOptions.borderRadius,
-                      borderSide: widget.dropdownOptions.borderSide,
-                      arrowAlign: widget.dropdownTriangleOptions.align,
-                      isTriangleDown: _dropdownCalculator.isArrowDown,
-                    ),
+            child: _buildAnimation(
+              child: Container(
+                margin: widget.dropdownOptions.marginGap,
+                clipBehavior: Clip.antiAlias,
+                width: _dropdownCalculator.dropdownWidth,
+                height: (_dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width) <=
+                        widget.dropdownItemOptions.height
+                    ? widget.dropdownItemOptions.height
+                    : _dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width,
+                padding: EdgeInsets.all(widget.dropdownOptions.borderSide.width * 0.5),
+                decoration: ShapeDecoration(
+                  //color: widget.dropdownOptions.color,
+                  shadows: widget.dropdownOptions.shadows,
+                  shape: DropdownShapeBorder(
+                    triangle: widget.dropdownTriangleOptions,
+                    radius: widget.dropdownOptions.borderRadius,
+                    borderSide: widget.dropdownOptions.borderSide,
+                    arrowAlign: widget.dropdownTriangleOptions.align,
+                    isTriangleDown: _dropdownCalculator.isArrowDown,
                   ),
-                  child: widget.dropdownList.isNotEmpty
-                      ? ListView.builder(
-                          controller: _dropdownCalculator.scrollController,
-                          padding: EdgeInsets.zero,
-                          itemCount: widget.dropdownList.length,
-                          itemBuilder: (_, index) => InkWell(
-                            onTap: () {
-                              widget.onChangedText.call(widget.dropdownList[index].label);
-                              widget.onChange.call(widget.dropdownList[index].value);
-                              _setSelectedItem(widget.dropdownList[index]);
-                            },
-                            child: Column(
-                              children: [
-                                DropdownItemWidget(
-                                  item: widget.dropdownList[index],
-                                  dropdownItemOptions: widget.dropdownItemOptions,
-                                  decoration: widget.dropdownItemOptions.selectedBoxDecoration,
-                                  height: widget.dropdownItemOptions.height,
-                                ),
-                                if (index != widget.dropdownList.length - 1)
-                                  SizedBox(
-                                    height: widget.dropdownOptions.gap.betweenItems,
-                                  ),
-                              ],
-                            ),
-                          ),
-                        )
-                      : (widget.undefinedItem != null)
-                          ? InkWell(
-                              onTap: () {
-                                widget.controller.close();
-                              },
-                              child: DropdownItemWidget(
-                                item: widget.undefinedItem!,
+                ),
+                child: widget.dropdownList.isNotEmpty
+                    ? ListView.builder(
+                        controller: _dropdownCalculator.scrollController,
+                        padding: EdgeInsets.zero,
+                        itemCount: widget.dropdownList.length,
+                        itemBuilder: (_, index) => InkWell(
+                          borderRadius: widget.dropdownOptions.borderRadius,
+                          highlightColor: widget.dropdownOptions.splashColor,
+                          onTap: () {
+                            widget.onChangedText.call(widget.dropdownList[index].label);
+                            widget.onChange.call(widget.dropdownList[index].value);
+                            _setSelectedItem(widget.dropdownList[index]);
+                          },
+                          child: Column(
+                            children: [
+                              DropdownItemWidget(
+                                item: widget.dropdownList[index],
                                 dropdownItemOptions: widget.dropdownItemOptions,
-                                decoration: widget.dropdownOptions.undefinedDecoration ?? BoxDecoration(),
+                                decoration: widget.dropdownItemOptions.selectedBoxDecoration,
                                 height: widget.dropdownItemOptions.height,
                               ),
-                            )
-                          : SizedBox(),
-                ),
+                              if (index != widget.dropdownList.length - 1)
+                                SizedBox(
+                                  height: widget.dropdownOptions.gap.betweenItems,
+                                ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : (widget.undefinedItem != null)
+                        ? InkWell(
+                            borderRadius: widget.dropdownOptions.borderRadius,
+                            highlightColor: widget.dropdownOptions.splashColor,
+                            onTap: () {
+                              widget.controller.close();
+                            },
+                            child: DropdownItemWidget(
+                              item: widget.undefinedItem!,
+                              dropdownItemOptions: widget.dropdownItemOptions,
+                              decoration: widget.dropdownOptions.undefinedDecoration ?? BoxDecoration(),
+                              height: widget.dropdownItemOptions.height,
+                            ),
+                          )
+                        : SizedBox(),
               ),
             ),
           ),
