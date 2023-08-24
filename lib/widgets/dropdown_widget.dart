@@ -149,7 +149,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                   child: widget.dropdownList.isNotEmpty
                       ? ListView.builder(
                           controller: _dropdownCalculator.scrollController,
-                          padding: widget.dropdownOptions.calcPadding,
+                          padding: EdgeInsets.zero,
                           itemCount: widget.dropdownList.length,
                           itemBuilder: (_, index) => InkWell(
                             onTap: () {
