@@ -159,12 +159,6 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                             },
                             child: Column(
                               children: [
-                                /*  if (index == 0)
-                                  SizedBox(
-                                    height:
-                                        widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
-                                  ),
-                                */
                                 DropdownItemWidget(
                                   item: widget.dropdownList[index],
                                   dropdownItemOptions: widget.dropdownItemOptions,
@@ -175,11 +169,6 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                                   SizedBox(
                                     height: widget.dropdownOptions.gap.betweenItems,
                                   ),
-                                /*  if (index == widget.dropdownList.length - 1)
-                                  SizedBox(
-                                    height: widget.dropdownOptions.gap.bottom +
-                                        widget.dropdownOptions.borderSide.width * 0.5,
-                                  ), */
                               ],
                             ),
                           ),
