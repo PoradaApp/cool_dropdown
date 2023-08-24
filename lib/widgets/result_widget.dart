@@ -21,6 +21,7 @@ class ResultWidget<T> extends StatefulWidget {
   final DropdownTriangleOptions dropdownArrowOptions;
   final DropdownController controller;
   final Function(T t) onChange;
+  final Function() onClose;
   final Function(bool)? onOpen;
   final bool hasInputField;
   final Function(String value)? onEditingChange;
@@ -40,6 +41,7 @@ class ResultWidget<T> extends StatefulWidget {
     required this.dropdownArrowOptions,
     required this.controller,
     required this.onChange,
+    required this.onClose,
     this.hasInputField = false,
     this.onOpen,
     this.defaultItem,
@@ -93,28 +95,30 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
 
   void open() {
     widget.controller.show(
-        context: context,
-        child: DropdownWidget<T>(
-          controller: widget.controller,
-          dropdownOptions: widget.dropdownOptions,
-          dropdownItemOptions: widget.dropdownItemOptions,
-          dropdownTriangleOptions: widget.dropdownArrowOptions,
-          resultKey: resultKey,
-          onChangedText: (value) {
-            if (widget.hasInputField) {
-              _textController.text = value;
-              setState(() {});
-            }
-          },
-          onChange: (value) {
-            widget.onChange(value);
-          },
-          dropdownList: widget.dropdownList,
-          selectedItemCallback: (item) => _setSelectedItem(item),
-          selectedItem: selectedItem,
-          bodyContext: context,
-          undefinedItem: widget.undefinedItem,
-        ));
+      context: context,
+      child: DropdownWidget<T>(
+        controller: widget.controller,
+        dropdownOptions: widget.dropdownOptions,
+        dropdownItemOptions: widget.dropdownItemOptions,
+        dropdownTriangleOptions: widget.dropdownArrowOptions,
+        resultKey: resultKey,
+        onChangedText: (value) {
+          if (widget.hasInputField) {
+            _textController.text = value;
+            setState(() {});
+          }
+        },
+        onChange: (value) {
+          widget.onChange(value);
+        },
+        dropdownList: widget.dropdownList,
+        selectedItemCallback: (item) => _setSelectedItem(item),
+        selectedItem: selectedItem,
+        bodyContext: context,
+        undefinedItem: widget.undefinedItem,
+        onClose: widget.onClose,
+      ),
+    );
   }
 
   void _setSelectedItem(CoolDropdownItem<T> item) {

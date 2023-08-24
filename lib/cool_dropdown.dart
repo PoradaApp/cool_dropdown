@@ -33,6 +33,7 @@ class CoolDropdown<T> extends StatelessWidget {
   final DropdownTriangleOptions dropdownTriangleOptions;
   final DropdownController controller;
   final Function(T) onChange;
+  final Function()? onClose;
   final Function(bool)? onOpen;
   final bool hasInputField;
   final bool isMarquee;
@@ -61,6 +62,7 @@ class CoolDropdown<T> extends StatelessWidget {
     this.undefinedItem,
     this.inputDecoration,
     this.onValidate,
+    this.onClose,
   }) : super(key: key);
 
   @override
@@ -82,6 +84,7 @@ class CoolDropdown<T> extends StatelessWidget {
       undefinedItem: undefinedItem,
       inputDecoration: inputDecoration,
       onValidate: onValidate,
+      onClose: onClose ?? () {},
     );
   }
 }

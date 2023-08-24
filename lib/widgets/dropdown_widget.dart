@@ -19,6 +19,7 @@ class DropdownWidget<T> extends StatefulWidget {
   final BuildContext bodyContext;
   final List<CoolDropdownItem<T>> dropdownList;
   final Function(T t) onChange;
+  final Function() onClose;
   final Function(String text) onChangedText;
   final SelectedItemCallback<T> selectedItemCallback;
   final CoolDropdownItem<T>? selectedItem;
@@ -38,6 +39,7 @@ class DropdownWidget<T> extends StatefulWidget {
     required this.selectedItem,
     required this.onChangedText,
     required this.undefinedItem,
+    required this.onClose,
   }) : super(key: key);
 
   @override
@@ -107,8 +109,11 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
       color: Colors.transparent,
       child: Stack(
         children: [
-          GestureDetector(
-            onTap: () => widget.controller.close(),
+          InkWell(
+            onTap: () {
+              widget.onClose();
+              widget.controller.close();
+            },
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
@@ -154,11 +159,12 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                             },
                             child: Column(
                               children: [
-                                if (index == 0)
+                                /*  if (index == 0)
                                   SizedBox(
                                     height:
                                         widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
                                   ),
+                                */
                                 DropdownItemWidget(
                                   item: widget.dropdownList[index],
                                   dropdownItemOptions: widget.dropdownItemOptions,
@@ -169,11 +175,11 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                                   SizedBox(
                                     height: widget.dropdownOptions.gap.betweenItems,
                                   ),
-                                if (index == widget.dropdownList.length - 1)
+                                /*  if (index == widget.dropdownList.length - 1)
                                   SizedBox(
                                     height: widget.dropdownOptions.gap.bottom +
                                         widget.dropdownOptions.borderSide.width * 0.5,
-                                  ),
+                                  ), */
                               ],
                             ),
                           ),
