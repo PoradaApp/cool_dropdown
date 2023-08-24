@@ -151,7 +151,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                           controller: _dropdownCalculator.scrollController,
                           padding: widget.dropdownOptions.calcPadding,
                           itemCount: widget.dropdownList.length,
-                          itemBuilder: (_, index) => GestureDetector(
+                          itemBuilder: (_, index) => InkWell(
                             onTap: () {
                               widget.onChangedText.call(widget.dropdownList[index].label);
                               widget.onChange.call(widget.dropdownList[index].value);
@@ -185,21 +185,15 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                           ),
                         )
                       : (widget.undefinedItem != null)
-                          ? GestureDetector(
+                          ? InkWell(
                               onTap: () {
                                 widget.controller.close();
-                                //widget.onChange.call(widget.undefinedItem!.value);
-                                //_setSelectedItem(widget.undefinedItem!);
                               },
-                              child: Container(
-                                decoration: widget.dropdownOptions.undefinedDecoration,
-                                child: DropdownItemWidget(
-                                  item: widget.undefinedItem!,
-                                  dropdownItemOptions: widget.dropdownItemOptions,
-                                  decoration: widget.dropdownOptions.undefinedDecoration ?? BoxDecoration(),
-                                  height: widget.dropdownItemOptions.height -
-                                      (widget.dropdownOptions.undefinedDecoration?.border?.top.width ?? 0),
-                                ),
+                              child: DropdownItemWidget(
+                                item: widget.undefinedItem!,
+                                dropdownItemOptions: widget.dropdownItemOptions,
+                                decoration: widget.dropdownOptions.undefinedDecoration ?? BoxDecoration(),
+                                height: widget.dropdownItemOptions.height,
                               ),
                             )
                           : SizedBox(),
