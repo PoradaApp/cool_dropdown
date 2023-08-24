@@ -109,7 +109,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
       color: Colors.transparent,
       child: Stack(
         children: [
-          InkWell(
+          GestureDetector(
             onTap: () {
               widget.onClose();
               widget.controller.close();
