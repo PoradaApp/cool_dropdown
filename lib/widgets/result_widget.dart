@@ -180,7 +180,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
               maxLines: 1,
               keyboardType: TextInputType.text,
               style: widget.resultOptions.inputTextField,
-              cursorColor: widget.resultOptions.inputTextField.color,
+              cursorColor: widget.resultOptions.cursorColor ?? Colors.white,
               controller: _textController,
               decoration: widget.inputDecoration ??
                   InputDecoration(

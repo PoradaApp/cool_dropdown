@@ -43,6 +43,8 @@ class ResultOptions {
   /// The duration of the switch animation.
   final Duration duration, marqueeDuration, backDuration, pauseDuration;
 
+  final Color? cursorColor;
+
   const ResultOptions({
     this.width = 220,
     this.height = 50,
@@ -53,6 +55,7 @@ class ResultOptions {
     this.render = ResultRender.all,
     this.backgroundIconColor,
     this.iconRadius,
+    this.cursorColor,
     this.boxDecoration = const BoxDecoration(
       color: Color(0xFFFFFFFF),
       borderRadius: BorderRadius.all(Radius.circular(10)),
