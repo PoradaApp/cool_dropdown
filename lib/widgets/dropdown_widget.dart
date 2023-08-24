@@ -103,8 +103,6 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.dropdownList.isNotEmpty);
-    print(1);
     return Material(
       color: Colors.transparent,
       child: Stack(
@@ -124,37 +122,40 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
             top: dropdownOffset.dy - widget.dropdownOptions.marginGap.top,
             left: dropdownOffset.dx - widget.dropdownOptions.marginGap.left,
             child: _buildAnimation(
-              child: Material(
-                color: widget.dropdownOptions.color,
-                borderRadius: widget.dropdownOptions.borderRadius,
-                child: Container(
-                  margin: widget.dropdownOptions.marginGap,
-                  clipBehavior: Clip.antiAlias,
-                  width: _dropdownCalculator.dropdownWidth,
-                  height: (_dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width) <=
-                          widget.dropdownItemOptions.height
-                      ? widget.dropdownItemOptions.height
-                      : _dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width,
-                  padding: EdgeInsets.all(widget.dropdownOptions.borderSide.width * 0.5),
-                  decoration: ShapeDecoration(
-                    //color: widget.dropdownOptions.color,
-                    shadows: widget.dropdownOptions.shadows,
-                    shape: DropdownShapeBorder(
-                      triangle: widget.dropdownTriangleOptions,
-                      radius: widget.dropdownOptions.borderRadius,
-                      borderSide: widget.dropdownOptions.borderSide,
-                      arrowAlign: widget.dropdownTriangleOptions.align,
-                      isTriangleDown: _dropdownCalculator.isArrowDown,
-                    ),
+              child: Container(
+                margin: widget.dropdownOptions.marginGap,
+                clipBehavior: Clip.antiAlias,
+                width: _dropdownCalculator.dropdownWidth,
+                height: (_dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width) <=
+                        widget.dropdownItemOptions.height
+                    ? widget.dropdownItemOptions.height
+                    : _dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width,
+                padding: EdgeInsets.all(widget.dropdownOptions.borderSide.width * 0.5),
+                decoration: ShapeDecoration(
+                  //color: widget.dropdownOptions.color,
+                  shadows: widget.dropdownOptions.shadows,
+                  shape: DropdownShapeBorder(
+                    triangle: widget.dropdownTriangleOptions,
+                    radius: widget.dropdownOptions.borderRadius,
+                    borderSide: widget.dropdownOptions.borderSide,
+                    arrowAlign: widget.dropdownTriangleOptions.align,
+                    isTriangleDown: _dropdownCalculator.isArrowDown,
                   ),
-                  child: widget.dropdownList.isNotEmpty
-                      ? ListView.builder(
+                ),
+                child: widget.dropdownList.isNotEmpty
+                    ? Material(
+                        color: widget.dropdownOptions.color,
+                        borderRadius: widget.dropdownOptions.borderRadius,
+                        child: ListView.builder(
                           controller: _dropdownCalculator.scrollController,
                           padding: EdgeInsets.zero,
                           itemCount: widget.dropdownList.length,
                           itemBuilder: (_, index) => InkWell(
                             borderRadius: widget.dropdownOptions.splashRadius,
                             highlightColor: widget.dropdownOptions.splashColor,
+                            focusColor: widget.dropdownOptions.splashColor,
+                            hoverColor: widget.dropdownOptions.splashColor,
+                            splashColor: widget.dropdownOptions.splashColor,
                             onTap: () {
                               widget.onChangedText.call(widget.dropdownList[index].label);
                               widget.onChange.call(widget.dropdownList[index].value);
@@ -175,11 +176,18 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                               ],
                             ),
                           ),
-                        )
-                      : (widget.undefinedItem != null)
-                          ? InkWell(
+                        ),
+                      )
+                    : (widget.undefinedItem != null)
+                        ? Material(
+                            color: widget.dropdownOptions.color,
+                            borderRadius: widget.dropdownOptions.borderRadius,
+                            child: InkWell(
                               borderRadius: widget.dropdownOptions.splashRadius,
                               highlightColor: widget.dropdownOptions.splashColor,
+                              focusColor: widget.dropdownOptions.splashColor,
+                              hoverColor: widget.dropdownOptions.splashColor,
+                              splashColor: widget.dropdownOptions.splashColor,
                               onTap: () {
                                 widget.controller.close();
                               },
@@ -189,9 +197,9 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                                 decoration: widget.dropdownOptions.undefinedDecoration ?? BoxDecoration(),
                                 height: widget.dropdownItemOptions.height,
                               ),
-                            )
-                          : SizedBox(),
-                ),
+                            ),
+                          )
+                        : SizedBox(),
               ),
             ),
           ),
