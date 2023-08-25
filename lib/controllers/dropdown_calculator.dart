@@ -81,8 +81,11 @@ class DropdownCalculator<T> {
     double dropdownHeight = dropdownOptions.height;
     final dropdownBottomMargin = dropdownOptions.gap.betweenDropdownAndEdge;
 
-    double dropdownY =
-        resultOffset.dy + resultBox.size.height + dropdownBottomMargin + dropdownOptions.gap.betweenDropdownAndEdge;
+    double dropdownY = resultOffset.dy +
+        resultBox.size.height +
+        dropdownBottomMargin +
+        dropdownOptions.top +
+        dropdownOptions.gap.betweenDropdownAndEdge;
 
     // Проверяем, чтобы дропдаун не вылезал за пределы экрана внизу
     if (dropdownY + dropdownHeight > screenHeight) {
