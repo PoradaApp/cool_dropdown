@@ -77,27 +77,20 @@ class DropdownCalculator<T> {
     required Offset resultOffset,
   }) {
     final screenHeight = MediaQuery.of(bodyContext).size.height;
-
     double dropdownHeight = dropdownOptions.height;
     final dropdownBottomMargin = dropdownOptions.gap.betweenDropdownAndEdge;
-
     double dropdownY = resultOffset.dy +
         resultBox.size.height +
         dropdownBottomMargin +
         dropdownOptions.top +
         dropdownOptions.gap.betweenDropdownAndEdge;
-
-    // Проверяем, чтобы дропдаун не вылезал за пределы экрана внизу
-    if (dropdownY + dropdownHeight > screenHeight) {
+    /*    if (dropdownY + dropdownHeight > screenHeight) {
       final overflowAmount = dropdownY + dropdownHeight - screenHeight;
-      dropdownY -= overflowAmount;
+      // dropdownY -= overflowAmount;
 
-      // Обрезаем высоту дропдауна, чтобы он полностью уместился на экране
-      dropdownHeight -= overflowAmount;
+      //    dropdownHeight -= overflowAmount;
     }
-
-    // Теперь можно использовать значение dropdownHeight для настройки размера дропдауна
-
+ */
     return dropdownY;
   }
 
