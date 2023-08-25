@@ -77,21 +77,46 @@ class DropdownCalculator<T> {
     required Offset resultOffset,
   }) {
     final screenHeight = MediaQuery.of(bodyContext).size.height;
+
+    // Всегда размещаем дропдаун внизу страницы
+    final dropdownHeight = dropdownOptions.height;
+
+    final dropdownBottomMargin = dropdownOptions.gap.betweenDropdownAndEdge;
+
+    // Рассчитываем координату Y для дропдауна
+    double dropdownY = resultOffset.dy + resultBox.size.height + dropdownBottomMargin;
+
+    // Проверяем, чтобы дропдаун не вылезал за пределы экрана внизу
+    if (dropdownY + dropdownHeight > screenHeight) {
+      final overflowAmount = dropdownY + dropdownHeight - screenHeight;
+      dropdownY -= overflowAmount;
+    }
+
+    return dropdownY;
+  }
+
+  /*  double _setOffsetDy({
+    required RenderBox resultBox,
+    required Offset resultOffset,
+  }) {
+    final screenHeight = MediaQuery.of(bodyContext).size.height;
     final resultOffsetCenterDy = resultOffset.dy + resultBox.size.height * 0.5;
 
-    _isTriangleDown = true; /* resultOffsetCenterDy > screenHeight * 0.5; */
+    _isTriangleDown = resultOffsetCenterDy > screenHeight * 0.5;
 
     /// set dropdown height not to overflow screen
     if (_isTriangleDown) {
       if (resultOffset.dy - dropdownOptions.height < 0) {
-        _calcDropdownHeight = resultOffset.dy - (dropdownOptions.top + dropdownOptions.gap.betweenDropdownAndEdge);
+        _calcDropdownHeight = resultOffset.dy -
+            (dropdownOptions.top + dropdownOptions.gap.betweenDropdownAndEdge);
         return dropdownOptions.gap.betweenDropdownAndEdge;
       }
 
       /// shrinkwrap
       return resultOffset.dy - dropdownHeight - dropdownOptions.top;
     } else {
-      if (resultOffset.dy + resultBox.size.height + dropdownOptions.height > screenHeight) {
+      if (resultOffset.dy + resultBox.size.height + dropdownOptions.height >
+          screenHeight) {
         _calcDropdownHeight = screenHeight -
             (resultOffset.dy +
                 resultBox.size.height +
@@ -100,7 +125,7 @@ class DropdownCalculator<T> {
       }
       return resultOffset.dy + resultBox.size.height + dropdownOptions.top;
     }
-  }
+  } */
 
   double get calcArrowAlignmentDx {
     switch (dropdownTriangleOptions.align) {
