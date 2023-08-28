@@ -37,7 +37,7 @@ class CoolDropdown<T> extends StatelessWidget {
   final Function(bool)? onOpen;
   final bool hasInputField;
   final bool isMarquee;
-  final Function(String value)? onEditingChange;
+  final Function(String value)? onTextEditing;
   final List<TextInputFormatter>? inputFormatters;
   final InputDecoration? inputDecoration;
   final String? hintText;
@@ -53,7 +53,7 @@ class CoolDropdown<T> extends StatelessWidget {
     this.dropdownTriangleOptions = const DropdownTriangleOptions(),
     required this.controller,
     required this.onChange,
-    this.onEditingChange,
+    this.onTextEditing,
     this.onOpen,
     this.isMarquee = false,
     this.hasInputField = false,
@@ -78,7 +78,7 @@ class CoolDropdown<T> extends StatelessWidget {
       onOpen: onOpen,
       defaultItem: defaultItem,
       hasInputField: hasInputField,
-      onEditingChange: onEditingChange,
+      onTextEditing: onTextEditing,
       inputFormatters: inputFormatters,
       hintText: hintText,
       undefinedItem: undefinedItem,

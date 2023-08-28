@@ -24,7 +24,7 @@ class ResultWidget<T> extends StatefulWidget {
   final Function() onClose;
   final Function(bool)? onOpen;
   final bool hasInputField;
-  final Function(String value)? onEditingChange;
+  final Function(String value)? onTextEditing;
   final List<TextInputFormatter>? inputFormatters;
   final CoolDropdownItem<T>? defaultItem;
   final String? hintText;
@@ -45,7 +45,7 @@ class ResultWidget<T> extends StatefulWidget {
     this.hasInputField = false,
     this.onOpen,
     this.defaultItem,
-    this.onEditingChange,
+    this.onTextEditing,
     this.inputFormatters,
     this.hintText,
     this.undefinedItem,
@@ -170,7 +170,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                 setState(() {});
               },
               onChanged: (value) {
-                widget.onEditingChange?.call(value);
+                widget.onTextEditing?.call(value);
                 if (value.isEmpty) {
                   widget.controller.removeOverlay();
                 }
