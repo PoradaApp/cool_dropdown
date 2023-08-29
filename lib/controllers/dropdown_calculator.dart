@@ -85,12 +85,12 @@ class DropdownCalculator<T> {
         dropdownOptions.top +
         dropdownOptions.gap.betweenDropdownAndEdge;
     //Remove check to cut height
-    /*   if (dropdownY + dropdownHeight > screenHeight) {
+    if (dropdownY + dropdownHeight > screenHeight) {
       final overflowAmount = dropdownY + dropdownHeight - screenHeight;
       dropdownY -= overflowAmount;
 
       dropdownHeight -= overflowAmount;
-    } */
+    }
     return dropdownY;
   }
 
