@@ -1,12 +1,12 @@
 import 'package:cool_dropdown/enums/dropdown_item_render.dart';
-import 'package:cool_dropdown/models/cool_dropdown_item.dart';
+import 'package:cool_dropdown/models/one_dropdown_item.dart';
 import 'package:cool_dropdown/options/dropdown_item_options.dart';
 import 'package:cool_dropdown/utils/extension_util.dart';
 import 'package:cool_dropdown/widgets/marquee_widget.dart';
 import 'package:flutter/material.dart';
 
 class DropdownItemWidget extends StatefulWidget {
-  final CoolDropdownItem item;
+  final OneDropdownItem item;
   final DropdownItemOptions dropdownItemOptions;
   final BoxDecoration decoration;
   final double height;

@@ -2,7 +2,7 @@ import 'package:cool_dropdown/controllers/dropdown_calculator.dart';
 import 'package:cool_dropdown/controllers/dropdown_controller.dart';
 import 'package:cool_dropdown/customPaints/dropdown_shape_border.dart';
 import 'package:cool_dropdown/enums/dropdown_animation.dart';
-import 'package:cool_dropdown/models/cool_dropdown_item.dart';
+import 'package:cool_dropdown/models/one_dropdown_item.dart';
 import 'package:cool_dropdown/options/dropdown_item_options.dart';
 import 'package:cool_dropdown/options/dropdown_options.dart';
 import 'package:cool_dropdown/options/dropdown_triangle_options.dart';
@@ -17,13 +17,13 @@ class DropdownWidget<T> extends StatefulWidget {
   final DropdownController controller;
   final GlobalKey resultKey;
   final BuildContext bodyContext;
-  final List<CoolDropdownItem<T>> dropdownList;
+  final List<OneDropdownItem<T>> dropdownList;
   final Function(T t) onChange;
   final Function() onClose;
   final Function(String text) onChangedText;
   final SelectedItemCallback<T> selectedItemCallback;
-  final CoolDropdownItem<T>? selectedItem;
-  final CoolDropdownItem<T>? undefinedItem;
+  final OneDropdownItem<T>? selectedItem;
+  final OneDropdownItem<T>? undefinedItem;
 
   const DropdownWidget({
     Key? key,
@@ -79,7 +79,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
     super.dispose();
   }
 
-  void _setSelectedItem(CoolDropdownItem<T> item) {
+  void _setSelectedItem(OneDropdownItem<T> item) {
     widget.selectedItemCallback(item);
   }
 

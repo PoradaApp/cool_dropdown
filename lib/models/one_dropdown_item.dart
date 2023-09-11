@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CoolDropdownItem<T> {
+class OneDropdownItem<T> {
   final String label;
   final bool isSelected;
   final Widget? icon;
   final Widget? selectedIcon;
   final T value;
 
-  CoolDropdownItem({
+  OneDropdownItem({
     required this.label,
     this.isSelected = false,
     this.icon,
@@ -15,14 +15,14 @@ class CoolDropdownItem<T> {
     required this.value,
   });
 
-  CoolDropdownItem<T> copyWith({
+  OneDropdownItem<T> copyWith({
     String? label,
     bool? isSelected,
     Widget? icon,
     Widget? selectedIcon,
     T? value,
   }) {
-    return CoolDropdownItem<T>(
+    return OneDropdownItem<T>(
       label: label ?? this.label,
       isSelected: isSelected ?? this.isSelected,
       icon: icon ?? this.icon,
@@ -40,7 +40,7 @@ class CoolDropdownItem<T> {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is CoolDropdownItem<T> &&
+    return other is OneDropdownItem<T> &&
         other.label == label &&
         other.isSelected == isSelected &&
         other.icon == icon &&

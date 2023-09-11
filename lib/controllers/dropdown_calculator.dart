@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:cool_dropdown/enums/dropdown_align.dart';
 import 'package:cool_dropdown/enums/dropdown_triangle_align.dart';
 import 'package:cool_dropdown/enums/selected_item_align.dart';
-import 'package:cool_dropdown/models/cool_dropdown_item.dart';
+import 'package:cool_dropdown/models/one_dropdown_item.dart';
 import 'package:cool_dropdown/options/dropdown_item_options.dart';
 import 'package:cool_dropdown/options/dropdown_options.dart';
 import 'package:cool_dropdown/options/dropdown_triangle_options.dart';
 import 'package:flutter/widgets.dart';
 
 class DropdownCalculator<T> {
-  final List<CoolDropdownItem<T>> dropdownList;
+  final List<OneDropdownItem<T>> dropdownList;
   final BuildContext bodyContext;
   final GlobalKey resultKey;
   final DropdownOptions dropdownOptions;

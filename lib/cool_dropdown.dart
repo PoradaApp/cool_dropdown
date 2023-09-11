@@ -1,7 +1,7 @@
 library cool_dropdown;
 
 import 'package:cool_dropdown/controllers/dropdown_controller.dart';
-import 'package:cool_dropdown/models/cool_dropdown_item.dart';
+import 'package:cool_dropdown/models/one_dropdown_item.dart';
 import 'package:cool_dropdown/options/dropdown_item_options.dart';
 import 'package:cool_dropdown/options/dropdown_options.dart';
 import 'package:cool_dropdown/options/dropdown_triangle_options.dart';
@@ -24,9 +24,9 @@ export 'package:cool_dropdown/options/dropdown_triangle_options.dart';
 export 'package:cool_dropdown/options/result_options.dart';
 
 class CoolDropdown<T> extends StatelessWidget {
-  final List<CoolDropdownItem<T>> dropdownList;
-  final CoolDropdownItem<T>? defaultItem;
-  final CoolDropdownItem<T>? undefinedItem;
+  final List<OneDropdownItem<T>> dropdownList;
+  final OneDropdownItem<T>? defaultItem;
+  final OneDropdownItem<T>? undefinedItem;
   final ResultOptions resultOptions;
   final DropdownOptions dropdownOptions;
   final DropdownItemOptions dropdownItemOptions;

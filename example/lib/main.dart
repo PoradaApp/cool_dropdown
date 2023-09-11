@@ -1,5 +1,5 @@
 import 'package:cool_dropdown/cool_dropdown.dart';
-import 'package:cool_dropdown/models/cool_dropdown_item.dart';
+import 'package:cool_dropdown/models/one_dropdown_item.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,7 +11,7 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-List<CoolDropdownItem<String>> dropdownItemList = [];
+List<OneDropdownItem<String>> dropdownItemList = [];
 
 List<String> pokemons = ['pikachu', 'charmander', 'squirtle', 'bullbasaur', 'snorlax', 'mankey', 'psyduck', 'meowth'];
 List<String> fruits = [
@@ -27,8 +27,8 @@ List<String> fruits = [
 ];
 
 class _MyAppState extends State<MyApp> {
-  List<CoolDropdownItem<String>> pokemonDropdownItems = [];
-  List<CoolDropdownItem<String>> fruitDropdownItems = [];
+  List<OneDropdownItem<String>> pokemonDropdownItems = [];
+  List<OneDropdownItem<String>> fruitDropdownItems = [];
   final _formKey = GlobalKey<FormState>();
   final fruitDropdownController = DropdownController();
   final pokemonDropdownController = DropdownController();
@@ -38,7 +38,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     for (var i = 0; i < pokemons.length; i++) {
       pokemonDropdownItems.add(
-        CoolDropdownItem<String>(
+        OneDropdownItem<String>(
             label: '${pokemons[i]}',
             icon: Container(
               height: 25,
@@ -129,7 +129,7 @@ class _MyAppState extends State<MyApp> {
                     hintText: 'Select language',
                     onOpen: (value) {},
                     isMarquee: false,
-                    undefinedItem: CoolDropdownItem(label: 'Create with this name', value: 'test'),
+                    undefinedItem: OneDropdownItem(label: 'Create with this name', value: 'test'),
                     onValidate: (value) {
                       if (value == null) return null;
                       if (value.isEmpty) return 'gfdgdf';

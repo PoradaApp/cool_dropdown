@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:cool_dropdown/controllers/dropdown_controller.dart';
 import 'package:cool_dropdown/enums/result_render.dart';
-import 'package:cool_dropdown/models/cool_dropdown_item.dart';
+import 'package:cool_dropdown/models/one_dropdown_item.dart';
 import 'package:cool_dropdown/options/dropdown_item_options.dart';
 import 'package:cool_dropdown/options/dropdown_options.dart';
 import 'package:cool_dropdown/options/dropdown_triangle_options.dart';
@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ResultWidget<T> extends StatefulWidget {
-  final List<CoolDropdownItem<T>> dropdownList;
+  final List<OneDropdownItem<T>> dropdownList;
   final ResultOptions resultOptions;
   final DropdownOptions dropdownOptions;
   final DropdownItemOptions dropdownItemOptions;
@@ -26,9 +26,9 @@ class ResultWidget<T> extends StatefulWidget {
   final bool hasInputField;
   final Function(String value)? onTextEditing;
   final List<TextInputFormatter>? inputFormatters;
-  final CoolDropdownItem<T>? defaultItem;
+  final OneDropdownItem<T>? defaultItem;
   final String? hintText;
-  final CoolDropdownItem<T>? undefinedItem;
+  final OneDropdownItem<T>? undefinedItem;
   final InputDecoration? inputDecoration;
   final String? Function(String? value)? onValidate;
 
@@ -61,7 +61,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
   late final TextEditingController _textController;
 
   final resultKey = GlobalKey();
-  CoolDropdownItem<T>? selectedItem;
+  OneDropdownItem<T>? selectedItem;
 
   bool _isError = false;
 
@@ -121,7 +121,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
     );
   }
 
-  void _setSelectedItem(CoolDropdownItem<T> item) {
+  void _setSelectedItem(OneDropdownItem<T> item) {
     setState(() {
       selectedItem = item;
     });
@@ -253,7 +253,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                                     Material(
                                       color: widget.resultOptions.backgroundIconColor ?? Colors.transparent,
                                       child: ClipRRect(
-                                        borderRadius: widget.resultOptions.iconRadius,
+                                        borderRadius: widget.resultOptions.iconRadius ?? BorderRadius.zero,
                                         child: Container(
                                           height: widget.resultOptions.height,
                                           width: 48,
