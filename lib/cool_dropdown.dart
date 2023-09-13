@@ -27,6 +27,7 @@ class CoolDropdown<T> extends StatelessWidget {
   final List<OneDropdownItem<T>> dropdownList;
   final OneDropdownItem<T>? defaultItem;
   final OneDropdownItem<T>? undefinedItem;
+  final OneDropdownItem<T>? emptyItem;
   final ResultOptions resultOptions;
   final DropdownOptions dropdownOptions;
   final DropdownItemOptions dropdownItemOptions;
@@ -65,6 +66,7 @@ class CoolDropdown<T> extends StatelessWidget {
     this.onValidate,
     this.onClose,
     this.textController,
+    this.emptyItem,
   }) : super(key: key) {
     assert(!hasInputField || textController != null, 'textController must be provided when hasInputField is true');
   }
@@ -88,6 +90,7 @@ class CoolDropdown<T> extends StatelessWidget {
       undefinedItem: undefinedItem,
       inputDecoration: inputDecoration,
       onValidate: onValidate,
+      emptyItem: emptyItem,
       onClose: onClose ?? () {},
     );
   }
