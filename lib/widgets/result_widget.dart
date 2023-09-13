@@ -24,11 +24,12 @@ class ResultWidget<T> extends StatefulWidget {
   final Function() onClose;
   final Function(bool)? onOpen;
   final bool hasInputField;
-  final Function(String value)? onTextEditing;
+  final TextEditingController? textController;
   final List<TextInputFormatter>? inputFormatters;
   final OneDropdownItem<T>? defaultItem;
   final String? hintText;
   final OneDropdownItem<T>? undefinedItem;
+  final OneDropdownItem<T>? emptyItem;
   final InputDecoration? inputDecoration;
   final String? Function(String? value)? onValidate;
 
@@ -43,14 +44,15 @@ class ResultWidget<T> extends StatefulWidget {
     required this.onChange,
     required this.onClose,
     this.hasInputField = false,
+    this.textController,
     this.onOpen,
     this.defaultItem,
-    this.onTextEditing,
     this.inputFormatters,
     this.hintText,
     this.undefinedItem,
     this.inputDecoration,
     this.onValidate,
+    this.emptyItem,
   }) : super(key: key);
 
   @override
@@ -58,8 +60,6 @@ class ResultWidget<T> extends StatefulWidget {
 }
 
 class _ResultWidgetState<T> extends State<ResultWidget<T>> {
-  late final TextEditingController _textController;
-
   final resultKey = GlobalKey();
   OneDropdownItem<T>? selectedItem;
 
@@ -75,10 +75,9 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
     if (widget.defaultItem != null) {
       _setSelectedItem(widget.defaultItem!);
     }
-    if (widget.hasInputField) {
-      _textController = TextEditingController();
+    if (widget.hasInputField && widget.textController != null) {
       if (widget.defaultItem != null) {
-        _textController.text = widget.defaultItem!.label;
+        widget.textController!.text = widget.defaultItem!.label;
       }
     }
     widget.controller.setFunctions(onError, widget.onOpen, open, _setSelectedItem);
@@ -102,12 +101,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
         dropdownItemOptions: widget.dropdownItemOptions,
         dropdownTriangleOptions: widget.dropdownArrowOptions,
         resultKey: resultKey,
-        onChangedText: (value) {
-          if (widget.hasInputField) {
-            _textController.text = value;
-            setState(() {});
-          }
-        },
+        textController: widget.textController,
         onChange: (value) {
           widget.onChange(value);
         },
@@ -117,6 +111,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
         bodyContext: context,
         undefinedItem: widget.undefinedItem,
         onClose: widget.onClose,
+        emptyItem: widget.emptyItem,
       ),
     );
   }
@@ -166,11 +161,10 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
           child: Center(
             child: TextFormField(
               onTap: () {
-                _textController.clear();
+                widget.textController?.clear();
                 setState(() {});
               },
               onChanged: (value) {
-                widget.onTextEditing?.call(value);
                 if (value.isEmpty) {
                   widget.controller.removeOverlay();
                 }
@@ -181,7 +175,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
               keyboardType: TextInputType.text,
               style: widget.resultOptions.inputTextField,
               cursorColor: widget.resultOptions.cursorColor ?? Colors.white,
-              controller: _textController,
+              controller: widget.textController,
               decoration: widget.inputDecoration ??
                   InputDecoration(
                     border: InputBorder.none,

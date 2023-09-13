@@ -47,6 +47,8 @@ class DropdownOptions {
 
   final BoxDecoration? undefinedDecoration;
 
+  final BoxDecoration? emptyDecoration;
+
   final Color? splashColor;
 
   const DropdownOptions({
@@ -75,6 +77,7 @@ class DropdownOptions {
     this.duration = const Duration(milliseconds: 300),
     this.curve = Curves.easeInOut,
     this.undefinedDecoration,
+    this.emptyDecoration,
   });
 
   /// The max blur radius plus max spread radius of the dropdown.

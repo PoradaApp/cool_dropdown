@@ -36,6 +36,7 @@ class CoolDropdown<T> extends StatelessWidget {
   final Function()? onClose;
   final Function(bool)? onOpen;
   final bool hasInputField;
+  final TextEditingController? textController;
   final bool isMarquee;
   final Function(String value)? onTextEditing;
   final List<TextInputFormatter>? inputFormatters;
@@ -63,7 +64,10 @@ class CoolDropdown<T> extends StatelessWidget {
     this.inputDecoration,
     this.onValidate,
     this.onClose,
-  }) : super(key: key);
+    this.textController,
+  }) : super(key: key) {
+    assert(!hasInputField || textController != null, 'textController must be provided when hasInputField is true');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +82,7 @@ class CoolDropdown<T> extends StatelessWidget {
       onOpen: onOpen,
       defaultItem: defaultItem,
       hasInputField: hasInputField,
-      onTextEditing: onTextEditing,
+      textController: textController,
       inputFormatters: inputFormatters,
       hintText: hintText,
       undefinedItem: undefinedItem,
