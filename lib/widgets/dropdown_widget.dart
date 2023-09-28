@@ -62,9 +62,8 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
       dropdownItemOptions: widget.dropdownItemOptions,
       dropdownList: widget.dropdownList,
     );
-
     dropdownOffset = _dropdownCalculator.setOffset();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       final currentIndex = widget.dropdownList.indexWhere((dropdownItem) => dropdownItem == widget.selectedItem);
       if (currentIndex < 0) return;
       if (widget.selectedItem != null) {
@@ -128,10 +127,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                 margin: widget.dropdownOptions.marginGap,
                 clipBehavior: Clip.antiAlias,
                 width: _dropdownCalculator.dropdownWidth,
-                height: (_dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width) <=
-                        widget.dropdownItemOptions.height
-                    ? widget.dropdownItemOptions.height
-                    : _dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width,
+                height: widget.dropdownList.isNotEmpty ? limitToMax(widget.dropdownList.length, 8) * 52 : 52,
                 padding: EdgeInsets.all(widget.dropdownOptions.borderSide.width * 0.5),
                 decoration: ShapeDecoration(
                   //color: widget.dropdownOptions.color,
@@ -144,13 +140,20 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                     isTriangleDown: _dropdownCalculator.isArrowDown,
                   ),
                 ),
-                child: _buildItems(),
+                child: Container(child: _buildItems()),
               ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  int limitToMax(int number, int max) {
+    if (number > max) {
+      return max;
+    }
+    return number;
   }
 
   Widget _buildItems() {
@@ -161,6 +164,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
         child: ListView.builder(
           controller: _dropdownCalculator.scrollController,
           padding: EdgeInsets.zero,
+          shrinkWrap: true,
           itemCount: widget.dropdownList.length,
           itemBuilder: (_, index) => InkWell(
             borderRadius: widget.dropdownOptions.splashRadius,
@@ -169,7 +173,6 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
             hoverColor: widget.dropdownOptions.splashColor,
             splashColor: widget.dropdownOptions.splashColor,
             onTap: () {
-              // widget.onChangedText.call(widget.dropdownList[index].label);
               if (widget.textController != null) {
                 widget.textController!.text = widget.dropdownList[index].label;
               }
@@ -177,6 +180,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
               _setSelectedItem(widget.dropdownList[index]);
             },
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 DropdownItemWidget(
                   item: widget.dropdownList[index],
@@ -197,20 +201,22 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
       return Material(
         color: widget.dropdownOptions.color,
         borderRadius: widget.dropdownOptions.borderRadius,
-        child: InkWell(
-          borderRadius: widget.dropdownOptions.splashRadius,
-          highlightColor: widget.dropdownOptions.splashColor,
-          focusColor: widget.dropdownOptions.splashColor,
-          hoverColor: widget.dropdownOptions.splashColor,
-          splashColor: widget.dropdownOptions.splashColor,
-          onTap: () {
-            widget.controller.close();
-          },
-          child: DropdownItemWidget(
-            item: widget.emptyItem!,
-            dropdownItemOptions: widget.dropdownItemOptions,
-            decoration: widget.dropdownOptions.emptyDecoration ?? BoxDecoration(),
-            height: widget.dropdownItemOptions.height,
+        child: Container(
+          child: InkWell(
+            borderRadius: widget.dropdownOptions.splashRadius,
+            highlightColor: widget.dropdownOptions.splashColor,
+            focusColor: widget.dropdownOptions.splashColor,
+            hoverColor: widget.dropdownOptions.splashColor,
+            splashColor: widget.dropdownOptions.splashColor,
+            onTap: () {
+              widget.controller.close();
+            },
+            child: DropdownItemWidget(
+              item: widget.emptyItem!,
+              dropdownItemOptions: widget.dropdownItemOptions,
+              decoration: widget.dropdownOptions.emptyDecoration ?? BoxDecoration(),
+              height: 52,
+            ),
           ),
         ),
       );
@@ -218,20 +224,22 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
       return Material(
         color: widget.dropdownOptions.color,
         borderRadius: widget.dropdownOptions.borderRadius,
-        child: InkWell(
-          borderRadius: widget.dropdownOptions.splashRadius,
-          highlightColor: widget.dropdownOptions.splashColor,
-          focusColor: widget.dropdownOptions.splashColor,
-          hoverColor: widget.dropdownOptions.splashColor,
-          splashColor: widget.dropdownOptions.splashColor,
-          onTap: () {
-            widget.controller.close();
-          },
-          child: DropdownItemWidget(
-            item: widget.undefinedItem!,
-            dropdownItemOptions: widget.dropdownItemOptions,
-            decoration: widget.dropdownOptions.undefinedDecoration ?? BoxDecoration(),
-            height: widget.dropdownItemOptions.height,
+        child: Container(
+          child: InkWell(
+            borderRadius: widget.dropdownOptions.splashRadius,
+            highlightColor: widget.dropdownOptions.splashColor,
+            focusColor: widget.dropdownOptions.splashColor,
+            hoverColor: widget.dropdownOptions.splashColor,
+            splashColor: widget.dropdownOptions.splashColor,
+            onTap: () {
+              widget.controller.close();
+            },
+            child: DropdownItemWidget(
+              item: widget.undefinedItem!,
+              dropdownItemOptions: widget.dropdownItemOptions,
+              decoration: widget.dropdownOptions.undefinedDecoration ?? BoxDecoration(),
+              height: 52,
+            ),
           ),
         ),
       );

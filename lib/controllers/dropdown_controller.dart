@@ -116,7 +116,7 @@ class DropdownController implements TickerProvider {
     }
     _overlayEntry = OverlayEntry(builder: (_) => child);
     if (_overlayEntry == null) return;
-    Overlay.of(context).insert(_overlayEntry!);
+    Overlay.of(context, rootOverlay: true).insert(_overlayEntry!);
 
     _isOpen = true;
     onOpen?.call(true);
