@@ -35,7 +35,7 @@ class CoolDropdown<T> extends StatelessWidget {
   final DropdownController controller;
   final Function(T) onChange;
   final Function()? onClose;
-  final Function(bool)? onOpen;
+  final Function()? onOpen;
   final bool hasInputField;
   final TextEditingController? textController;
   final bool isMarquee;

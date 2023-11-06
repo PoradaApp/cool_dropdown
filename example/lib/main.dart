@@ -94,7 +94,6 @@ class _MyAppState extends State<MyApp> {
                 } else {
                   await fruitDropdownController.error();
                 }
-                fruitDropdownController.open();
               },
               label: Text('Error'),
             ),
@@ -127,7 +126,6 @@ class _MyAppState extends State<MyApp> {
                     hasInputField: true,
                     onChange: (value) async {},
                     hintText: 'Select language',
-                    onOpen: (value) {},
                     isMarquee: false,
                     undefinedItem: OneDropdownItem(label: 'Create with this name', value: 'test'),
                     onValidate: (value) {

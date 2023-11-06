@@ -130,7 +130,6 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                 height: widget.dropdownList.isNotEmpty ? limitToMax(widget.dropdownList.length, 8) * 52 : 52,
                 padding: EdgeInsets.all(widget.dropdownOptions.borderSide.width * 0.5),
                 decoration: ShapeDecoration(
-                  //color: widget.dropdownOptions.color,
                   shadows: widget.dropdownOptions.shadows,
                   shape: DropdownShapeBorder(
                     triangle: widget.dropdownTriangleOptions,

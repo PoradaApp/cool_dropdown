@@ -22,7 +22,7 @@ class ResultWidget<T> extends StatefulWidget {
   final DropdownController controller;
   final Function(T t) onChange;
   final Function() onClose;
-  final Function(bool)? onOpen;
+  final Function()? onOpen;
   final bool hasInputField;
   final TextEditingController? textController;
   final List<TextInputFormatter>? inputFormatters;
@@ -80,7 +80,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
         widget.textController!.text = widget.defaultItem!.label;
       }
     }
-    widget.controller.setFunctions(onError, widget.onOpen, open, _setSelectedItem);
+    widget.controller.setFunctions(onError, _setSelectedItem);
     widget.controller.setResultOptions(widget.resultOptions);
 
     super.initState();
@@ -93,6 +93,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
   }
 
   void open() {
+    widget.onOpen?.call();
     widget.controller.show(
       context: context,
       child: DropdownWidget<T>(
@@ -161,6 +162,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
           child: Center(
             child: TextFormField(
               onTap: () {
+                widget.onOpen?.call();
                 widget.textController?.clear();
                 setState(() {});
               },
@@ -195,11 +197,11 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
   }
 
   Widget _buildMarquee(Widget child) {
-    return widget.resultOptions.isMarquee
-        ? MarqueeWidget(
-            child: child,
-          )
-        : child;
+    if (widget.resultOptions.isMarquee) {
+      return MarqueeWidget(child: child);
+    } else {
+      return child;
+    }
   }
 
   @override
@@ -207,67 +209,68 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
     return GestureDetector(
       onTap: () => open(),
       child: AnimatedBuilder(
-          animation: Listenable.merge([widget.controller.controller, widget.controller.errorController]),
-          builder: (_, __) {
-            return Container(
-              width: widget.resultOptions.width,
-              child: Stack(
-                children: [
-                  if (widget.hasInputField) _buildInputFieldItem(),
-                  Container(
-                    key: resultKey,
-                    height: widget.hasInputField ? null : widget.resultOptions.height,
-                    decoration: widget.hasInputField
-                        ? null
-                        : (_isError ? widget.controller.errorDecoration.value : _decorationBoxTween.value),
-                    child: Align(
-                      alignment: widget.resultOptions.alignment,
-                      child: widget.resultOptions.render != ResultRender.none
-                          ? Padding(
-                              padding: widget.resultOptions.padding,
-                              child: Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  verticalDirection: VerticalDirection.down,
-                                  children: [
-                                    Expanded(
-                                      child: AnimatedSwitcher(
-                                        duration: widget.resultOptions.duration,
-                                        transitionBuilder: (child, animation) {
-                                          return SizeTransition(
-                                            sizeFactor: animation,
-                                            axisAlignment: 1,
-                                            child: child,
-                                          );
-                                        },
-                                        child: widget.hasInputField ? Container() : _buildResultItem(),
-                                      ),
+        animation: Listenable.merge([widget.controller.controller, widget.controller.errorController]),
+        builder: (_, __) {
+          return Container(
+            width: widget.resultOptions.width,
+            child: Stack(
+              children: [
+                if (widget.hasInputField) _buildInputFieldItem(),
+                Container(
+                  key: resultKey,
+                  height: widget.hasInputField ? null : widget.resultOptions.height,
+                  decoration: widget.hasInputField
+                      ? null
+                      : (_isError ? widget.controller.errorDecoration.value : _decorationBoxTween.value),
+                  child: Align(
+                    alignment: widget.resultOptions.alignment,
+                    child: widget.resultOptions.render != ResultRender.none
+                        ? Padding(
+                            padding: widget.resultOptions.padding,
+                            child: Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                verticalDirection: VerticalDirection.down,
+                                children: [
+                                  Expanded(
+                                    child: AnimatedSwitcher(
+                                      duration: widget.resultOptions.duration,
+                                      transitionBuilder: (child, animation) {
+                                        return SizeTransition(
+                                          sizeFactor: animation,
+                                          axisAlignment: 1,
+                                          child: child,
+                                        );
+                                      },
+                                      child: widget.hasInputField ? Container() : _buildResultItem(),
                                     ),
-                                    SizedBox(width: widget.resultOptions.space),
-                                    Material(
-                                      color: widget.resultOptions.backgroundIconColor ?? Colors.transparent,
-                                      child: ClipRRect(
-                                        borderRadius: widget.resultOptions.iconRadius ?? BorderRadius.zero,
-                                        child: Container(
-                                          height: widget.resultOptions.height,
-                                          width: 48,
-                                          child: Center(
-                                            child: _buildArrow(),
-                                          ),
+                                  ),
+                                  SizedBox(width: widget.resultOptions.space),
+                                  Material(
+                                    color: widget.resultOptions.backgroundIconColor ?? Colors.transparent,
+                                    child: ClipRRect(
+                                      borderRadius: widget.resultOptions.iconRadius ?? BorderRadius.zero,
+                                      child: Container(
+                                        height: widget.resultOptions.height,
+                                        width: 48,
+                                        child: Center(
+                                          child: _buildArrow(),
                                         ),
                                       ),
                                     ),
-                                  ].isReverse(widget.resultOptions.render == ResultRender.reverse),
-                                ),
+                                  ),
+                                ].isReverse(widget.resultOptions.render == ResultRender.reverse),
                               ),
-                            )
-                          : _buildArrow(),
-                    ),
+                            ),
+                          )
+                        : _buildArrow(),
                   ),
-                ],
-              ),
-            );
-          }),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
