@@ -80,7 +80,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
         widget.textController!.text = widget.defaultItem!.label;
       }
     }
-    widget.controller.setFunctions(onError, _setSelectedItem);
+    widget.controller.setFunctions(onError, open, _setSelectedItem);
     widget.controller.setResultOptions(widget.resultOptions);
 
     super.initState();
