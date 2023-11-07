@@ -25,6 +25,8 @@ class DropdownWidget<T> extends StatefulWidget {
   final OneDropdownItem<T>? selectedItem;
   final OneDropdownItem<T>? undefinedItem;
   final OneDropdownItem<T>? emptyItem;
+  final int maxExpandedItemsCount;
+  final double maxExpandedHeight;
 
   const DropdownWidget({
     Key? key,
@@ -42,6 +44,8 @@ class DropdownWidget<T> extends StatefulWidget {
     required this.undefinedItem,
     required this.onClose,
     required this.emptyItem,
+    required this.maxExpandedItemsCount,
+    required this.maxExpandedHeight,
   }) : super(key: key);
 
   @override
@@ -127,7 +131,9 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                 margin: widget.dropdownOptions.marginGap,
                 clipBehavior: Clip.antiAlias,
                 width: _dropdownCalculator.dropdownWidth,
-                height: widget.dropdownList.isNotEmpty ? limitToMax(widget.dropdownList.length, 8) * 52 : 52,
+                height: widget.dropdownList.isNotEmpty
+                    ? limitToMax(widget.dropdownList.length, widget.maxExpandedItemsCount) * widget.maxExpandedHeight
+                    : widget.maxExpandedHeight,
                 padding: EdgeInsets.all(widget.dropdownOptions.borderSide.width * 0.5),
                 decoration: ShapeDecoration(
                   shadows: widget.dropdownOptions.shadows,
@@ -214,7 +220,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
               item: widget.emptyItem!,
               dropdownItemOptions: widget.dropdownItemOptions,
               decoration: widget.dropdownOptions.emptyDecoration ?? BoxDecoration(),
-              height: 52,
+              height: widget.maxExpandedHeight,
             ),
           ),
         ),
@@ -238,7 +244,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
               item: widget.undefinedItem!,
               dropdownItemOptions: widget.dropdownItemOptions,
               decoration: widget.dropdownOptions.undefinedDecoration ?? BoxDecoration(),
-              height: 52,
+              height: widget.maxExpandedHeight,
             ),
           ),
         ),

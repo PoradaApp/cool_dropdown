@@ -32,6 +32,8 @@ class ResultWidget<T> extends StatefulWidget {
   final OneDropdownItem<T>? emptyItem;
   final InputDecoration? inputDecoration;
   final String? Function(String? value)? onValidate;
+  final int maxExpandedItemsCount;
+  final double maxExpandedHeight;
 
   const ResultWidget({
     Key? key,
@@ -43,6 +45,8 @@ class ResultWidget<T> extends StatefulWidget {
     required this.controller,
     required this.onChange,
     required this.onClose,
+    required this.maxExpandedItemsCount,
+    required this.maxExpandedHeight,
     this.hasInputField = false,
     this.textController,
     this.onOpen,
@@ -112,6 +116,8 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
         undefinedItem: widget.undefinedItem,
         onClose: widget.onClose,
         emptyItem: widget.emptyItem,
+        maxExpandedHeight: widget.maxExpandedHeight,
+        maxExpandedItemsCount: widget.maxExpandedItemsCount,
       ),
     );
   }

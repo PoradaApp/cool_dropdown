@@ -43,6 +43,8 @@ class CoolDropdown<T> extends StatelessWidget {
   final InputDecoration? inputDecoration;
   final String? hintText;
   final String? Function(String? value)? onValidate;
+  final int maxExpandedItemsCount;
+  final double maxExpandedHeight;
 
   CoolDropdown({
     Key? key,
@@ -65,6 +67,8 @@ class CoolDropdown<T> extends StatelessWidget {
     this.onClose,
     this.textController,
     this.emptyItem,
+    this.maxExpandedItemsCount = 8,
+    this.maxExpandedHeight = 52,
   }) : super(key: key) {
     assert(!hasInputField || textController != null, 'textController must be provided when hasInputField is true');
   }
@@ -90,6 +94,8 @@ class CoolDropdown<T> extends StatelessWidget {
       onValidate: onValidate,
       emptyItem: emptyItem,
       onClose: onClose ?? () {},
+      maxExpandedItemsCount: maxExpandedItemsCount,
+      maxExpandedHeight: maxExpandedHeight,
     );
   }
 }
