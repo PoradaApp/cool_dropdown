@@ -6,6 +6,7 @@ class OneDropdownItem<T> {
   final Widget? icon;
   final Widget? selectedIcon;
   final T value;
+  final Function()? onTap;
 
   OneDropdownItem({
     required this.label,
@@ -13,6 +14,7 @@ class OneDropdownItem<T> {
     this.icon,
     this.selectedIcon,
     required this.value,
+    this.onTap,
   });
 
   OneDropdownItem<T> copyWith({
@@ -21,6 +23,7 @@ class OneDropdownItem<T> {
     Widget? icon,
     Widget? selectedIcon,
     T? value,
+    Function()? onTap,
   }) {
     return OneDropdownItem<T>(
       label: label ?? this.label,
@@ -28,6 +31,7 @@ class OneDropdownItem<T> {
       icon: icon ?? this.icon,
       selectedIcon: selectedIcon ?? this.selectedIcon,
       value: value ?? this.value,
+      onTap: onTap ?? this.onTap,
     );
   }
 
@@ -45,11 +49,17 @@ class OneDropdownItem<T> {
         other.isSelected == isSelected &&
         other.icon == icon &&
         other.selectedIcon == selectedIcon &&
-        other.value == value;
+        other.value == value &&
+        other.onTap == onTap;
   }
 
   @override
   int get hashCode {
-    return label.hashCode ^ isSelected.hashCode ^ icon.hashCode ^ selectedIcon.hashCode ^ value.hashCode;
+    return label.hashCode ^
+        isSelected.hashCode ^
+        icon.hashCode ^
+        selectedIcon.hashCode ^
+        value.hashCode ^
+        onTap.hashCode;
   }
 }
