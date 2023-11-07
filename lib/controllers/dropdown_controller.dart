@@ -167,7 +167,6 @@ class DropdownController implements TickerProvider {
 
   void setFunctions(Function errorFunction, Function openFunction, Function resetFunction) {
     _onError = errorFunction;
-
     _openFunction = openFunction;
     _resetFunction = resetFunction;
   }

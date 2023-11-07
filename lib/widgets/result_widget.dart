@@ -93,7 +93,6 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
   }
 
   void open() {
-    widget.onOpen?.call();
     widget.controller.show(
       context: context,
       child: DropdownWidget<T>(
@@ -162,7 +161,6 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
           child: Center(
             child: TextFormField(
               onTap: () {
-                widget.onOpen?.call();
                 widget.textController?.clear();
                 setState(() {});
               },
@@ -207,7 +205,10 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => open(),
+      onTap: () {
+        widget.onOpen?.call();
+        open();
+      },
       child: AnimatedBuilder(
         animation: Listenable.merge([widget.controller.controller, widget.controller.errorController]),
         builder: (_, __) {
