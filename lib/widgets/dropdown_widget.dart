@@ -232,6 +232,7 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
             splashColor: widget.dropdownOptions.splashColor,
             onTap: () {
               widget.controller.close();
+              widget.undefinedItem!.onTap?.call();
             },
             child: DropdownItemWidget(
               item: widget.undefinedItem!,
