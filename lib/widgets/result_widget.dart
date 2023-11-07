@@ -206,8 +206,11 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.onOpen?.call();
-        open();
+        if (widget.onOpen != null) {
+          widget.onOpen!();
+        } else {
+          open();
+        }
       },
       child: AnimatedBuilder(
         animation: Listenable.merge([widget.controller.controller, widget.controller.errorController]),
