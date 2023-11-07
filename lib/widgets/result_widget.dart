@@ -80,7 +80,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
         widget.textController!.text = widget.defaultItem!.label;
       }
     }
-    widget.controller.setFunctions(onError, open, _setSelectedItem);
+    widget.controller.setFunctions(onError, widget.onOpen, openDropdown, _setSelectedItem);
     widget.controller.setResultOptions(widget.resultOptions);
 
     super.initState();
@@ -92,7 +92,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
     });
   }
 
-  void open() {
+  void openDropdown() {
     widget.controller.show(
       context: context,
       child: DropdownWidget<T>(
@@ -206,11 +206,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (widget.onOpen != null) {
-          widget.onOpen!();
-        } else {
-          open();
-        }
+        openDropdown();
       },
       child: AnimatedBuilder(
         animation: Listenable.merge([widget.controller.controller, widget.controller.errorController]),

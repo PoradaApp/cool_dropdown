@@ -36,13 +36,13 @@ class DropdownController implements TickerProvider {
   Function? _onError;
   Function? get onError => _onError;
 
-  Function? _openFunction;
-  Function? get openFunction => _openFunction;
+  Function? _openDropdown;
+  Function? get openFunction => _openDropdown;
 
   Function? _resetFunction;
   Function? get resetFunction => _resetFunction;
 
-  Function(bool)? onOpen;
+  Function()? _onOpenCallback;
 
   bool _isError = false;
   bool get isError => _isError;
@@ -119,8 +119,7 @@ class DropdownController implements TickerProvider {
     Overlay.of(context, rootOverlay: true).insert(_overlayEntry!);
 
     _isOpen = true;
-    onOpen?.call(true);
-
+    _onOpenCallback?.call();
     _controller.forward();
   }
 
@@ -140,7 +139,6 @@ class DropdownController implements TickerProvider {
     removeOverlay();
 
     _isOpen = false;
-    onOpen?.call(false);
   }
 
   void resetValue() {
@@ -165,9 +163,15 @@ class DropdownController implements TickerProvider {
     _isError = false;
   }
 
-  void setFunctions(Function errorFunction, Function openFunction, Function resetFunction) {
+  void setFunctions(
+    Function errorFunction,
+    Function()? onOpenCallback,
+    Function openDropdownFunction,
+    Function resetFunction,
+  ) {
     _onError = errorFunction;
-    _openFunction = openFunction;
+    _onOpenCallback = onOpenCallback;
+    _openDropdown = openDropdownFunction;
     _resetFunction = resetFunction;
   }
 
