@@ -7,6 +7,7 @@ class OneDropdownItem<T> {
   final Widget? selectedIcon;
   final T value;
   final Function()? onTap;
+  final Widget? prefixIcon;
 
   OneDropdownItem({
     required this.label,
@@ -14,6 +15,7 @@ class OneDropdownItem<T> {
     this.icon,
     this.selectedIcon,
     required this.value,
+    this.prefixIcon,
     this.onTap,
   });
 
@@ -24,6 +26,7 @@ class OneDropdownItem<T> {
     Widget? selectedIcon,
     T? value,
     Function()? onTap,
+    Widget? prefixIcon,
   }) {
     return OneDropdownItem<T>(
       label: label ?? this.label,
@@ -32,12 +35,8 @@ class OneDropdownItem<T> {
       selectedIcon: selectedIcon ?? this.selectedIcon,
       value: value ?? this.value,
       onTap: onTap ?? this.onTap,
+      prefixIcon: prefixIcon ?? this.prefixIcon,
     );
-  }
-
-  @override
-  String toString() {
-    return 'CoolDropdownItem(label: $label, isSelected: $isSelected, icon: $icon, selectedIcon: $selectedIcon, value: $value)';
   }
 
   @override
@@ -50,7 +49,8 @@ class OneDropdownItem<T> {
         other.icon == icon &&
         other.selectedIcon == selectedIcon &&
         other.value == value &&
-        other.onTap == onTap;
+        other.onTap == onTap &&
+        other.prefixIcon == prefixIcon;
   }
 
   @override
@@ -60,6 +60,7 @@ class OneDropdownItem<T> {
         icon.hashCode ^
         selectedIcon.hashCode ^
         value.hashCode ^
-        onTap.hashCode;
+        onTap.hashCode ^
+        prefixIcon.hashCode;
   }
 }

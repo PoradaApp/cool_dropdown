@@ -4,6 +4,7 @@ import 'package:cool_dropdown/options/dropdown_item_options.dart';
 import 'package:cool_dropdown/utils/extension_util.dart';
 import 'package:cool_dropdown/widgets/marquee_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class DropdownItemWidget extends StatefulWidget {
   final OneDropdownItem item;
@@ -68,10 +69,17 @@ class _DropdownItemWidgetState extends State<DropdownItemWidget> with SingleTick
           widget.dropdownItemOptions.render == DropdownItemRender.reverse)
         Flexible(
           child: _buildLabel(
-            Text(
-              widget.item.label,
-              style: _textStyleTween.value,
-              overflow: widget.dropdownItemOptions.textOverflow,
+            Row(
+              children: [
+                if (widget.item.prefixIcon != null) ...[widget.item.prefixIcon!, SizedBox(width: 8)],
+                Flexible(
+                  child: Text(
+                    widget.item.label,
+                    style: _textStyleTween.value,
+                    overflow: widget.dropdownItemOptions.textOverflow,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
