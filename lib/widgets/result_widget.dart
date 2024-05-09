@@ -147,10 +147,13 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
         Row(
           children: [
             if (selectedItem?.prefixIcon != null) ...[selectedItem!.prefixIcon!, SizedBox(width: 8)],
-            Text(
-              selectedItem?.label ?? widget.resultOptions.placeholder ?? '',
-              overflow: widget.resultOptions.textOverflow,
-              style: selectedItem != null ? widget.resultOptions.textStyle : widget.resultOptions.placeholderTextStyle,
+            Flexible(
+              child: Text(
+                selectedItem?.label ?? widget.resultOptions.placeholder ?? '',
+                overflow: widget.resultOptions.textOverflow,
+                style:
+                    selectedItem != null ? widget.resultOptions.textStyle : widget.resultOptions.placeholderTextStyle,
+              ),
             ),
           ],
         ),
