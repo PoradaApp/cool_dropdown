@@ -146,7 +146,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
       return _buildMarquee(
         Row(
           children: [
-            if (selectedItem?.icon != null) ...[selectedItem!.icon!, SizedBox(width: 8)],
+            if (selectedItem?.prefixIcon != null) ...[selectedItem!.prefixIcon!, SizedBox(width: 8)],
             Text(
               selectedItem?.label ?? widget.resultOptions.placeholder ?? '',
               overflow: widget.resultOptions.textOverflow,
