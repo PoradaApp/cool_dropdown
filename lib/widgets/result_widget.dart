@@ -144,12 +144,15 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
         widget.resultOptions.render == ResultRender.label ||
         widget.resultOptions.render == ResultRender.reverse) {
       return _buildMarquee(
-        Container(
-          child: Text(
-            selectedItem?.label ?? widget.resultOptions.placeholder ?? '',
-            overflow: widget.resultOptions.textOverflow,
-            style: selectedItem != null ? widget.resultOptions.textStyle : widget.resultOptions.placeholderTextStyle,
-          ),
+        Row(
+          children: [
+            if (selectedItem?.icon != null) ...[selectedItem!.icon!, SizedBox(width: 8)],
+            Text(
+              selectedItem?.label ?? widget.resultOptions.placeholder ?? '',
+              overflow: widget.resultOptions.textOverflow,
+              style: selectedItem != null ? widget.resultOptions.textStyle : widget.resultOptions.placeholderTextStyle,
+            ),
+          ],
         ),
       );
     } else {
