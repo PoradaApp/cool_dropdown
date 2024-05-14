@@ -235,7 +235,13 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
             width: widget.resultOptions.width,
             child: Stack(
               children: [
-                if (widget.hasInputField) _buildInputFieldItem(),
+                if (widget.hasInputField)
+                  Row(
+                    children: [
+                      Expanded(child: _buildInputFieldItem()),
+                      SizedBox(width: 48),
+                    ],
+                  ),
                 Container(
                   key: resultKey,
                   height: widget.hasInputField ? null : widget.resultOptions.height,
