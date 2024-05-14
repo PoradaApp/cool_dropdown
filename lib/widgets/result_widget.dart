@@ -198,6 +198,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
               controller: widget.textController,
               decoration: widget.inputDecoration ??
                   InputDecoration(
+                    suffix: SizedBox(width: 48),
                     border: InputBorder.none,
                     focusColor: Colors.transparent,
                     hoverColor: Colors.transparent,
@@ -235,13 +236,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
             width: widget.resultOptions.width,
             child: Stack(
               children: [
-                if (widget.hasInputField)
-                  Row(
-                    children: [
-                      Expanded(child: _buildInputFieldItem()),
-                      SizedBox(width: 48),
-                    ],
-                  ),
+                if (widget.hasInputField) _buildInputFieldItem(),
                 Container(
                   key: resultKey,
                   height: widget.hasInputField ? null : widget.resultOptions.height,
