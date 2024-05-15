@@ -94,7 +94,9 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
   void didUpdateWidget(covariant ResultWidget<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.defaultItem != oldWidget.defaultItem) {
-      _setSelectedItem(widget.defaultItem!);
+      if (widget.defaultItem != null) {
+        _setSelectedItem(widget.defaultItem!);
+      }
     }
   }
 
