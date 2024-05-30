@@ -8,6 +8,7 @@ class OneDropdownItem<T> {
   final T value;
   final Function()? onTap;
   final Widget? prefixIcon;
+  final Function(BuildContext context)? builder;
 
   OneDropdownItem({
     required this.label,
@@ -17,6 +18,7 @@ class OneDropdownItem<T> {
     required this.value,
     this.prefixIcon,
     this.onTap,
+    this.builder,
   });
 
   OneDropdownItem<T> copyWith({
@@ -27,6 +29,7 @@ class OneDropdownItem<T> {
     T? value,
     Function()? onTap,
     Widget? prefixIcon,
+    Function(BuildContext context)? builder,
   }) {
     return OneDropdownItem<T>(
       label: label ?? this.label,
@@ -36,6 +39,7 @@ class OneDropdownItem<T> {
       value: value ?? this.value,
       onTap: onTap ?? this.onTap,
       prefixIcon: prefixIcon ?? this.prefixIcon,
+      builder: builder ?? this.builder,
     );
   }
 
@@ -50,6 +54,7 @@ class OneDropdownItem<T> {
         other.selectedIcon == selectedIcon &&
         other.value == value &&
         other.onTap == onTap &&
+        other.builder == builder &&
         other.prefixIcon == prefixIcon;
   }
 
@@ -61,6 +66,7 @@ class OneDropdownItem<T> {
         selectedIcon.hashCode ^
         value.hashCode ^
         onTap.hashCode ^
+        builder.hashCode ^
         prefixIcon.hashCode;
   }
 }

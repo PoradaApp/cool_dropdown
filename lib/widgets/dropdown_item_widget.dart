@@ -68,20 +68,22 @@ class _DropdownItemWidgetState extends State<DropdownItemWidget> with SingleTick
           widget.dropdownItemOptions.render == DropdownItemRender.label ||
           widget.dropdownItemOptions.render == DropdownItemRender.reverse)
         Flexible(
-          child: _buildLabel(
-            Row(
-              children: [
-                if (widget.item.prefixIcon != null) ...[widget.item.prefixIcon!, SizedBox(width: 8)],
-                Flexible(
-                  child: Text(
-                    widget.item.label,
-                    style: _textStyleTween.value,
-                    overflow: widget.dropdownItemOptions.textOverflow,
+          child: widget.item.builder != null
+              ? _buildLabel(child: widget.item.builder!(context))
+              : _buildLabel(
+                  child: Row(
+                    children: [
+                      if (widget.item.prefixIcon != null) ...[widget.item.prefixIcon!, SizedBox(width: 8)],
+                      Flexible(
+                        child: Text(
+                          widget.item.label,
+                          style: _textStyleTween.value,
+                          overflow: widget.dropdownItemOptions.textOverflow,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
         ),
 
       /// if you want to show icon in result widget
@@ -92,12 +94,14 @@ class _DropdownItemWidgetState extends State<DropdownItemWidget> with SingleTick
     ].isReverse(widget.dropdownItemOptions.render == DropdownItemRender.reverse);
   }
 
-  Widget _buildLabel(Widget child) {
-    return widget.dropdownItemOptions.isMarquee
-        ? MarqueeWidget(
-            child: child,
-          )
-        : child;
+  Widget _buildLabel({required Widget child}) {
+    if (widget.dropdownItemOptions.isMarquee) {
+      return MarqueeWidget(
+        child: child,
+      );
+    } else {
+      return child;
+    }
   }
 
   Widget _buildIcon() {

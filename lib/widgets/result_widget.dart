@@ -149,12 +149,19 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
         });
   }
 
+  Widget _buildCustomItem() {
+    return selectedItem?.builder?.call(context) ?? const SizedBox();
+  }
+
   Widget _buildResultItem() {
     if (widget.resultOptions.render == ResultRender.all ||
         widget.resultOptions.render == ResultRender.label ||
         widget.resultOptions.render == ResultRender.reverse) {
+      if (selectedItem?.builder != null) {
+        return _buildMarquee(child: _buildCustomItem());
+      }
       return _buildMarquee(
-        Row(
+        child: Row(
           children: [
             if (selectedItem?.prefixIcon != null) ...[selectedItem!.prefixIcon!, SizedBox(width: 8)],
             Flexible(
@@ -178,7 +185,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
         widget.resultOptions.render == ResultRender.label ||
         widget.resultOptions.render == ResultRender.reverse)
       return _buildMarquee(
-        Container(
+        child: Container(
           width: widget.resultOptions.width,
           child: Center(
             child: TextFormField(
@@ -217,7 +224,7 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
     }
   }
 
-  Widget _buildMarquee(Widget child) {
+  Widget _buildMarquee({required Widget child}) {
     if (widget.resultOptions.isMarquee) {
       return MarqueeWidget(child: child);
     } else {
