@@ -8,7 +8,7 @@ class OneDropdownItem<T> {
   final T value;
   final Function()? onTap;
   final Widget? prefixIcon;
-  final Function(BuildContext context)? builder;
+  final Widget Function(BuildContext context)? builder;
 
   OneDropdownItem({
     required this.label,
@@ -29,7 +29,7 @@ class OneDropdownItem<T> {
     T? value,
     Function()? onTap,
     Widget? prefixIcon,
-    Function(BuildContext context)? builder,
+    Widget Function(BuildContext context)? builder,
   }) {
     return OneDropdownItem<T>(
       label: label ?? this.label,
