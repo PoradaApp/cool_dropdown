@@ -280,11 +280,14 @@ class _ResultWidgetState<T> extends State<ResultWidget<T>> {
                                     color: widget.resultOptions.backgroundIconColor ?? Colors.transparent,
                                     child: ClipRRect(
                                       borderRadius: widget.resultOptions.iconRadius ?? BorderRadius.zero,
-                                      child: Container(
-                                        height: widget.resultOptions.height,
-                                        width: 48,
-                                        child: Center(
-                                          child: _buildArrow(),
+                                      child: Align(
+                                        alignment: Alignment.topCenter,
+                                        child: Container(
+                                          height: 48,
+                                          width: 48,
+                                          child: Align(
+                                            child: Center(child: _buildArrow()),
+                                          ),
                                         ),
                                       ),
                                     ),
