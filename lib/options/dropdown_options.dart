@@ -16,6 +16,8 @@ class DropdownOptions {
   /// The border radius of the dropdown.
   final BorderRadius borderRadius;
 
+  final BorderRadius? splashRadius;
+
   /// The border of the dropdown.
   final BorderSide borderSide;
 
@@ -43,7 +45,15 @@ class DropdownOptions {
   /// The curve of the dropdown scroll animation.
   final Curve curve;
 
+  final BoxDecoration? undefinedDecoration;
+
+  final BoxDecoration? emptyDecoration;
+
+  final Color? splashColor;
+
   const DropdownOptions({
+    this.splashColor,
+    this.splashRadius,
     this.width,
     this.height = 220,
     this.top = 0,
@@ -66,6 +76,8 @@ class DropdownOptions {
     this.padding = EdgeInsets.zero,
     this.duration = const Duration(milliseconds: 300),
     this.curve = Curves.easeInOut,
+    this.undefinedDecoration,
+    this.emptyDecoration,
   });
 
   /// The max blur radius plus max spread radius of the dropdown.
@@ -75,8 +87,7 @@ class DropdownOptions {
       final blurRadius = shadow.blurRadius;
       final spreadRadius = shadow.spreadRadius;
       final offset = shadow.offset;
-      final maxBlurRadiusPlusMaxSpreadRadius =
-          blurRadius + spreadRadius + offset.distance;
+      final maxBlurRadiusPlusMaxSpreadRadius = blurRadius + spreadRadius + offset.distance;
       if (maxBlurRadiusPlusMaxSpreadRadius > max) {
         max = maxBlurRadiusPlusMaxSpreadRadius;
       }
@@ -98,11 +109,9 @@ class DropdownOptions {
   EdgeInsets get marginGap => animationType == DropdownAnimationType.size
       ? EdgeInsets.only(
           top: borderSide.width * 0.5 + shadowMaxBlurRadiusPlusMaxSpreadRadius,
-          bottom:
-              borderSide.width * 0.5 + shadowMaxBlurRadiusPlusMaxSpreadRadius,
+          bottom: borderSide.width * 0.5 + shadowMaxBlurRadiusPlusMaxSpreadRadius,
           left: borderSide.width * 0.5 + shadowMaxBlurRadiusPlusMaxSpreadRadius,
-          right:
-              borderSide.width * 0.5 + shadowMaxBlurRadiusPlusMaxSpreadRadius,
+          right: borderSide.width * 0.5 + shadowMaxBlurRadiusPlusMaxSpreadRadius,
         )
       : EdgeInsets.zero;
 }

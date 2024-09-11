@@ -22,7 +22,7 @@ class ResultOptions {
   final BoxDecoration boxDecoration, openBoxDecoration, errorBoxDecoration;
 
   /// Result text style
-  final TextStyle textStyle, placeholderTextStyle;
+  final TextStyle textStyle, placeholderTextStyle, inputTextField;
 
   /// Result text is overflow
   final TextOverflow textOverflow;
@@ -36,8 +36,14 @@ class ResultOptions {
   /// Result is marquee
   final bool isMarquee;
 
+  final Color? backgroundIconColor;
+
+  final BorderRadius? iconRadius;
+
   /// The duration of the switch animation.
   final Duration duration, marqueeDuration, backDuration, pauseDuration;
+
+  final Color? cursorColor;
 
   const ResultOptions({
     this.width = 220,
@@ -47,6 +53,9 @@ class ResultOptions {
     this.padding = const EdgeInsets.symmetric(horizontal: 10),
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
     this.render = ResultRender.all,
+    this.backgroundIconColor,
+    this.iconRadius,
+    this.cursorColor,
     this.boxDecoration = const BoxDecoration(
       color: Color(0xFFFFFFFF),
       borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -96,6 +105,11 @@ class ResultOptions {
       ],
     ),
     this.textStyle = const TextStyle(
+      color: Color(0xff000000),
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+    ),
+    this.inputTextField = const TextStyle(
       color: Color(0xff000000),
       fontSize: 16,
       fontWeight: FontWeight.w400,

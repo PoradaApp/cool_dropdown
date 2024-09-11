@@ -1,33 +1,37 @@
 import 'package:cool_dropdown/enums/dropdown_item_render.dart';
-import 'package:cool_dropdown/models/cool_dropdown_item.dart';
+import 'package:cool_dropdown/models/one_dropdown_item.dart';
 import 'package:cool_dropdown/options/dropdown_item_options.dart';
 import 'package:cool_dropdown/utils/extension_util.dart';
 import 'package:cool_dropdown/widgets/marquee_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class DropdownItemWidget extends StatefulWidget {
-  final CoolDropdownItem item;
+  final OneDropdownItem item;
   final DropdownItemOptions dropdownItemOptions;
+  final BoxDecoration decoration;
+  final double height;
 
   const DropdownItemWidget({
     Key? key,
     required this.item,
     required this.dropdownItemOptions,
+    required this.decoration,
+    required this.height,
   }) : super(key: key);
 
   @override
   State<DropdownItemWidget> createState() => _DropdownItemWidgetState();
 }
 
-class _DropdownItemWidgetState extends State<DropdownItemWidget>
-    with SingleTickerProviderStateMixin {
+class _DropdownItemWidgetState extends State<DropdownItemWidget> with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: widget.dropdownItemOptions.duration,
   );
   late final _decorationBoxTween = DecorationTween(
     begin: BoxDecoration(),
-    end: widget.dropdownItemOptions.selectedBoxDecoration,
+    end: widget.decoration,
   ).animate(_controller);
 
   late final _textStyleTween = TextStyleTween(
@@ -64,13 +68,22 @@ class _DropdownItemWidgetState extends State<DropdownItemWidget>
           widget.dropdownItemOptions.render == DropdownItemRender.label ||
           widget.dropdownItemOptions.render == DropdownItemRender.reverse)
         Flexible(
-          child: _buildLabel(
-            Text(
-              widget.item.label,
-              style: _textStyleTween.value,
-              overflow: widget.dropdownItemOptions.textOverflow,
-            ),
-          ),
+          child: widget.item.builder != null
+              ? _buildLabel(child: widget.item.builder!(context))
+              : _buildLabel(
+                  child: Row(
+                    children: [
+                      if (widget.item.prefixIcon != null) ...[widget.item.prefixIcon!, SizedBox(width: 8)],
+                      Flexible(
+                        child: Text(
+                          widget.item.label,
+                          style: _textStyleTween.value,
+                          overflow: widget.dropdownItemOptions.textOverflow,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
         ),
 
       /// if you want to show icon in result widget
@@ -78,16 +91,17 @@ class _DropdownItemWidgetState extends State<DropdownItemWidget>
           widget.dropdownItemOptions.render == DropdownItemRender.icon ||
           widget.dropdownItemOptions.render == DropdownItemRender.reverse)
         _buildIcon(),
-    ].isReverse(
-        widget.dropdownItemOptions.render == DropdownItemRender.reverse);
+    ].isReverse(widget.dropdownItemOptions.render == DropdownItemRender.reverse);
   }
 
-  Widget _buildLabel(Widget child) {
-    return widget.dropdownItemOptions.isMarquee
-        ? MarqueeWidget(
-            child: child,
-          )
-        : child;
+  Widget _buildLabel({required Widget child}) {
+    if (widget.dropdownItemOptions.isMarquee) {
+      return MarqueeWidget(
+        child: child,
+      );
+    } else {
+      return child;
+    }
   }
 
   Widget _buildIcon() {
@@ -105,9 +119,7 @@ class _DropdownItemWidgetState extends State<DropdownItemWidget>
         },
         child: Container(
           key: ValueKey(widget.item.isSelected),
-          child: widget.item.isSelected
-              ? widget.item.selectedIcon
-              : widget.item.icon,
+          child: widget.item.isSelected ? widget.item.selectedIcon : widget.item.icon,
         ),
       );
     }
@@ -116,21 +128,22 @@ class _DropdownItemWidgetState extends State<DropdownItemWidget>
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-        animation: _controller,
-        builder: (_, __) {
-          return Container(
-            padding: _paddingTween.value,
-            height: widget.dropdownItemOptions.height,
+      animation: _controller,
+      builder: (_, __) {
+        return Container(
+          padding: _paddingTween.value,
+          height: widget.height,
+          alignment: widget.dropdownItemOptions.alignment,
+          decoration: _decorationBoxTween.value,
+          child: Align(
             alignment: widget.dropdownItemOptions.alignment,
-            decoration: _decorationBoxTween.value,
-            child: Align(
-              alignment: widget.dropdownItemOptions.alignment,
-              child: Row(
-                mainAxisAlignment: widget.dropdownItemOptions.mainAxisAlignment,
-                children: _buildDropdownItem(),
-              ),
+            child: Row(
+              mainAxisAlignment: widget.dropdownItemOptions.mainAxisAlignment,
+              children: _buildDropdownItem(),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

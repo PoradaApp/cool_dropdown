@@ -1,4 +1,4 @@
-import 'package:cool_dropdown/models/cool_dropdown_item.dart';
+import 'package:cool_dropdown/models/one_dropdown_item.dart';
 import 'package:cool_dropdown/options/result_options.dart';
 import 'package:cool_dropdown/typedefs/typedef.dart';
 import 'package:cool_dropdown/widgets/dropdown_widget.dart';
@@ -41,10 +41,10 @@ class DropdownController<T> implements TickerProvider {
   VoidCallback? _openFunction;
   VoidCallback? get openFunction => _openFunction;
 
-  ItemSelectionCallback<T>? _setValueFunction;
-  ItemSelectionCallback<T>? get setValueFunction => _setValueFunction;
+  SelectedItemCallback<T>? _setValueFunction;
+  SelectedItemCallback<T>? get setValueFunction => _setValueFunction;
 
-  void Function(bool isOpened)? onOpen;
+  void Function()? onOpen;
 
   bool _isError = false;
   bool get isError => _isError;
@@ -112,13 +112,16 @@ class DropdownController<T> implements TickerProvider {
       );
 
   void show({required BuildContext context, required DropdownWidget child}) {
+    if (_overlayEntry != null && Overlay.of(context).mounted) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
     _overlayEntry = OverlayEntry(builder: (_) => child);
     if (_overlayEntry == null) return;
-    Overlay.of(context).insert(_overlayEntry!);
+    Overlay.of(context, rootOverlay: true).insert(_overlayEntry!);
 
     _isOpen = true;
-    onOpen?.call(true);
-
+    openFunction?.call();
     _controller.forward();
   }
 
@@ -126,19 +129,25 @@ class DropdownController<T> implements TickerProvider {
     openFunction!.call();
   }
 
+  void removeOverlay() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
+
   void close() async {
     await _controller.reverse();
-    _overlayEntry?.remove();
+    removeOverlay();
 
     _isOpen = false;
-    onOpen?.call(false);
   }
 
   void resetValue() {
     setValueFunction?.call(null);
   }
 
-  void setValue(CoolDropdownItem<T>? item) {
+  void setValue(OneDropdownItem<T>? item) {
     setValueFunction?.call(item);
   }
 
@@ -162,8 +171,8 @@ class DropdownController<T> implements TickerProvider {
 
   void setFunctions({
     required void Function(bool value) errorFunction,
-    required void Function(bool isOpened)? onOpenCallback,
-    required ItemSelectionCallback<T> setItemFunction,
+    required void Function()? onOpenCallback,
+    required SelectedItemCallback<T> setItemFunction,
     required VoidCallback openFunction,
   }) {
     _onError = errorFunction;

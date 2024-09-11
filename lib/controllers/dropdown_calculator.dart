@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:cool_dropdown/enums/dropdown_align.dart';
 import 'package:cool_dropdown/enums/dropdown_triangle_align.dart';
 import 'package:cool_dropdown/enums/selected_item_align.dart';
-import 'package:cool_dropdown/models/cool_dropdown_item.dart';
-import 'package:cool_dropdown/options/dropdown_triangle_options.dart';
+import 'package:cool_dropdown/models/one_dropdown_item.dart';
 import 'package:cool_dropdown/options/dropdown_item_options.dart';
 import 'package:cool_dropdown/options/dropdown_options.dart';
+import 'package:cool_dropdown/options/dropdown_triangle_options.dart';
 import 'package:flutter/widgets.dart';
 
 class DropdownCalculator<T> {
-  final List<CoolDropdownItem<T>> dropdownList;
+  final List<OneDropdownItem<T>> dropdownList;
   final BuildContext bodyContext;
   final GlobalKey resultKey;
   final DropdownOptions dropdownOptions;
@@ -27,8 +27,7 @@ class DropdownCalculator<T> {
   double _resultWidth = 0;
 
   double get dropdownWidth => dropdownOptions.width ?? _resultWidth;
-  double get dropdownHeight =>
-      _calcDropdownHeight ?? min(dropdownOptions.height, _totalHeight);
+  double get dropdownHeight => _calcDropdownHeight ?? min(dropdownOptions.height, _totalHeight);
 
   double get _totalHeight {
     return (dropdownItemOptions.height * dropdownList.length) +
@@ -67,18 +66,35 @@ class DropdownCalculator<T> {
       case DropdownAlign.left:
         return resultOffset.dx + dropdownOptions.left;
       case DropdownAlign.right:
-        return resultOffset.dx +
-            resultBox.size.width -
-            dropdownWidth +
-            dropdownOptions.left;
+        return resultOffset.dx + resultBox.size.width - dropdownWidth + dropdownOptions.left;
       case DropdownAlign.center:
-        return resultOffset.dx +
-            (resultBox.size.width - dropdownWidth) * 0.5 +
-            dropdownOptions.left;
+        return resultOffset.dx + (resultBox.size.width - dropdownWidth) * 0.5 + dropdownOptions.left;
     }
   }
 
   double _setOffsetDy({
+    required RenderBox resultBox,
+    required Offset resultOffset,
+  }) {
+    final screenHeight = MediaQuery.of(bodyContext).size.height;
+    double dropdownHeight = dropdownOptions.height;
+    final dropdownBottomMargin = dropdownOptions.gap.betweenDropdownAndEdge;
+    double dropdownY = resultOffset.dy +
+        resultBox.size.height +
+        dropdownBottomMargin +
+        dropdownOptions.top +
+        dropdownOptions.gap.betweenDropdownAndEdge;
+    //Remove check to cut height
+    if (dropdownY + dropdownHeight > screenHeight) {
+      final overflowAmount = dropdownY + dropdownHeight - screenHeight;
+      dropdownY -= overflowAmount;
+
+      dropdownHeight -= overflowAmount;
+    }
+    return dropdownY;
+  }
+
+  /*  double _setOffsetDy({
     required RenderBox resultBox,
     required Offset resultOffset,
   }) {
@@ -108,7 +124,7 @@ class DropdownCalculator<T> {
       }
       return resultOffset.dy + resultBox.size.height + dropdownOptions.top;
     }
-  }
+  } */
 
   double get calcArrowAlignmentDx {
     switch (dropdownTriangleOptions.align) {
@@ -122,8 +138,7 @@ class DropdownCalculator<T> {
         if (_isTriangleDown) {
           return _arrowRightCenterDx(dropdownOptions.borderRadius.topRight.x);
         } else {
-          return _arrowRightCenterDx(
-              dropdownOptions.borderRadius.bottomRight.x);
+          return _arrowRightCenterDx(dropdownOptions.borderRadius.bottomRight.x);
         }
       case DropdownTriangleAlign.center:
         return 0;
@@ -131,15 +146,11 @@ class DropdownCalculator<T> {
   }
 
   double _arrowLeftCenterDx(double radius) {
-    return (((radius + dropdownTriangleOptions.width * 0.5) +
-                dropdownTriangleOptions.left) /
-            dropdownWidth) -
-        1;
+    return (((radius + dropdownTriangleOptions.width * 0.5) + dropdownTriangleOptions.left) / dropdownWidth) - 1;
   }
 
   double _arrowRightCenterDx(double radius) {
-    return ((dropdownWidth - radius - dropdownTriangleOptions.width * 0.5) +
-            dropdownTriangleOptions.left) /
+    return ((dropdownWidth - radius - dropdownTriangleOptions.width * 0.5) + dropdownTriangleOptions.left) /
         dropdownWidth;
   }
 
@@ -177,8 +188,7 @@ class DropdownCalculator<T> {
     if (_totalHeight < dropdownHeight) {
       scrollPosition = 0;
     }
-    scrollController.animateTo(scrollPosition,
-        duration: dropdownOptions.duration, curve: dropdownOptions.curve);
+    scrollController.animateTo(scrollPosition, duration: dropdownOptions.duration, curve: dropdownOptions.curve);
   }
 
   void dispose() {

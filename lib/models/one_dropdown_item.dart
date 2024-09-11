@@ -1,51 +1,61 @@
 import 'package:flutter/material.dart';
 
-class CoolDropdownItem<T> {
+class OneDropdownItem<T> {
   final String label;
   final bool isSelected;
   final Widget? icon;
   final Widget? selectedIcon;
   final T value;
+  final Function()? onTap;
+  final Widget? prefixIcon;
+  final Widget Function(BuildContext context)? builder;
 
-  CoolDropdownItem({
+  OneDropdownItem({
     required this.label,
     this.isSelected = false,
     this.icon,
     this.selectedIcon,
     required this.value,
+    this.prefixIcon,
+    this.onTap,
+    this.builder,
   });
 
-  CoolDropdownItem<T> copyWith({
+  OneDropdownItem<T> copyWith({
     String? label,
     bool? isSelected,
     Widget? icon,
     Widget? selectedIcon,
     T? value,
+    Function()? onTap,
+    Widget? prefixIcon,
+    Widget Function(BuildContext context)? builder,
   }) {
-    return CoolDropdownItem<T>(
+    return OneDropdownItem<T>(
       label: label ?? this.label,
       isSelected: isSelected ?? this.isSelected,
       icon: icon ?? this.icon,
       selectedIcon: selectedIcon ?? this.selectedIcon,
       value: value ?? this.value,
+      onTap: onTap ?? this.onTap,
+      prefixIcon: prefixIcon ?? this.prefixIcon,
+      builder: builder ?? this.builder,
     );
-  }
-
-  @override
-  String toString() {
-    return 'CoolDropdownItem(label: $label, isSelected: $isSelected, icon: $icon, selectedIcon: $selectedIcon, value: $value)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is CoolDropdownItem<T> &&
+    return other is OneDropdownItem<T> &&
         other.label == label &&
         other.isSelected == isSelected &&
         other.icon == icon &&
         other.selectedIcon == selectedIcon &&
-        other.value == value;
+        other.value == value &&
+        other.onTap == onTap &&
+        other.builder == builder &&
+        other.prefixIcon == prefixIcon;
   }
 
   @override
@@ -54,6 +64,9 @@ class CoolDropdownItem<T> {
         isSelected.hashCode ^
         icon.hashCode ^
         selectedIcon.hashCode ^
-        value.hashCode;
+        value.hashCode ^
+        onTap.hashCode ^
+        builder.hashCode ^
+        prefixIcon.hashCode;
   }
 }

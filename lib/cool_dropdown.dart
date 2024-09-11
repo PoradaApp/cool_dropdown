@@ -1,41 +1,50 @@
 library cool_dropdown;
 
 import 'package:cool_dropdown/controllers/dropdown_controller.dart';
-import 'package:cool_dropdown/models/cool_dropdown_item.dart';
-import 'package:cool_dropdown/options/dropdown_triangle_options.dart';
+import 'package:cool_dropdown/models/one_dropdown_item.dart';
 import 'package:cool_dropdown/options/dropdown_item_options.dart';
 import 'package:cool_dropdown/options/dropdown_options.dart';
+import 'package:cool_dropdown/options/dropdown_triangle_options.dart';
 import 'package:cool_dropdown/options/result_options.dart';
 import 'package:cool_dropdown/widgets/result_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 export 'package:cool_dropdown/controllers/dropdown_controller.dart';
+export 'package:cool_dropdown/customPaints/arrow_down_painter.dart';
 export 'package:cool_dropdown/enums/dropdown_align.dart';
-export 'package:cool_dropdown/enums/dropdown_triangle_align.dart';
-export 'package:cool_dropdown/enums/selected_item_align.dart';
-export 'package:cool_dropdown/enums/result_render.dart';
-export 'package:cool_dropdown/enums/dropdown_item_render.dart';
 export 'package:cool_dropdown/enums/dropdown_animation.dart';
-export 'package:cool_dropdown/options/dropdown_triangle_options.dart';
+export 'package:cool_dropdown/enums/dropdown_item_render.dart';
+export 'package:cool_dropdown/enums/dropdown_triangle_align.dart';
+export 'package:cool_dropdown/enums/result_render.dart';
+export 'package:cool_dropdown/enums/selected_item_align.dart';
 export 'package:cool_dropdown/options/dropdown_item_options.dart';
 export 'package:cool_dropdown/options/dropdown_options.dart';
+export 'package:cool_dropdown/options/dropdown_triangle_options.dart';
 export 'package:cool_dropdown/options/result_options.dart';
-export 'package:cool_dropdown/customPaints/arrow_down_painter.dart';
 
 class CoolDropdown<T> extends StatelessWidget {
-  final List<CoolDropdownItem<T>> dropdownList;
-  final CoolDropdownItem<T>? defaultItem;
-
+  final List<OneDropdownItem<T>> dropdownList;
+  final OneDropdownItem<T>? defaultItem;
+  final OneDropdownItem<T>? undefinedItem;
+  final OneDropdownItem<T>? emptyItem;
   final ResultOptions resultOptions;
   final DropdownOptions dropdownOptions;
   final DropdownItemOptions dropdownItemOptions;
   final DropdownTriangleOptions dropdownTriangleOptions;
   final DropdownController<T> controller;
-
-  final void Function(T value) onChange;
-  final Function(bool)? onOpen;
-
+  final Function(T) onChange;
+  final Function()? onClose;
+  final Function()? onOpen;
+  final bool hasInputField;
+  final TextEditingController? textController;
   final bool isMarquee;
+  final List<TextInputFormatter>? inputFormatters;
+  final InputDecoration? inputDecoration;
+  final String? hintText;
+  final String? Function(String? value)? onValidate;
+  final int maxExpandedItemsCount;
+  final double maxExpandedHeight;
 
   CoolDropdown({
     Key? key,
@@ -49,7 +58,20 @@ class CoolDropdown<T> extends StatelessWidget {
     required this.onChange,
     this.onOpen,
     this.isMarquee = false,
-  }) : super(key: key);
+    this.hasInputField = false,
+    this.inputFormatters,
+    this.hintText,
+    this.undefinedItem,
+    this.inputDecoration,
+    this.onValidate,
+    this.onClose,
+    this.textController,
+    this.emptyItem,
+    this.maxExpandedItemsCount = 8,
+    this.maxExpandedHeight = 52,
+  }) : super(key: key) {
+    assert(!hasInputField || textController != null, 'textController must be provided when hasInputField is true');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +85,17 @@ class CoolDropdown<T> extends StatelessWidget {
       onChange: onChange,
       onOpen: onOpen,
       defaultItem: defaultItem,
+      hasInputField: hasInputField,
+      textController: textController,
+      inputFormatters: inputFormatters,
+      hintText: hintText,
+      undefinedItem: undefinedItem,
+      inputDecoration: inputDecoration,
+      onValidate: onValidate,
+      emptyItem: emptyItem,
+      onClose: onClose ?? () {},
+      maxExpandedItemsCount: maxExpandedItemsCount,
+      maxExpandedHeight: maxExpandedHeight,
     );
   }
 }

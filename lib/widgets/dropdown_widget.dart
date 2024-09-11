@@ -2,10 +2,10 @@ import 'package:cool_dropdown/controllers/dropdown_calculator.dart';
 import 'package:cool_dropdown/controllers/dropdown_controller.dart';
 import 'package:cool_dropdown/customPaints/dropdown_shape_border.dart';
 import 'package:cool_dropdown/enums/dropdown_animation.dart';
-import 'package:cool_dropdown/models/cool_dropdown_item.dart';
-import 'package:cool_dropdown/options/dropdown_triangle_options.dart';
+import 'package:cool_dropdown/models/one_dropdown_item.dart';
 import 'package:cool_dropdown/options/dropdown_item_options.dart';
 import 'package:cool_dropdown/options/dropdown_options.dart';
+import 'package:cool_dropdown/options/dropdown_triangle_options.dart';
 import 'package:cool_dropdown/typedefs/typedef.dart';
 import 'package:cool_dropdown/widgets/dropdown_item_widget.dart';
 import 'package:flutter/material.dart';
@@ -15,16 +15,18 @@ class DropdownWidget<T> extends StatefulWidget {
   final DropdownItemOptions dropdownItemOptions;
   final DropdownTriangleOptions dropdownTriangleOptions;
   final DropdownController controller;
-
   final GlobalKey resultKey;
   final BuildContext bodyContext;
-
-  final List<CoolDropdownItem> dropdownList;
-
-  final void Function(T t) onChange;
-
-  final GetSelectedItem getSelectedItem;
-  final CoolDropdownItem<T>? selectedItem;
+  final List<OneDropdownItem<T>> dropdownList;
+  final Function(T t) onChange;
+  final Function() onClose;
+  final TextEditingController? textController;
+  final SelectedItemCallback<T> selectedItemCallback;
+  final OneDropdownItem<T>? selectedItem;
+  final OneDropdownItem<T>? undefinedItem;
+  final OneDropdownItem<T>? emptyItem;
+  final int maxExpandedItemsCount;
+  final double maxExpandedHeight;
 
   const DropdownWidget({
     Key? key,
@@ -36,8 +38,14 @@ class DropdownWidget<T> extends StatefulWidget {
     required this.bodyContext,
     required this.dropdownList,
     required this.onChange,
-    required this.getSelectedItem,
+    required this.selectedItemCallback,
     required this.selectedItem,
+    required this.textController,
+    required this.undefinedItem,
+    required this.onClose,
+    required this.emptyItem,
+    required this.maxExpandedItemsCount,
+    required this.maxExpandedHeight,
   }) : super(key: key);
 
   @override
@@ -58,12 +66,13 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
       dropdownItemOptions: widget.dropdownItemOptions,
       dropdownList: widget.dropdownList,
     );
-
     dropdownOffset = _dropdownCalculator.setOffset();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       final currentIndex = widget.dropdownList.indexWhere((dropdownItem) => dropdownItem == widget.selectedItem);
       if (currentIndex < 0) return;
-      _setSelectedItem(currentIndex);
+      if (widget.selectedItem != null) {
+        _setSelectedItem(widget.selectedItem!);
+      }
       _dropdownCalculator.setScrollPosition(currentIndex);
     });
     super.initState();
@@ -75,17 +84,8 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
     super.dispose();
   }
 
-  void _setSelectedItem(int index) {
-    setState(() {
-      for (var i = 0; i < widget.dropdownList.length; i++) {
-        if (index == i) {
-          widget.dropdownList[i] = widget.dropdownList[i].copyWith(isSelected: true);
-          widget.getSelectedItem(i);
-        } else {
-          widget.dropdownList[i] = widget.dropdownList[i].copyWith(isSelected: false);
-        }
-      }
-    });
+  void _setSelectedItem(OneDropdownItem<T> item) {
+    widget.selectedItemCallback(item);
   }
 
   Widget _buildAnimation({required Widget child}) {
@@ -102,6 +102,8 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
           alignment: Alignment(_dropdownCalculator.calcArrowAlignmentDx, _dropdownCalculator.isArrowDown ? 1 : -1),
           child: child,
         );
+      case DropdownAnimationType.none:
+        return child;
     }
   }
 
@@ -112,7 +114,10 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
       child: Stack(
         children: [
           GestureDetector(
-            onTap: () => widget.controller.close(),
+            onTap: () {
+              widget.onClose();
+              widget.controller.close();
+            },
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
@@ -122,90 +127,131 @@ class DropdownWidgetState<T> extends State<DropdownWidget<T>> {
           Positioned(
             top: dropdownOffset.dy - widget.dropdownOptions.marginGap.top,
             left: dropdownOffset.dx - widget.dropdownOptions.marginGap.left,
-            child: GestureDetector(
-              onTap: () {},
-              child: _buildAnimation(
-                child: Container(
-                  margin: widget.dropdownOptions.marginGap,
-                  clipBehavior: Clip.antiAlias,
-                  width: _dropdownCalculator.dropdownWidth,
-                  height: _dropdownCalculator.dropdownHeight + widget.dropdownOptions.borderSide.width,
-                  padding: EdgeInsets.all(widget.dropdownOptions.borderSide.width * 0.5),
-                  decoration: ShapeDecoration(
-                    color: widget.dropdownOptions.color,
-                    shadows: widget.dropdownOptions.shadows,
-                    shape: DropdownShapeBorder(
-                      triangle: widget.dropdownTriangleOptions,
-                      radius: widget.dropdownOptions.borderRadius,
-                      borderSide: widget.dropdownOptions.borderSide,
-                      arrowAlign: widget.dropdownTriangleOptions.align,
-                      isTriangleDown: _dropdownCalculator.isArrowDown,
-                    ),
-                  ),
-                  child: ListView.builder(
-                    controller: _dropdownCalculator.scrollController,
-                    padding: widget.dropdownOptions.calcPadding,
-                    itemCount: widget.dropdownList.length,
-                    itemBuilder: (_, index) => GestureDetector(
-                      onTap: () {
-                        widget.onChange.call(widget.dropdownList[index].value);
-                        _setSelectedItem(index);
-                      },
-                      child: Column(
-                        children: [
-                          if (index == 0)
-                            SizedBox(
-                              height: widget.dropdownOptions.gap.top + widget.dropdownOptions.borderSide.width * 0.5,
-                            ),
-                          DropdownItemWidget(
-                            item: widget.dropdownList[index],
-                            dropdownItemOptions: widget.dropdownItemOptions,
-                          ),
-                          if (index != widget.dropdownList.length - 1)
-                            SizedBox(
-                              height: widget.dropdownOptions.gap.betweenItems,
-                            ),
-                          if (index == widget.dropdownList.length - 1)
-                            SizedBox(
-                              height: widget.dropdownOptions.gap.bottom + widget.dropdownOptions.borderSide.width * 0.5,
-                            ),
-                        ],
-                      ),
-                    ),
+            child: _buildAnimation(
+              child: Container(
+                margin: widget.dropdownOptions.marginGap,
+                clipBehavior: Clip.antiAlias,
+                width: _dropdownCalculator.dropdownWidth,
+                height: widget.dropdownList.isNotEmpty
+                    ? limitToMax(widget.dropdownList.length, widget.maxExpandedItemsCount) * widget.maxExpandedHeight
+                    : widget.maxExpandedHeight,
+                padding: EdgeInsets.all(widget.dropdownOptions.borderSide.width * 0.5),
+                decoration: ShapeDecoration(
+                  shadows: widget.dropdownOptions.shadows,
+                  shape: DropdownShapeBorder(
+                    triangle: widget.dropdownTriangleOptions,
+                    radius: widget.dropdownOptions.borderRadius,
+                    borderSide: widget.dropdownOptions.borderSide,
+                    arrowAlign: widget.dropdownTriangleOptions.align,
+                    isTriangleDown: _dropdownCalculator.isArrowDown,
                   ),
                 ),
+                child: Container(child: _buildItems()),
               ),
             ),
           ),
-
-          /// center line test
-          // Positioned(
-          //   top: dropdownOffset.dy - widget.dropdownOptions.marginGap.top,
-          //   left: dropdownOffset.dx - widget.dropdownOptions.marginGap.left,
-          //   child: IgnorePointer(
-          //     child: GestureDetector(
-          //       onTap: () {},
-          //       child: _buildAnimation(
-          //         child: Container(
-          //           margin: widget.dropdownOptions.marginGap,
-          //           width: _dropdownCalculator.dropdownWidth,
-          //           height: _dropdownCalculator.dropdownHeight +
-          //               widget.dropdownOptions.borderSide.width,
-          //           padding: EdgeInsets.all(
-          //               widget.dropdownOptions.borderSide.width * 0.5),
-          //           child: Center(
-          //             child: Container(
-          //               height: 3,
-          //               color: Colors.blue.withOpacity(0.8),
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );
+  }
+
+  int limitToMax(int number, int max) {
+    if (number > max) {
+      return max;
+    }
+    return number;
+  }
+
+  Widget _buildItems() {
+    if (widget.dropdownList.isNotEmpty) {
+      return Material(
+        color: widget.dropdownOptions.color,
+        borderRadius: widget.dropdownOptions.borderRadius,
+        child: ListView.builder(
+          controller: _dropdownCalculator.scrollController,
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
+          itemCount: widget.dropdownList.length,
+          itemBuilder: (_, index) => InkWell(
+            borderRadius: widget.dropdownOptions.splashRadius,
+            highlightColor: widget.dropdownOptions.splashColor,
+            focusColor: widget.dropdownOptions.splashColor,
+            hoverColor: widget.dropdownOptions.splashColor,
+            splashColor: widget.dropdownOptions.splashColor,
+            onTap: () {
+              if (widget.textController != null) {
+                widget.textController!.text = widget.dropdownList[index].label;
+              }
+              widget.onChange.call(widget.dropdownList[index].value);
+              _setSelectedItem(widget.dropdownList[index]);
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DropdownItemWidget(
+                  item: widget.dropdownList[index],
+                  dropdownItemOptions: widget.dropdownItemOptions,
+                  decoration: widget.dropdownItemOptions.selectedBoxDecoration,
+                  height: widget.dropdownItemOptions.height,
+                ),
+                if (index != widget.dropdownList.length - 1)
+                  SizedBox(
+                    height: widget.dropdownOptions.gap.betweenItems,
+                  ),
+              ],
+            ),
+          ),
+        ),
+      );
+    } else if (widget.emptyItem != null && widget.textController != null && widget.textController!.text.isEmpty) {
+      return Material(
+        color: widget.dropdownOptions.color,
+        borderRadius: widget.dropdownOptions.borderRadius,
+        child: Container(
+          child: InkWell(
+            borderRadius: widget.dropdownOptions.splashRadius,
+            highlightColor: widget.dropdownOptions.splashColor,
+            focusColor: widget.dropdownOptions.splashColor,
+            hoverColor: widget.dropdownOptions.splashColor,
+            splashColor: widget.dropdownOptions.splashColor,
+            onTap: () {
+              widget.controller.close();
+            },
+            child: DropdownItemWidget(
+              item: widget.emptyItem!,
+              dropdownItemOptions: widget.dropdownItemOptions,
+              decoration: widget.dropdownOptions.emptyDecoration ?? BoxDecoration(),
+              height: widget.maxExpandedHeight,
+            ),
+          ),
+        ),
+      );
+    } else if (widget.undefinedItem != null) {
+      return Material(
+        color: widget.dropdownOptions.color,
+        borderRadius: widget.dropdownOptions.borderRadius,
+        child: Container(
+          child: InkWell(
+            borderRadius: widget.dropdownOptions.splashRadius,
+            highlightColor: widget.dropdownOptions.splashColor,
+            focusColor: widget.dropdownOptions.splashColor,
+            hoverColor: widget.dropdownOptions.splashColor,
+            splashColor: widget.dropdownOptions.splashColor,
+            onTap: () {
+              widget.controller.close();
+              widget.undefinedItem!.onTap?.call();
+            },
+            child: DropdownItemWidget(
+              item: widget.undefinedItem!,
+              dropdownItemOptions: widget.dropdownItemOptions,
+              decoration: widget.dropdownOptions.undefinedDecoration ?? BoxDecoration(),
+              height: widget.maxExpandedHeight,
+            ),
+          ),
+        ),
+      );
+    } else {
+      return SizedBox();
+    }
   }
 }
