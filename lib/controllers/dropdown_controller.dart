@@ -44,7 +44,7 @@ class DropdownController<T> implements TickerProvider {
   SelectedItemCallback<T>? _setValueFunction;
   SelectedItemCallback<T>? get setValueFunction => _setValueFunction;
 
-  void Function()? onOpen;
+  void Function()? _onOpenCallback;
 
   bool _isError = false;
   bool get isError => _isError;
@@ -173,12 +173,12 @@ class DropdownController<T> implements TickerProvider {
     required void Function(bool value) errorFunction,
     required void Function()? onOpenCallback,
     required SelectedItemCallback<T> setItemFunction,
-    required VoidCallback openFunction,
+    required Function() openFunction,
   }) {
     _onError = errorFunction;
-    onOpen = onOpenCallback;
-    _openFunction = openFunction;
+    _onOpenCallback = onOpenCallback;
     _setValueFunction = setItemFunction;
+    _openFunction = openFunction;
   }
 
   void setResultOptions(ResultOptions resultOptions) {
